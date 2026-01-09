@@ -1,7 +1,6 @@
 const fs = require('fs');
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const reportRoutes = require('./routes/report');
@@ -29,7 +28,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(bodyParser.json({ limit: config.bodyLimit }));
+app.use(express.json({ limit: config.bodyLimit }));
 app.use(cors({
   origin(origin, cb) {
     if (!origin) return cb(null, true);
