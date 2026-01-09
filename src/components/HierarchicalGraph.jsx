@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useMemo, useState, useCallback } from 'react';
 import './Graph.css';
 import ForceGraph2D from 'react-force-graph-2d';
-import { forceManyBody, forceCollide, forceLink, forceCenter, forceRadial } from 'd3-force';
+import { forceManyBody, forceCollide, forceLink, forceCenter, forceRadial, forceX, forceY } from 'd3-force';
 
 export const HierarchicalGraph = ({
   data,
@@ -10,7 +10,7 @@ export const HierarchicalGraph = ({
   highlightPath = [],
   disableLevelSystem = false,
   selectedNodeId = null,
-  graphMode = 'focus',
+  bookmarkedNodeIds = null,
   lockLayout = false,
   onToggleLock,
   layoutPreset = 'radial',
@@ -20,12 +20,23 @@ export const HierarchicalGraph = ({
   const fgRef = useRef(null);
   const suppressAutoFit = useRef(false);
   const tooltipCacheRef = useRef(new Map());
+  const labelLayoutRef = useRef({ boxes: [] });
+  const exportSnapshotRef = useRef({ nodes: [], links: [] });
+  const exportFnsRef = useRef({ getNodeColor: () => '#94A3B8', getNodeSize: () => 10 });
   const [size, setSize] = useState({ width: 800, height: 520 });
   const [levels, setLevels] = useState(new Map());
   const [expandedNodes, setExpandedNodes] = useState(new Set());
-  const [maxVisibleLevel, setMaxVisibleLevel] = useState(null); // when set, force visibility by level
+  const [maxVisibleLevel, setMaxVisibleLevel] = useState(2); // force visibility by level
   const [hoverNodeId, setHoverNodeId] = useState(null);
-  const [pinnedNodes, setPinnedNodes] = useState(new Set());
+  const [, setPinnedNodes] = useState(new Set());
+  const [labelMode, setLabelMode] = useState(() => {
+    if (typeof window === 'undefined') return 'smart';
+    try {
+      return localStorage.getItem('graphLabelMode') || 'smart';
+    } catch (e) {
+      return 'smart';
+    }
+  });
   const [layout, setLayout] = useState(() => {
     if (typeof window === 'undefined') return 'radial';
     try {
@@ -45,21 +56,38 @@ export const HierarchicalGraph = ({
     } catch (e) { /* ignore */ }
   }, []);
 
+  const maxExistingLevel = useMemo(() => {
+    if (!data?.nodes?.length) return 1;
+    let mx = 1;
+    data.nodes.forEach((n) => {
+      const fallbackLevel =
+        n.type === 'host' && n.role === 'root'
+          ? 1
+          : (n.type === 'host' && n.role === 'subdomain') || n.type === 'dir'
+            ? 2
+            : 3;
+      const lvl = levels.get(n.id) ?? fallbackLevel;
+      if (lvl > mx) mx = lvl;
+    });
+    return mx;
+  }, [data, levels]);
+
+  // Keep the active level within the max depth present in the graph.
+  useEffect(() => {
+    if (disableLevelSystem) return;
+    setMaxVisibleLevel((prev) => {
+      const base = prev == null ? 2 : prev;
+      const next = Math.max(1, Math.min(maxExistingLevel, base));
+      return next === prev ? prev : next;
+    });
+  }, [disableLevelSystem, maxExistingLevel]);
+
   // Local small component for level buttons rendered over the graph
   const LevelButtons = () => {
-    // compute the current max existing level from data
-    const maxLevel = React.useMemo(() => {
-      if (!data || !data.nodes) return 1;
-      let mx = 1;
-      data.nodes.forEach(n => {
-        const fallbackLevel = (n.type === 'host' && n.role === 'root') ? 1 : ((n.type === 'host' && n.role === 'subdomain') || n.type === 'dir' ? 2 : 3);
-        const l = levels.get(n.id) ?? fallbackLevel;
-        if (l > mx) mx = l;
-      });
-      return mx;
-    }, [data, levels]);
-
-    const cur = maxVisibleLevel === null ? 1 : maxVisibleLevel;
+    const maxLevel = maxExistingLevel;
+    const cur = Math.max(1, Math.min(maxLevel, maxVisibleLevel ?? 2));
+    const canDec = cur > 1;
+    const canInc = cur < maxLevel;
 
     const setLevel = (lvl) => {
       const newLvl = Math.max(1, Math.min(maxLevel, lvl));
@@ -69,10 +97,11 @@ export const HierarchicalGraph = ({
 
     return (
       <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-        <button onClick={() => setLevel((maxVisibleLevel===null?1:maxVisibleLevel) - 1)} title="Decrease level">−</button>
-        <div className="level-display" style={{ minWidth: 84, textAlign: 'center', padding: '6px 10px', borderRadius: 6 }}>Level {cur}</div>
-        <button onClick={() => setLevel((maxVisibleLevel===null?1:maxVisibleLevel) + 1)} title="Increase level">+</button>
-        <button onClick={() => { setMaxVisibleLevel(null); setExpanded(() => new Set()); }} title="Clear level" style={{ marginLeft: 6 }}>Clear</button>
+        <button onClick={() => setLevel(cur - 1)} disabled={!canDec} title="Previous level">−</button>
+        <div className="level-display" style={{ minWidth: 110, textAlign: 'center', padding: '6px 10px', borderRadius: 6 }}>
+          Level {cur} / {maxLevel}
+        </div>
+        <button onClick={() => setLevel(cur + 1)} disabled={!canInc} title="Next level">+</button>
       </div>
     );
   };
@@ -92,6 +121,14 @@ export const HierarchicalGraph = ({
 
   useEffect(() => {
     try {
+      localStorage.setItem('graphLabelMode', labelMode);
+    } catch (e) {
+      // ignore
+    }
+  }, [labelMode]);
+
+  useEffect(() => {
+    try {
       localStorage.setItem('graphLayoutPreset', layout);
     } catch (e) {
       // ignore persistence errors
@@ -102,7 +139,7 @@ export const HierarchicalGraph = ({
     if (layoutPreset && layoutPreset !== layout) {
       setLayout(layoutPreset);
     }
-  }, [layoutPreset]);
+  }, [layoutPreset, layout]);
 
   useEffect(() => {
     if (!disableLevelSystem) return;
@@ -136,7 +173,6 @@ export const HierarchicalGraph = ({
   useEffect(() => {
     if (!data?.nodes?.length || !fgRef.current) return;
 
-    const fg = fgRef.current;
     const root = data.nodes.find(n => n.type === 'host' && n.role === 'root') || data.nodes.find(n => n.type === 'host');
     if (!root) return;
 
@@ -174,16 +210,21 @@ export const HierarchicalGraph = ({
     
     const nodesToExpand = new Set();
     const findParents = (id) => {
-      const parentLinks = data.links.filter(l => l.target === id && l.type === 'contains');
+      const parentLinks = data.links.filter(l => {
+        if (l.type !== 'contains') return false;
+        const tgt = typeof l.target === 'object' ? l.target.id : l.target;
+        return String(tgt) === String(id);
+      });
       parentLinks.forEach(link => {
-        nodesToExpand.add(link.source);
-        findParents(link.source);
+        const src = typeof link.source === 'object' ? link.source.id : link.source;
+        nodesToExpand.add(src);
+        findParents(src);
       });
     };
     
     findParents(nodeId);
-  setExpanded(prev => new Set([...prev, ...nodesToExpand]));
-  }, [data]);
+    setExpanded(prev => new Set([...prev, ...nodesToExpand]));
+  }, [data, setExpanded]);
 
   const manualFit = useCallback((padding = 420, duration = 160, delay = 120) => {
     suppressAutoFit.current = true;
@@ -241,13 +282,13 @@ export const HierarchicalGraph = ({
       setExpanded(prev => new Set([...prev, ...all]));
     };
 
-    // Expand up to a given hierarchical level (0 = root only). When used we switch to
+    // Expand up to a given hierarchical level (1 = root only). When used we switch to
     // a level-driven visibility mode: getVisibleNodes will return nodes whose level <= given
     // level and ignore the normal expansion set. This prevents accidentally expanding beyond
     // the maximum depth present in the graph.
     const expandToLevel = (level) => {
       // compute integer level
-      const lvl = Number.isFinite(Number(level)) ? Math.max(0, Math.floor(Number(level))) : 0;
+      const lvl = Number.isFinite(Number(level)) ? Math.max(1, Math.floor(Number(level))) : 1;
       // clear manual expansions to avoid conflicting state
       setExpanded(() => new Set());
       setMaxVisibleLevel(lvl);
@@ -275,6 +316,71 @@ export const HierarchicalGraph = ({
 
   // debug overlay removed: no DOM debug panel
 
+    const getCanvasEl = () => {
+      try {
+        const root = containerRef.current;
+        if (!root) return null;
+        const canvases = Array.from(root.querySelectorAll('canvas'));
+        if (!canvases.length) return null;
+        const visible = canvases.find((c) => {
+          try {
+            const rect = c.getBoundingClientRect();
+            return rect.width > 0 && rect.height > 0 && c.style.display !== 'none';
+          } catch (e) {
+            return false;
+          }
+        });
+        return visible || canvases[0] || null;
+      } catch (e) {
+        return null;
+      }
+    };
+
+    const getVisibleGraphData = () => {
+      const snap = exportSnapshotRef.current || { nodes: [], links: [] };
+      const colorFn = exportFnsRef.current?.getNodeColor || (() => '#94A3B8');
+      const sizeFn = exportFnsRef.current?.getNodeSize || (() => 10);
+
+      const nodes = (snap.nodes || []).map((n) => ({
+        id: String(n.id),
+        type: n.type,
+        role: n.role,
+        label: n.label,
+        fullLabel: n.fullLabel,
+        hostname: n.hostname,
+        path: n.path,
+        level: n.level,
+        status: n.status,
+        technologies: n.technologies || n.meta?.technologies || [],
+        ip: n.ip || n.meta?.ip,
+        count: n.count,
+        clusterType: n.clusterType,
+        parentId: n.parentId,
+        x: Number.isFinite(n.x) ? n.x : null,
+        y: Number.isFinite(n.y) ? n.y : null,
+        color: (() => { try { return colorFn(n); } catch (e) { return '#94A3B8'; } })(),
+        radius: (() => { try { return sizeFn(n); } catch (e) { return 10; } })(),
+        bookmarked: bookmarkedNodeIds instanceof Set ? bookmarkedNodeIds.has(String(n.id)) : Array.isArray(bookmarkedNodeIds) ? bookmarkedNodeIds.includes(String(n.id)) : false
+      }));
+
+      const links = (snap.links || []).map((l) => {
+        const src = String(typeof l.source === 'object' ? l.source.id : l.source);
+        const tgt = String(typeof l.target === 'object' ? l.target.id : l.target);
+        return { source: src, target: tgt, type: l.type || 'contains' };
+      });
+
+      return {
+        meta: {
+          layout,
+          labelMode,
+          maxExistingLevel,
+          maxVisibleLevel
+        },
+        nodes,
+        links
+      };
+    };
+
     // Wrap methods to log calls and update debug overlay
     window.graphInstance = {
       expandType: (...a) => { try { console.debug('[graph] expandType', ...a); } catch(e){}; return expandType(...a); },
@@ -290,11 +396,13 @@ export const HierarchicalGraph = ({
       isExpanded: (...a) => { try { console.debug('[graph] isExpanded', ...a); } catch(e){}; return isExpanded(...a); },
       getExpandedNodes: () => { try { console.debug('[graph] getExpandedNodes'); } catch(e){}; return Array.from(expandedNodes); },
       manualFit: (...a) => { try { console.debug('[graph] manualFit', ...a); } catch(e){}; return manualFit(...a); },
+      getCanvas: () => getCanvasEl(),
+      getVisibleGraphData: () => getVisibleGraphData(),
       focusOn: (id, opts = {}) => {
         try { console.debug('[graph] focusOn', id, opts); } catch(e){}
         const n = (data?.nodes || []).find(nn => nn.id === id);
         if (!n) return;
-        const { zoom = 1.8, duration = 600, delay = 100 } = opts;
+        const { zoom = 1.8, duration = 600 } = opts;
         const inst = fgRef.current;
         if (!inst || !isFinite(n.x) || !isFinite(n.y)) return;
         suppressAutoFit.current = true;
@@ -316,7 +424,7 @@ export const HierarchicalGraph = ({
         return layout;
       }
       };
-    }, [data, expandToNode, manualFit, layout]);
+    }, [data, expandToNode, manualFit, layout, expandedNodes, labelMode, maxVisibleLevel, maxExistingLevel, bookmarkedNodeIds, setExpanded]);
 
   const focusOnNode = useCallback((node, { zoom = 1.8, duration = 600, delay = 140, retries = 3 } = {}) => {
     if (!node) return;
@@ -350,8 +458,9 @@ export const HierarchicalGraph = ({
       });
     }
 
-    // Build parent map from links
+    // Build parent/child maps from links
     const parentMap = new Map();
+    const childMap = new Map();
     (data.links || []).forEach(l => {
       if (l.type !== 'contains') return;
       const src = typeof l.source === 'object' ? l.source.id : l.source;
@@ -359,6 +468,9 @@ export const HierarchicalGraph = ({
       const arr = parentMap.get(tgt) || [];
       arr.push(src);
       parentMap.set(tgt, arr);
+      const kids = childMap.get(src) || [];
+      kids.push(tgt);
+      childMap.set(src, kids);
     });
 
     const visible = new Set();
@@ -369,6 +481,30 @@ export const HierarchicalGraph = ({
         const lvl = levels.get(n.id) ?? fallbackLevel;
         if (lvl <= maxVisibleLevel) visible.add(n.id);
       });
+
+      // Branch expansion: when a node is expanded, reveal its children even if deeper than maxVisibleLevel.
+      const queue = [];
+      const queued = new Set();
+      expandedNodes.forEach((id) => {
+        const sid = String(id);
+        if (!visible.has(sid)) return;
+        queue.push(sid);
+        queued.add(sid);
+      });
+      let guard = 0;
+      while (queue.length && guard++ < 20000) {
+        const pid = queue.shift();
+        const kids = childMap.get(pid) || [];
+        for (const childId of kids) {
+          const cid = String(childId);
+          if (visible.has(cid)) continue;
+          visible.add(cid);
+          if (expandedNodes.has(cid) && !queued.has(cid)) {
+            queue.push(cid);
+            queued.add(cid);
+          }
+        }
+      }
     } else {
       // Show root host and its immediate subdomain children by default
       const root = data.nodes.find(n => n.type === 'host' && n.role === 'root') || data.nodes.find(n => n.type === 'host');
@@ -432,23 +568,42 @@ export const HierarchicalGraph = ({
     });
   }, [data]);
 
-  // Enhanced color mapping based on hierarchy
+  // Color mapping aligned with Web Recon Map UI:
+  // Subdomains: blue, Directories: yellow, Endpoints: red, IPs: orange, Accent: teal/cyan.
   const getNodeColor = useCallback((node) => {
     if (!node || !node.type) return '#9CA3AF';
 
-    if (node.type === 'cluster') return '#9333EA';
-    if (node.type === 'host' && node.role === 'root') return '#DC2626';
-    if (node.type === 'host' && node.role === 'subdomain') return '#2563EB';
-    
+    if (node.type === 'cluster') {
+      const ct = String(node.clusterType || '').toLowerCase();
+      if (ct.startsWith('attack_')) {
+        const map = {
+          attack_findings: '#EF4444',
+          attack_auth: '#F59E0B',
+          attack_admin: '#A855F7',
+          attack_api: '#3B82F6',
+          attack_leaks: '#FB923C',
+          attack_restricted: '#FBBF24',
+          attack_errors: '#F43F5E',
+          attack_other: '#94A3B8',
+          attack_subdomains: '#60A5FA'
+        };
+        return map[ct] || '#A855F7';
+      }
+      return '#A855F7';
+    }
+    if (node.type === 'host' && node.role === 'root') return '#2DE2E6';
+    if (node.type === 'host' && node.role === 'subdomain') return '#3B82F6';
+
     const colors = {
-      dir: '#059669',   // Green - directory
-      path: '#EA580C',  // Orange - path
-      file: '#D97706',  // Amber - file
+      dir: '#FBBF24',   // Yellow - directory
+      path: '#EF4444',  // Red - endpoint
+      file: '#EF4444',  // Red - endpoint
+      ip: '#FB923C',    // Orange - IP
       port: '#7C3AED',
       service: '#0891B2'
     };
-    
-    return colors[node.type] || '#6B7280';
+
+    return colors[node.type] || '#94A3B8';
   }, []);
   
   // Get node size based on type and expansion state
@@ -458,13 +613,18 @@ export const HierarchicalGraph = ({
       dir: 14,
       path: 12,
       file: 12,
-      cluster: 18,
+      ip: 12,
+      cluster: node?.attackView ? 22 : 18,
       port: 10,
       service: 10
     };
 
     const baseSize = baseSizes[node.type] || 10;
     const countBoost = node?.count ? Math.min(18, Math.log2(node.count + 1) * 4) : 0;
+    const attackScore = Number(node?.attackScore);
+    const attackBoost = node?.attackView && Number.isFinite(attackScore) && attackScore > 0
+      ? Math.min(18, Math.log2(attackScore + 1) * 4)
+      : 0;
     
     // Make expanded nodes slightly larger
     const expandedMultiplier = expandedNodes.has(node.id) ? 1.2 : 1;
@@ -472,55 +632,70 @@ export const HierarchicalGraph = ({
     // Make highlighted nodes larger
     const highlightMultiplier = highlightedNodes.includes(String(node.id)) ? 1.3 : 1;
     
-    return (baseSize + countBoost) * expandedMultiplier * highlightMultiplier;
+    return (baseSize + countBoost + attackBoost) * expandedMultiplier * highlightMultiplier;
   }, [expandedNodes, highlightedNodes]);
+
+  const isExpandableNode = useCallback((node) => {
+    if (!node) return false;
+    const t = String(node.type || '');
+    if (t === 'host') return String(node.role || '') === 'subdomain';
+    return t === 'dir';
+  }, []);
+
+  useEffect(() => {
+    exportFnsRef.current.getNodeColor = getNodeColor;
+    exportFnsRef.current.getNodeSize = getNodeSize;
+  }, [getNodeColor, getNodeSize]);
   
-  // Handle node click with expand/collapse functionality
-  const handleNodeClick = useCallback((node) => {
+  // Handle node click:
+  // - Click expandable nodes => expand/collapse (no auto-zoom, no details fetch)
+  // - Shift+click (or leaf nodes) => focus + show details
+  // - Cluster nodes => delegate to parent (no auto-zoom)
+  const handleNodeClick = useCallback((node, event) => {
     if (!node) return;
-    expandToNode(node.id);
-    
-    // Check if node has children
-    const hasChildren = data?.links?.some(l => l.source === node.id && l.type === 'contains');
-    
-    if (hasChildren) {
-      // Toggle expansion state using centralized setter (persists and emits change event)
-      setExpanded(prev => {
-        const newSet = new Set(prev);
-        if (newSet.has(node.id)) {
-          // Collapse: remove this node and its immediate children (do not recurse)
-          newSet.delete(node.id);
-          const childLinks = data.links.filter(l => l.source === node.id && l.type === 'contains');
-          childLinks.forEach(link => newSet.delete(link.target));
-        } else {
-          // Expand: add node id (do not auto-expand grandchildren)
-          newSet.add(node.id);
-          // For convenience, also ensure immediate children become visible only when desired.
-          // (Do not add descendants recursively.)
-        }
-        return newSet;
-      });
+    const id = String(node.id);
+
+    if (node.type === 'cluster') {
+      onNodeClick && onNodeClick(node, [id]);
+      return;
     }
 
-    focusOnNode(node);
-
-    setPinnedNodes(prev => {
-      const next = new Set(prev);
-      if (next.has(node.id)) {
-        next.delete(node.id);
-        node.fx = null;
-        node.fy = null;
-      } else {
-        next.add(node.id);
-        node.fx = node.x;
-        node.fy = node.y;
-      }
-      return next;
+    const hasChildren = data?.links?.some((l) => {
+      if (l.type !== 'contains') return false;
+      const src = typeof l.source === 'object' ? l.source.id : l.source;
+      return String(src) === id;
     });
 
-    // Notify parent component
-    onNodeClick && onNodeClick(node, [node.id]);
-  }, [data, expandToNode, focusOnNode, onNodeClick]);
+    const wantsDetails = !!event?.shiftKey;
+    if (!disableLevelSystem && hasChildren && isExpandableNode(node) && !wantsDetails) {
+      // Toggle expansion state using centralized setter (persists and emits change event)
+      setExpanded((prev) => {
+        const next = new Set(prev);
+        if (next.has(id)) {
+          // Collapse: remove this node and its immediate children (do not recurse)
+          next.delete(id);
+          const childLinks = (data.links || []).filter((l) => {
+            if (l.type !== 'contains') return false;
+            const src = typeof l.source === 'object' ? l.source.id : l.source;
+            return String(src) === id;
+          });
+          childLinks.forEach((link) => {
+            const tgt = typeof link.target === 'object' ? link.target.id : link.target;
+            next.delete(String(tgt));
+          });
+        } else {
+          next.add(id);
+        }
+        return next;
+      });
+      return;
+    }
+
+    // Details/inspect mode
+    expandToNode(id);
+    focusOnNode(node);
+    onNodeClick && onNodeClick(node, [id]);
+  }, [data, disableLevelSystem, expandToNode, focusOnNode, isExpandableNode, onNodeClick, setExpanded]);
   
   const parseUrlParts = useCallback((fullLabel, node) => {
     const empty = {
@@ -592,11 +767,53 @@ export const HierarchicalGraph = ({
 
   const shouldShowLabel = useCallback((node) => {
     if (!node) return false;
+    if (node.attackView) return true;
+    if (node.type === 'cluster') return true;
     if (hoverNodeId && node.id === hoverNodeId) return true;
+    if (highlightedNodes.includes(String(node.id))) return true;
+    if (highlightPath.includes(String(node.id))) return true;
+    if (selectedNodeId && String(node.id) === String(selectedNodeId)) return true;
     if (selectedNodeId && selectedNeighbors.has(node.id)) return true;
     if (node.type === 'host' && node.role === 'root') return true;
     return false;
-  }, [hoverNodeId, selectedNodeId, selectedNeighbors]);
+  }, [hoverNodeId, selectedNodeId, selectedNeighbors, highlightedNodes, highlightPath]);
+
+  const getLabelIntent = useCallback((node, globalScale) => {
+    if (!node) return false;
+    if (labelMode === 'off') return false;
+    if (labelMode === 'all') return true;
+    const zoomReveal = !!selectedNodeId && (globalScale || 1) >= 2.2;
+    return shouldShowLabel(node) || zoomReveal;
+  }, [labelMode, selectedNodeId, shouldShowLabel]);
+
+  const labelAlphaForZoom = useCallback((node, globalScale) => {
+    const scale = Number(globalScale) || 1;
+    const important = shouldShowLabel(node);
+    const start = labelMode === 'all'
+      ? 1.85
+      : (node?.attackView ? 0.72 : (important ? 1.05 : 1.35));
+    const end = start + (labelMode === 'all' ? 0.95 : 0.75);
+    const t = (scale - start) / Math.max(0.001, (end - start));
+    const a = Math.max(0, Math.min(1, t));
+    if (labelMode === 'smart' && node?.attackView && scale >= 0.72 && a < 0.28) return 0.28;
+    if (labelMode === 'smart' && important && scale >= 0.9 && a < 0.18) return 0.18;
+    return a;
+  }, [labelMode, shouldShowLabel]);
+
+  const rectsOverlap = useCallback((a, b, pad = 0) => {
+    if (!a || !b) return false;
+    return !(a.x2 + pad < b.x1 || a.x1 - pad > b.x2 || a.y2 + pad < b.y1 || a.y1 - pad > b.y2);
+  }, []);
+
+  const reserveLabelRect = useCallback((rect, pad = 0) => {
+    const boxes = labelLayoutRef.current.boxes || [];
+    for (let i = 0; i < boxes.length; i++) {
+      if (rectsOverlap(rect, boxes[i], pad)) return false;
+    }
+    boxes.push(rect);
+    labelLayoutRef.current.boxes = boxes;
+    return true;
+  }, [rectsOverlap]);
 
   const escapeHtml = useCallback((value) => {
     return String(value ?? '')
@@ -609,23 +826,39 @@ export const HierarchicalGraph = ({
 
   const renderHoverCard = useCallback((node) => {
     if (!node) return '';
-    const key = `${node.id}:${node.fullLabel || node.value || ''}`;
+    const key = `${node.id}:${node.fullLabel || node.value || ''}:${String(selectedNodeId || '')}:${disableLevelSystem ? 'd' : 'l'}:${expandedNodes.has(node.id) ? '1' : '0'}`;
     const cached = tooltipCacheRef.current.get(key);
     if (cached) return cached;
 
     const parts = parseUrlParts(node.fullLabel || node.value || '', node);
     const header = String(node.label || node.id || '').trim();
     const headerText = header.length > 28 ? `${header.slice(0, 28)}…` : header;
-    const typeLabel = node.type === 'host' ? 'Host' : (node.type === 'dir' ? 'Dir' : (node.type === 'file' ? 'File' : (node.type === 'cluster' ? 'Cluster' : 'Path')));
+    const typeLabel = node.type === 'host' ? 'Host' : (node.type === 'ip' ? 'IP' : (node.type === 'dir' ? 'Dir' : (node.type === 'file' ? 'File' : (node.type === 'cluster' ? 'Cluster' : 'Path'))));
     const extText = parts.extension ? parts.extension : '—';
     const hostText = parts.hostname || '—';
     const pathText = parts.pathname || '/';
     const normalizedText = parts.protocol && parts.hostname ? `${parts.protocol}://${parts.hostname}${parts.pathname}${parts.query ? `?${parts.query}` : ''}${parts.fragment ? `#${parts.fragment}` : ''}` : '';
+    const hasChildren = data?.links?.some((l) => {
+      if (l.type !== 'contains') return false;
+      const src = typeof l.source === 'object' ? l.source.id : l.source;
+      return String(src) === String(node.id);
+    });
+    const canExpand = hasChildren && !disableLevelSystem && isExpandableNode(node);
+    const isSelected = selectedNodeId && String(node.id) === String(selectedNodeId);
+    const actionText = (function () {
+      if (isSelected) return 'Selected';
+      if (node.type === 'cluster') return 'Expand';
+      if (canExpand) {
+        const base = expandedNodes.has(node.id) ? 'Collapse' : 'Expand';
+        return `${base} (Shift: details)`;
+      }
+      return 'Details';
+    })();
 
-    const html = `<div style="background: rgba(10, 14, 24, 0.88); color: #E2E8F0; padding: 12px 14px; border-radius: 14px; border: 1px solid rgba(148,163,184,0.18); box-shadow: 0 16px 32px rgba(0,0,0,0.45); backdrop-filter: blur(6px); max-width: 340px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+    const html = `<div style="background: rgba(7, 16, 23, 0.92); color: #E2E8F0; padding: 12px 14px; border-radius: 14px; border: 1px solid rgba(45,226,230,0.14); box-shadow: 0 16px 38px rgba(0,0,0,0.5); backdrop-filter: blur(8px); max-width: 360px; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
       <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px;">
         <div style="font-weight:700; font-size:13px; color:${escapeHtml(getNodeColor(node))}; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(headerText)}</div>
-        <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.12em; padding:2px 8px; border-radius:8px; background:rgba(148,163,184,0.18); color:#CBD5F5;">${escapeHtml(typeLabel)}</div>
+        <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.14em; padding:2px 8px; border-radius:10px; background:rgba(45,226,230,0.10); color:#BDFBFB; border: 1px solid rgba(45,226,230,0.14);">${escapeHtml(typeLabel)}</div>
       </div>
       <div style="display:grid; grid-template-columns: 70px 1fr; gap:6px 10px; font-size:11px;">
         <div style="color:#94A3B8;">Host</div>
@@ -638,22 +871,15 @@ export const HierarchicalGraph = ({
         <div style="color:#E2E8F0; text-align:right;">${escapeHtml(extText)}</div>
         <div style="color:#94A3B8;">Depth</div>
         <div style="color:#E2E8F0; text-align:right;">${escapeHtml(parts.depth)}</div>
+        <div style="color:#94A3B8;">Action</div>
+        <div style="color:#E2E8F0; text-align:right; font-weight:700;">${escapeHtml(actionText)}</div>
         ${normalizedText ? `<div style="color:#94A3B8;">Normalized</div>
         <div style="color:#E2E8F0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size:10px; word-break:break-all; user-select:text;">${escapeHtml(normalizedText)}</div>` : ''}
       </div>
     </div>`;
     tooltipCacheRef.current.set(key, html);
     return html;
-  }, [escapeHtml, getNodeColor, parseUrlParts]);
-
-  // Format bytes utility
-  const formatBytes = (bytes) => {
-    if (bytes === 0) return '0 B';
-    const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
-  };
+  }, [data, disableLevelSystem, escapeHtml, expandedNodes, getNodeColor, isExpandableNode, parseUrlParts, selectedNodeId]);
 
   // Resize observer
   useEffect(() => {
@@ -678,7 +904,102 @@ export const HierarchicalGraph = ({
   // Get current visible graph data
   const visibleNodes = getVisibleNodes();
   const visibleLinks = getVisibleLinks(visibleNodes);
-  const graphData = { nodes: visibleNodes, links: visibleLinks };
+  const orderedNodes = useMemo(() => {
+    if (!Array.isArray(visibleNodes) || !visibleNodes.length) return [];
+    const priority = (n) => {
+      if (!n) return 0;
+      const id = String(n.id);
+      if (selectedNodeId && id === String(selectedNodeId)) return 1000;
+      if (hoverNodeId && id === String(hoverNodeId)) return 920;
+      if (highlightedNodes.includes(id)) return 900;
+      if (highlightPath.includes(id)) return 860;
+      if (n.type === 'host' && n.role === 'root') return 820;
+      if (n.type === 'cluster') return 800;
+      if (n.type === 'host') return 500;
+      if (n.type === 'dir') return 420;
+      if (n.type === 'path' || n.type === 'file') return 360;
+      if (n.type === 'ip') return 320;
+      return 100;
+    };
+    return [...visibleNodes].sort((a, b) => priority(b) - priority(a));
+  }, [visibleNodes, selectedNodeId, hoverNodeId, highlightedNodes, highlightPath]);
+
+  const graphData = { nodes: orderedNodes, links: visibleLinks };
+
+  useEffect(() => {
+    exportSnapshotRef.current = { nodes: orderedNodes, links: visibleLinks };
+  }, [orderedNodes, visibleLinks]);
+
+  const selectedNode = useMemo(() => {
+    if (!selectedNodeId) return null;
+    const sid = String(selectedNodeId);
+    return orderedNodes.find((n) => String(n.id) === sid) || null;
+  }, [orderedNodes, selectedNodeId]);
+
+  const depthByNodeId = useMemo(() => {
+    const depth = new Map();
+    if (!selectedNodeId || !visibleLinks.length) return depth;
+    const start = String(selectedNodeId);
+    depth.set(start, 0);
+    const adj = new Map();
+
+    visibleLinks.forEach((link) => {
+      const src = String(typeof link.source === 'object' ? link.source.id : link.source);
+      const tgt = String(typeof link.target === 'object' ? link.target.id : link.target);
+      if (!adj.has(src)) adj.set(src, new Set());
+      if (!adj.has(tgt)) adj.set(tgt, new Set());
+      adj.get(src).add(tgt);
+      adj.get(tgt).add(src);
+    });
+
+    const queue = [start];
+    for (let i = 0; i < queue.length; i++) {
+      const id = queue[i];
+      const d = depth.get(id) || 0;
+      const neighbors = adj.get(id);
+      if (!neighbors) continue;
+      neighbors.forEach((nb) => {
+        if (depth.has(nb)) return;
+        depth.set(nb, d + 1);
+        queue.push(nb);
+      });
+    }
+    return depth;
+  }, [visibleLinks, selectedNodeId]);
+
+  const renderSelectionRings = useCallback((ctx, globalScale) => {
+    // Reset per-frame label occupancy so collision checks apply only within the current frame.
+    labelLayoutRef.current.boxes = [];
+
+    if (!selectedNodeId || !selectedNode) return;
+    const x = selectedNode.x;
+    const y = selectedNode.y;
+    if (!isFinite(x) || !isFinite(y)) return;
+
+    let maxDepth = 0;
+    try {
+      depthByNodeId.forEach((d) => {
+        const v = Number(d);
+        if (Number.isFinite(v)) maxDepth = Math.max(maxDepth, v);
+      });
+    } catch (e) {}
+    maxDepth = Math.min(3, Math.max(0, maxDepth));
+
+    const ringStep = 160;
+    const rings = Array.from({ length: maxDepth }, (_, idx) => (ringStep * (idx + 1)) / Math.max(0.3, globalScale));
+    const widths = Array.from({ length: maxDepth }, (_, idx) => (2.1 - idx * 0.35) / Math.max(0.6, globalScale));
+    const colors = ['rgba(45,226,230,0.18)', 'rgba(45,226,230,0.12)', 'rgba(45,226,230,0.08)'];
+
+    ctx.save();
+    rings.forEach((radius, idx) => {
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
+      ctx.lineWidth = widths[idx] || 1;
+      ctx.strokeStyle = colors[idx] || colors[colors.length - 1];
+      ctx.stroke();
+    });
+    ctx.restore();
+  }, [selectedNode, selectedNodeId, depthByNodeId]);
 
   // Set up hierarchical positioning
   useEffect(() => {
@@ -689,13 +1010,35 @@ export const HierarchicalGraph = ({
     const simulation = fgRef.current.d3Force;
     if (simulation) {
       if (layout === 'radial') {
+        const ringRadius = (node) => {
+          return ((node.level || 1) - 1) * 160 + 60;
+        };
         simulation('radial', forceRadial(
-          (node) => ((node.level || 1) - 1) * 160 + 60,
+          ringRadius,
           size.width / 2,
           size.height / 2
-        ).strength(0.9));
+        ).strength(0.92));
+        simulation('x', null);
+        simulation('y', null);
+      } else if (layout === 'hierarchical') {
+        simulation('radial', null);
+        const maxLevel = visibleNodes.reduce((mx, n) => {
+          const lvl = Number(n?.level);
+          return Number.isFinite(lvl) ? Math.max(mx, Math.max(1, Math.floor(lvl))) : mx;
+        }, 1);
+        const gap = Math.min(170, Math.max(90, (size.height - 160) / Math.max(1, maxLevel)));
+        const top = (size.height / 2) - ((maxLevel - 1) * gap) / 2;
+        const yFor = (node) => {
+          const lvl = Number(node?.level);
+          const safe = Number.isFinite(lvl) ? Math.max(1, Math.floor(lvl)) : 1;
+          return top + (safe - 1) * gap;
+        };
+        simulation('x', forceX(size.width / 2).strength(0.06));
+        simulation('y', forceY(yFor).strength(0.34));
       } else {
         simulation('radial', null);
+        simulation('x', null);
+        simulation('y', null);
       }
       
       simulation('charge', forceManyBody()
@@ -740,7 +1083,7 @@ export const HierarchicalGraph = ({
     }
   }, [visibleNodes, visibleLinks, size, getNodeSize, layout]);
 
-  // Toolbar actions: zoom in/out, reset home (fit), expand all, collapse all
+  // Toolbar actions: zoom in/out, reset home (fit)
   const zoomIn = () => {
     try {
       const fg = fgRef.current;
@@ -767,26 +1110,69 @@ export const HierarchicalGraph = ({
     } catch (e) { console.debug('[graph] zoomOut error', e); }
   };
 
-  const goHome = () => {
+  const goHome = useCallback(() => {
     try {
       manualFit(400, 100, 80);
     } catch (e) { console.debug('[graph] goHome error', e); }
-  };
+  }, [manualFit]);
 
-  const handleExpandAll = () => {
-    if (!data || !data.links) return;
-    const parents = new Set();
-    data.links.forEach(l => {
-      if (l.type !== 'contains') return;
-      const src = typeof l.source === 'object' ? l.source.id : l.source;
-      parents.add(src);
+  const cycleLabelMode = useCallback(() => {
+    setLabelMode((prev) => {
+      const cur = String(prev || 'smart');
+      if (cur === 'smart') return 'all';
+      if (cur === 'all') return 'off';
+      return 'smart';
     });
-    setExpanded(prev => new Set([...prev, ...Array.from(parents)]));
-  };
+  }, []);
 
-  const handleCollapseAll = () => {
-    setExpanded(() => new Set());
-  };
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (!e) return;
+      if (e.defaultPrevented) return;
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const target = e.target;
+      const tag = String(target?.tagName || '').toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || target?.isContentEditable) return;
+
+      const key = String(e.key || '');
+      const lower = key.toLowerCase();
+
+      if (lower === 'l') {
+        cycleLabelMode();
+        e.preventDefault();
+        return;
+      }
+      if (lower === 'f') {
+        goHome();
+        e.preventDefault();
+        return;
+      }
+      if (lower === 'g') {
+        const next = layout === 'radial' ? 'force' : layout === 'force' ? 'hierarchical' : 'radial';
+        setLayout(next);
+        if (onLayoutChange) onLayoutChange(next);
+        e.preventDefault();
+        return;
+      }
+
+      if (disableLevelSystem) return;
+
+      const isPlus = key === '+' || key === '=' || (key === '=' && e.shiftKey);
+      const isMinus = key === '-' || key === '_' || key === '–' || key === '−';
+      if (!isPlus && !isMinus) return;
+
+      const maxLevel = maxExistingLevel || 1;
+      const cur = Math.max(1, Math.min(maxLevel, maxVisibleLevel ?? 2));
+      const next = isPlus ? Math.min(maxLevel, cur + 1) : Math.max(1, cur - 1);
+      if (next === cur) return;
+      setExpanded(() => new Set());
+      setMaxVisibleLevel(next);
+      e.preventDefault();
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [cycleLabelMode, disableLevelSystem, goHome, layout, maxExistingLevel, maxVisibleLevel, onLayoutChange, setExpanded]);
 
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
@@ -801,19 +1187,33 @@ export const HierarchicalGraph = ({
 
           <div className="sep" />
 
-          {!disableLevelSystem && <LevelButtons />}
+          {!disableLevelSystem ? <LevelButtons /> : null}
+
+          <div className="sep" />
+
+          <button
+            className="wide"
+            onClick={cycleLabelMode}
+            title="Toggle labels (Smart → All → Off)"
+            aria-label="Toggle labels"
+          >
+            <span className="muted">Labels</span>
+            <span className="value">
+              {labelMode === 'smart' ? 'Smart' : labelMode === 'all' ? 'All' : 'Off'}
+            </span>
+          </button>
 
           <div className="sep" />
 
           <button
             onClick={() => {
-              const next = layout === 'radial' ? 'force' : 'radial';
+              const next = layout === 'radial' ? 'force' : layout === 'force' ? 'hierarchical' : 'radial';
               setLayout(next);
               if (onLayoutChange) onLayoutChange(next);
             }}
             title="Toggle layout"
           >
-            {layout === 'radial' ? 'Radial' : 'Force'}
+            {layout === 'radial' ? 'Radial' : layout === 'force' ? 'Force' : 'Hierarchy'}
           </button>
 
           <button
@@ -831,6 +1231,8 @@ export const HierarchicalGraph = ({
         width={size.width}
         height={size.height}
         graphData={graphData}
+        backgroundColor="rgba(0,0,0,0)"
+        onRenderFramePre={renderSelectionRings}
         
         // Node styling
         nodeColor={getNodeColor}
@@ -852,24 +1254,51 @@ export const HierarchicalGraph = ({
           const src = String(typeof link.source === 'object' ? link.source.id : link.source);
           const tgt = String(typeof link.target === 'object' ? link.target.id : link.target);
           const isHighlighted = highlightPath.includes(src) && highlightPath.includes(tgt);
-          if (isHighlighted) return 4;
-          if (selectedNodeId) {
-            const relevant = src === String(selectedNodeId) || tgt === String(selectedNodeId);
-            return relevant ? 2 : 1;
-          }
-          return link.type === 'contains' ? 2.5 : 1;
+          const baseWidth = (function() {
+            if (isHighlighted) return 4;
+            if (selectedNodeId) {
+              const relevant = src === String(selectedNodeId) || tgt === String(selectedNodeId);
+              return relevant ? 2 : 1;
+            }
+            return link.type === 'contains' ? 2.5 : 1;
+          })();
+
+          if (!selectedNodeId) return baseWidth;
+
+          const depthA = depthByNodeId.get(src);
+          const depthB = depthByNodeId.get(tgt);
+          const bucket = Math.min(3, Math.max(depthA ?? 3, depthB ?? 3));
+          const factor = bucket === 0 ? 1 : bucket === 1 ? 0.9 : bucket === 2 ? 0.7 : 0.55;
+          return baseWidth * factor;
         }}
         
         linkColor={(link) => {
           const src = String(typeof link.source === 'object' ? link.source.id : link.source);
           const tgt = String(typeof link.target === 'object' ? link.target.id : link.target);
           const isHighlighted = highlightPath.includes(src) && highlightPath.includes(tgt);
-          if (isHighlighted) return '#F59E0B';
-          if (selectedNodeId) {
+          let r = 148;
+          let g = 163;
+          let b = 184;
+          let a = link.type === 'contains' ? 0.22 : 0.16;
+
+          if (isHighlighted) {
+            r = 245; g = 158; b = 11; a = 0.85;
+          } else if (selectedNodeId) {
             const relevant = src === String(selectedNodeId) || tgt === String(selectedNodeId);
-            return relevant ? 'rgba(96,165,250,0.92)' : 'rgba(96,165,250,0.15)';
+            r = 45; g = 226; b = 230; a = relevant ? 0.62 : 0.10;
+          } else if (link.type === 'contains') {
+            r = 45; g = 226; b = 230; a = 0.32;
           }
-          return link.type === 'contains' ? 'rgba(96,165,250,0.92)' : 'rgba(156,163,175,0.28)';
+
+          if (selectedNodeId) {
+            const depthA = depthByNodeId.get(src);
+            const depthB = depthByNodeId.get(tgt);
+            const bucket = Math.min(3, Math.max(depthA ?? 3, depthB ?? 3));
+            const factor = bucket === 0 ? 1 : bucket === 1 ? 0.85 : bucket === 2 ? 0.55 : 0.3;
+            a *= factor;
+          }
+
+          return `rgba(${r},${g},${b},${a})`;
         }}
         
         linkDirectionalArrowLength={0}
@@ -906,23 +1335,62 @@ export const HierarchicalGraph = ({
   onEngineStop={() => { /* disable automatic fit; manualFit handles explicit requests */ }}
         
         // Custom node rendering for better visuals
-        nodeCanvasObjectMode={() => 'after'}
-        nodeCanvasObject={(node, ctx, globalScale) => {
-            // positions may be undefined early in the simulation; skip drawing until valid
-            if (node.x === undefined || node.y === undefined || !isFinite(node.x) || !isFinite(node.y)) return;
+	        nodeCanvasObjectMode={() => 'replace'}
+	        nodeCanvasObject={(node, ctx, globalScale) => {
+	            if (node.x === undefined || node.y === undefined || !isFinite(node.x) || !isFinite(node.y)) return;
 
-            // Enhanced node rendering: draw circle with ring, optional glow, and a visible name label
-            const nodeRadius = getNodeSize(node);
-            const hasChildren = data?.links?.some(l => l.source === node.id && l.type === 'contains');
-            const isExpanded = expandedNodes.has(node.id);
-            const isHighlighted = highlightedNodes.includes(String(node.id));
+	            const id = String(node.id);
+	            const isSelected = selectedNodeId && id === String(selectedNodeId);
+	            const rawDepth = selectedNodeId ? (depthByNodeId.get(id) ?? 99) : 0;
+	            const depthBucket = selectedNodeId ? Math.min(3, rawDepth) : 0;
+	            const isHighlighted = highlightedNodes.includes(id);
+	            const color = getNodeColor(node);
+	            const hasChildren = !disableLevelSystem && data?.links?.some((l) => {
+	              if (l.type !== 'contains') return false;
+	              const src = typeof l.source === 'object' ? l.source.id : l.source;
+	              return String(src) === String(node.id);
+	            });
+	            const canExpand = hasChildren && isExpandableNode(node);
+	            const isExpanded = expandedNodes.has(node.id);
 
-            // glow for highlighted nodes
-            if (isHighlighted) {
+	            const baseRadius = getNodeSize(node);
+	            const depthScale = !selectedNodeId ? 1 : (depthBucket === 0 ? 1.15 : depthBucket === 1 ? 1 : depthBucket === 2 ? 0.9 : 0.8);
+	            const nodeRadius = baseRadius * depthScale;
+
+            const alpha = !selectedNodeId ? 0.92 : (depthBucket === 0 ? 1 : depthBucket === 1 ? 0.9 : depthBucket === 2 ? 0.62 : 0.38);
+            const finalAlpha = isHighlighted ? 1 : alpha;
+
+            const attackScore = Number(node?.attackScore);
+            const attackGlow = node?.attackView
+              ? (node.type === 'cluster' ? 0.18 : (Number.isFinite(attackScore) && attackScore >= 90 ? 0.34 : Number.isFinite(attackScore) && attackScore >= 60 ? 0.22 : 0))
+              : 0;
+            const glowStrength = Math.max(
+              isHighlighted ? 0.42 : isSelected ? 0.3 : (depthBucket === 1 ? 0.12 : 0),
+              attackGlow
+            );
+            if (glowStrength > 0) {
               try {
-                const glowSize = Math.max(nodeRadius * 2.5, 20);
+                const glowSize = Math.max(nodeRadius * 3, 26);
                 const gradient = ctx.createRadialGradient(node.x, node.y, nodeRadius, node.x, node.y, glowSize);
-                gradient.addColorStop(0, getNodeColor(node));
+                const rgb = (function() {
+                  const c = String(color || '').trim();
+                  if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(c)) {
+                    const hex = c.slice(1);
+                    if (hex.length === 3) {
+                      const r = parseInt(hex[0] + hex[0], 16);
+                      const g = parseInt(hex[1] + hex[1], 16);
+                      const b = parseInt(hex[2] + hex[2], 16);
+                      return { r, g, b };
+                    }
+                    const r = parseInt(hex.slice(0, 2), 16);
+                    const g = parseInt(hex.slice(2, 4), 16);
+                    const b = parseInt(hex.slice(4, 6), 16);
+                    return { r, g, b };
+                  }
+                  return { r: 45, g: 226, b: 230 };
+                })();
+                gradient.addColorStop(0, `rgba(${rgb.r},${rgb.g},${rgb.b},${glowStrength})`);
+                gradient.addColorStop(0.4, `rgba(${rgb.r},${rgb.g},${rgb.b},${glowStrength * 0.5})`);
                 gradient.addColorStop(1, 'rgba(0,0,0,0)');
                 ctx.beginPath();
                 ctx.arc(node.x, node.y, glowSize, 0, 2 * Math.PI, false);
@@ -931,57 +1399,187 @@ export const HierarchicalGraph = ({
               } catch (e) {}
             }
 
-            // main node circle
+            // node body
+            ctx.save();
+            ctx.globalAlpha = finalAlpha;
             ctx.beginPath();
             ctx.arc(node.x, node.y, nodeRadius, 0, 2 * Math.PI, false);
-            ctx.fillStyle = getNodeColor(node);
+            ctx.fillStyle = color;
             ctx.fill();
+            ctx.restore();
 
-            // outer ring to indicate expanded state
-            ctx.lineWidth = isExpanded ? Math.max(2, 2 / Math.max(1, globalScale)) : 1;
-            ctx.strokeStyle = isExpanded ? 'rgba(16,185,129,0.95)' : 'rgba(255,255,255,0.06)';
+            // outline
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(node.x, node.y, nodeRadius, 0, 2 * Math.PI, false);
+            ctx.lineWidth = Math.max(1, 1.8 / Math.max(1, globalScale));
+            ctx.strokeStyle = isSelected
+              ? 'rgba(45,226,230,0.85)'
+              : depthBucket === 1
+                ? 'rgba(45,226,230,0.24)'
+                : 'rgba(255,255,255,0.06)';
             ctx.stroke();
+            ctx.restore();
+
+            const isBookmarked =
+              bookmarkedNodeIds instanceof Set
+                ? bookmarkedNodeIds.has(id)
+                : Array.isArray(bookmarkedNodeIds)
+                  ? bookmarkedNodeIds.includes(id)
+                  : false;
+            if (isBookmarked) {
+              try {
+                ctx.save();
+                const fs = Math.max(10, 12 / Math.max(0.7, globalScale));
+                ctx.font = `${fs}px Inter, Arial`;
+                ctx.fillStyle = 'rgba(45,226,230,0.92)';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                const ox = node.x + nodeRadius + (10 / Math.max(0.7, globalScale));
+                const oy = node.y - nodeRadius - (10 / Math.max(0.7, globalScale));
+                ctx.fillText('★', ox, oy);
+                ctx.restore();
+              } catch (e) {}
+            }
+
+	            // Hover action cue
+	            const isHovered = hoverNodeId && id === String(hoverNodeId);
+	            if (isHovered && !isSelected && canExpand) {
+	              try {
+	                const label = isExpanded ? 'Collapse' : 'Expand';
+	                ctx.save();
+	                ctx.font = `${Math.max(10, 11 / globalScale)}px Inter, Arial`;
+	                const tw = ctx.measureText(label).width;
+                const padX = 10 / Math.max(0.6, globalScale);
+                const padY = 6 / Math.max(0.6, globalScale);
+                const w = tw + padX * 2;
+                const h = (12 / Math.max(0.6, globalScale)) + padY * 2;
+                const x = node.x - w / 2;
+                const y = node.y - nodeRadius - h - (10 / Math.max(0.6, globalScale));
+                const r = 8 / Math.max(0.6, globalScale);
+                ctx.beginPath();
+                if (typeof ctx.roundRect === 'function') ctx.roundRect(x, y, w, h, r);
+                else {
+                  ctx.moveTo(x + r, y);
+                  ctx.arcTo(x + w, y, x + w, y + h, r);
+                  ctx.arcTo(x + w, y + h, x, y + h, r);
+                  ctx.arcTo(x, y + h, x, y, r);
+                  ctx.arcTo(x, y, x + w, y, r);
+                  ctx.closePath();
+                }
+                ctx.fillStyle = 'rgba(13, 22, 30, 0.82)';
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(45,226,230,0.22)';
+                ctx.lineWidth = Math.max(1, 1 / Math.max(1, globalScale));
+                ctx.stroke();
+                ctx.fillStyle = 'rgba(180, 255, 255, 0.92)';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(label, node.x, y + h / 2 + (0.5 / Math.max(1, globalScale)));
+                ctx.restore();
+              } catch (e) {}
+	            }
+
+	            const zoomReveal = !!selectedNodeId && depthBucket === 2 && globalScale >= 2.2;
+	            const intentLabel = getLabelIntent(node, globalScale) || zoomReveal;
 
             // draw name label below the node
-            try {
-              if (!shouldShowLabel(node)) return;
-              const label = node.label || node.value || node.id;
-              ctx.save();
-              ctx.font = `${Math.max(10, 12 / globalScale)}px Inter, Arial`;
-              ctx.textAlign = 'center';
-              ctx.textBaseline = 'top';
-              ctx.fillStyle = 'rgba(226, 239, 243, 0.95)';
-              // subtle background for text for readability
-              const textWidth = ctx.measureText(label).width;
-              const pad = 6;
-              const tx = node.x - textWidth / 2 - pad / 2;
-              const ty = node.y + nodeRadius + 8;
-              ctx.fillStyle = 'rgba(8,10,12,0.55)';
-              ctx.fillRect(tx, ty - 2, textWidth + pad, Math.max(16, 14 / Math.max(1, globalScale)) + 4);
-              ctx.fillStyle = 'rgba(226, 239, 243, 0.98)';
-              ctx.fillText(label, node.x, ty + 2);
-              ctx.restore();
-            } catch (e) {}
+            if (intentLabel) {
+              try {
+                const alpha = labelAlphaForZoom(node, globalScale);
+                if (alpha <= 0.01) {
+                  // keep the graph uncluttered when zoomed out
+                } else {
 
-            // Draw compact expansion indicator (small circle with +/−)
-            // Skip indicator for the root host node to avoid showing a misleading '+' on root
-            if (hasChildren && !(node.type === 'host' && node.role === 'root')) {
-              ctx.save();
-              const indicatorR = Math.max(8, nodeRadius * 0.55);
-              const ix = node.x + nodeRadius - indicatorR;
-              const iy = node.y - nodeRadius + indicatorR;
-              ctx.beginPath();
-              ctx.arc(ix, iy, indicatorR, 0, 2 * Math.PI, false);
-              ctx.fillStyle = isExpanded ? '#10B981' : '#6B7280';
-              ctx.fill();
-              ctx.fillStyle = 'white';
-              ctx.font = `${Math.max(8, 10 / globalScale)}px Arial`;
-              ctx.textAlign = 'center';
-              ctx.textBaseline = 'middle';
-              ctx.fillText(isExpanded ? '−' : '+', ix, iy);
-              ctx.restore();
-            }
-        }}
+                const raw = String(node.label || node.value || node.id || '').trim();
+                const label = raw.length > 36 ? `${raw.slice(0, 34)}…` : raw;
+                if (!label) {
+                  // nothing to render
+                } else {
+
+                ctx.save();
+                const fontSize = Math.max(10, 12 / Math.max(0.6, globalScale));
+                ctx.font = `${fontSize}px Inter, Arial`;
+
+                const textWidth = ctx.measureText(label).width;
+                const padX = 10 / Math.max(0.8, globalScale);
+                const padY = 6 / Math.max(0.8, globalScale);
+                const boxW = textWidth + padX * 2;
+                const boxH = fontSize + padY * 2;
+                const margin = 10 / Math.max(0.8, globalScale);
+
+                const candidates = [
+                  { cx: node.x, cy: node.y + nodeRadius + boxH / 2 + margin },
+                  { cx: node.x, cy: node.y - nodeRadius - boxH / 2 - margin },
+                  { cx: node.x + nodeRadius + boxW / 2 + margin, cy: node.y },
+                  { cx: node.x - nodeRadius - boxW / 2 - margin, cy: node.y },
+                  { cx: node.x + nodeRadius + boxW / 2 + margin * 0.75, cy: node.y + nodeRadius + boxH / 2 + margin * 0.75 },
+                  { cx: node.x - nodeRadius - boxW / 2 - margin * 0.75, cy: node.y + nodeRadius + boxH / 2 + margin * 0.75 },
+                  { cx: node.x + nodeRadius + boxW / 2 + margin * 0.75, cy: node.y - nodeRadius - boxH / 2 - margin * 0.75 },
+                  { cx: node.x - nodeRadius - boxW / 2 - margin * 0.75, cy: node.y - nodeRadius - boxH / 2 - margin * 0.75 }
+                ];
+
+                const paddingForCollision = 3 / Math.max(0.8, globalScale);
+                let placed = null;
+                for (const c of candidates) {
+                  const rect = {
+                    x1: c.cx - boxW / 2,
+                    y1: c.cy - boxH / 2,
+                    x2: c.cx + boxW / 2,
+                    y2: c.cy + boxH / 2
+                  };
+                  if (reserveLabelRect(rect, paddingForCollision)) {
+                    placed = { ...c, rect };
+                    break;
+                  }
+                }
+                if (!placed) {
+                  ctx.restore();
+                } else {
+                  ctx.globalAlpha = Math.min(0.98, alpha);
+                  ctx.fillStyle = 'rgba(2, 6, 12, 0.72)';
+                  ctx.strokeStyle = isSelected ? 'rgba(45,226,230,0.35)' : 'rgba(45,226,230,0.18)';
+                  ctx.lineWidth = Math.max(1, 1 / Math.max(1, globalScale));
+                  if (typeof ctx.roundRect === 'function') {
+                    ctx.beginPath();
+                    ctx.roundRect(placed.rect.x1, placed.rect.y1, boxW, boxH, 8 / Math.max(0.8, globalScale));
+                    ctx.fill();
+                    ctx.stroke();
+                  } else {
+                    ctx.fillRect(placed.rect.x1, placed.rect.y1, boxW, boxH);
+                  }
+
+                  ctx.textAlign = 'center';
+                  ctx.textBaseline = 'middle';
+                  ctx.fillStyle = 'rgba(226, 239, 243, 0.96)';
+                  ctx.fillText(label, placed.cx, placed.cy + 0.5 / Math.max(1, globalScale));
+                }
+                ctx.restore();
+                }
+                }
+              } catch (e) {}
+	            }
+
+	            // Expansion indicator
+	            if (canExpand) {
+	              try {
+	                ctx.save();
+	                const indicatorR = Math.max(8, nodeRadius * 0.55);
+	                const ix = node.x + nodeRadius - indicatorR;
+	                const iy = node.y - nodeRadius + indicatorR;
+	                ctx.beginPath();
+	                ctx.arc(ix, iy, indicatorR, 0, 2 * Math.PI, false);
+	                ctx.fillStyle = isExpanded ? 'rgba(45,226,230,0.8)' : 'rgba(148,163,184,0.5)';
+	                ctx.fill();
+	                ctx.fillStyle = 'rgba(2,6,12,0.92)';
+	                ctx.font = `${Math.max(8, 10 / globalScale)}px Inter, Arial`;
+	                ctx.textAlign = 'center';
+	                ctx.textBaseline = 'middle';
+	                ctx.fillText(isExpanded ? '−' : '+', ix, iy);
+	                ctx.restore();
+	              } catch (e) {}
+	            }
+	        }}
       />
       
   {/* legend removed per user request - they already have an external explanation */}

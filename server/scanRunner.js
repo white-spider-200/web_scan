@@ -1,7 +1,24 @@
-const { spawn } = require('child_process');
+const { spawn, spawnSync } = require('child_process');
 const path = require('path');
 
 const runningScans = new Map();
+
+function resolvePythonBinary() {
+  const envBin = String(process.env.PYTHON_BIN || '').trim();
+  if (envBin) return envBin;
+  const candidates = ['python3', 'python'];
+  for (const candidate of candidates) {
+    try {
+      const res = spawnSync(candidate, ['--version'], { timeout: 2000, windowsHide: true });
+      if (!res.error) return candidate;
+    } catch (e) {
+      // ignore
+    }
+  }
+  return 'python3';
+}
+
+const PYTHON_BIN = resolvePythonBinary();
 
 function sanitizeLogLine(line) {
   if (!line) return '';
@@ -198,11 +215,27 @@ function startScan({ db, scanId, target, options }) {
     }
   }, 2000);
 
-  const proc = spawn('python3', args, {
+  const proc = spawn(PYTHON_BIN, args, {
     cwd: projectRoot,
     env: { ...process.env, PYTHONUNBUFFERED: '1' }
   });
   entry.processes.add(proc);
+  proc.on('error', (err) => {
+    const finishedAt = new Date().toISOString();
+    entry.processes.delete(proc);
+    if (entry.heartbeat) {
+      clearInterval(entry.heartbeat);
+      entry.heartbeat = null;
+    }
+    const msg = err && err.code === 'ENOENT'
+      ? `Failed to start scan runner: ${PYTHON_BIN} not found`
+      : `Failed to start scan runner: ${err ? err.message : 'unknown error'}`;
+    console.error(`[${scanId}] ${msg}`);
+    finalizeStage(db, scanId, entry.lastStage, entry, 'failed');
+    db.run('UPDATE scans SET status = ?, finished_at = ?, timestamp_end = ? WHERE scan_id = ?', ['failed', finishedAt, finishedAt, scanId], () => {});
+    updateProgress(db, scanId, 'failed', msg, 'failed', 'Failed', target, '');
+    runningScans.delete(scanId);
+  });
   const handleLine = (line, isErr) => {
     const marker = parseStageMarker(line);
     if (marker) {

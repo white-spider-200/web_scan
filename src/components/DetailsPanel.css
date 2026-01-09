@@ -87,6 +87,33 @@
   transition: all 0.18s ease;
 }
 
+.dp-bookmark{
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(53, 78, 110, 0.18);
+  border: 1px solid rgba(102, 127, 158, 0.35);
+  color: rgba(226, 247, 249, 0.88);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s ease;
+}
+.dp-bookmark:hover{
+  transform: translateY(-1px);
+  background: rgba(45, 226, 230, 0.18);
+  border-color: rgba(45, 226, 230, 0.42);
+}
+.dp-bookmark.active{
+  background: rgba(45, 226, 230, 0.24);
+  border-color: rgba(45, 226, 230, 0.58);
+  color: #e9fcff;
+}
+
 .dp-close:hover {
   transform: translateY(-1px);
   background: rgba(116, 178, 255, 0.35);
@@ -2597,4 +2624,255 @@
   .dp-vuln-summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+@media (max-width: 900px) {
+  .details-panel.dp-panel {
+    width: 100vw !important;
+    left: 0;
+    right: 0;
+    border-left: none;
+  }
+
+  .dp-resize-handle {
+    display: none;
+  }
+}
+
+/* ---------------- Web Recon Map Theme Overrides ---------------- */
+
+.details-panel.dp-panel {
+  top: var(--topbar-height);
+  height: calc(100vh - var(--topbar-height));
+  background: rgba(10, 16, 22, 0.96);
+  border-left: 1px solid rgba(45, 226, 230, 0.14);
+  color: rgba(226, 239, 243, 0.92);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  box-shadow: -16px 0 48px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+}
+
+.dp-header-section {
+  border-bottom: 1px solid rgba(45, 226, 230, 0.12);
+  background: linear-gradient(180deg, rgba(13, 22, 30, 0.92), rgba(10, 16, 22, 0.88));
+}
+
+.dp-heading-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: radial-gradient(circle at 30% 30%, rgba(45, 226, 230, 0.22), rgba(15, 23, 42, 0.12));
+  border: 1px solid rgba(45, 226, 230, 0.16);
+  color: rgba(180, 255, 255, 0.95);
+}
+
+.dp-heading-kicker {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(154, 166, 176, 0.92);
+}
+
+.dp-heading-title {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: rgba(226, 247, 249, 0.95);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 380px;
+}
+
+.dp-type-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(180, 255, 255, 0.92);
+  background: rgba(45, 226, 230, 0.08);
+  border: 1px solid rgba(45, 226, 230, 0.16);
+}
+
+.dp-tabs {
+  background: rgba(10, 16, 22, 0.76);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dp-tab-content {
+  padding-top: 8px;
+}
+
+.dp-details-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dp-section {
+  background: rgba(15, 23, 42, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.dp-section-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(154, 166, 176, 0.92);
+  margin-bottom: 10px;
+}
+
+.dp-kv-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.dp-kv {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dp-k {
+  color: rgba(154, 166, 176, 0.92);
+  font-size: 12px;
+}
+
+.dp-v {
+  color: rgba(226, 239, 243, 0.92);
+  font-size: 12px;
+  text-align: right;
+  word-break: break-word;
+  max-width: 380px;
+}
+
+.dp-relations {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dp-relation {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px;
+  border-radius: 10px;
+  background: rgba(2, 6, 12, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dp-relation-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(226, 239, 243, 0.92);
+  font-size: 12px;
+}
+
+.dp-relation-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(148, 163, 184, 0.5);
+  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.14);
+}
+
+.dp-relation-dot.t-subdomain,
+.dp-relation-dot.t-host {
+  background: rgba(59, 130, 246, 0.92);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14);
+}
+
+.dp-relation-dot.t-dir,
+.dp-relation-dot.t-directory {
+  background: rgba(251, 191, 36, 0.95);
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.16);
+}
+
+.dp-relation-dot.t-path,
+.dp-relation-dot.t-file,
+.dp-relation-dot.t-url,
+.dp-relation-dot.t-endpoint {
+  background: rgba(239, 68, 68, 0.92);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.14);
+}
+
+.dp-relation-dot.t-ip {
+  background: rgba(251, 146, 60, 0.92);
+  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.14);
+}
+
+.dp-notes {
+  width: 100%;
+  resize: vertical;
+  min-height: 120px;
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(2, 6, 12, 0.36);
+  color: rgba(226, 239, 243, 0.92);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  outline: none;
+}
+
+.dp-notes:focus {
+  border-color: rgba(45, 226, 230, 0.35);
+  box-shadow: 0 0 0 3px rgba(45, 226, 230, 0.12);
+}
+
+.dp-evidence {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dp-evidence-row {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(2, 6, 12, 0.32);
+}
+
+.dp-evidence-k {
+  color: rgba(154, 166, 176, 0.92);
+  font-size: 12px;
+}
+
+.dp-evidence-v {
+  color: rgba(226, 239, 243, 0.92);
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .details-panel.dp-panel {
+    top: var(--topbar-height);
+    height: calc(100vh - var(--topbar-height));
+    border-left: none;
+  }
+  .dp-heading-title { max-width: 260px; }
+  .dp-v { max-width: 260px; }
 }

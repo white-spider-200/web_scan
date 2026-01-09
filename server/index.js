@@ -6,6 +6,8 @@ const cors = require('cors');
 const path = require('path');
 const reportRoutes = require('./routes/report');
 const { startScan, cancelScan } = require('./scanRunner');
+const { runPreflight } = require('./modules/preflight');
+const { ensureNodeValueUniqueness } = require('./modules/dbIntegrity');
 const config = require('./config');
 const { normalizeTarget, isValidTarget } = require('./validators');
 
@@ -55,7 +57,19 @@ const db = new sqlite3.Database(path.join(__dirname, 'data.db'), (err) => {
         ensureScanProgressTable(() =>
           ensureScanStagesTable(() =>
             ensureScanLogsTable(() =>
-              backfillLegacyScans(() => detectSchemaColumns())
+              backfillLegacyScans(() => {
+                ensureNodeValueUniqueness({ db, dbPath: path.join(__dirname, 'data.db') })
+                  .then((r) => {
+                    if (r && (r.migrated || r.created_unique_index)) {
+                      console.log(`[db] node uniqueness ensured (deduped_groups=${r.deduped_groups}, deduped_nodes=${r.deduped_nodes})`);
+                      if (r.backup_path) console.log(`[db] backup created at ${r.backup_path}`);
+                    }
+                  })
+                  .catch((e) => {
+                    console.error('[db] Failed to ensure node uniqueness:', e && e.message ? e.message : e);
+                  })
+                  .finally(() => detectSchemaColumns());
+              })
             )
           )
         )
@@ -205,6 +219,18 @@ app.use('/api', apiLimiter);
 app.use('/websites', apiLimiter);
 app.use('/nodes', apiLimiter);
 app.use('/api/report', reportLimiter, reportRoutes);
+
+app.get('/system/preflight', apiLimiter, async (req, res) => {
+  try {
+    const projectRoot = path.resolve(__dirname, '..');
+    const dbPath = path.join(__dirname, 'data.db');
+    const result = await runPreflight({ projectRoot, dbPath, db });
+    res.json(result);
+  } catch (err) {
+    console.error('Preflight failed:', err && err.message ? err.message : err);
+    sendError(res, 500, 'Preflight failed', err && err.message ? err.message : String(err));
+  }
+});
 
 async function loadHeadersByWebsite(websiteId) {
   const query = `
@@ -660,12 +686,31 @@ function computeElapsedSeconds(startedAt, finishedAt) {
   return Math.max(0, Math.floor((end - start) / 1000));
 }
 
-function handleStartScan(req, res) {
+async function handleStartScan(req, res) {
   const body = req.body || {};
   const rawTarget = String(body.target || '').trim();
   if (!rawTarget) return sendError(res, 400, 'target is required');
   if (!isValidTarget(rawTarget)) return sendError(res, 400, 'Invalid target', 'Expected a hostname or IP without paths');
   const normalized = normalizeTarget(rawTarget);
+
+  let preflight;
+  try {
+    const projectRoot = path.resolve(__dirname, '..');
+    const dbPath = path.join(__dirname, 'data.db');
+    preflight = await runPreflight({ projectRoot, dbPath, db });
+  } catch (err) {
+    console.error('Preflight failed:', err && err.message ? err.message : err);
+    return sendError(res, 500, 'Preflight failed', err && err.message ? err.message : String(err));
+  }
+
+  if (preflight.overall_status === 'fatal') {
+    return res.status(412).json({
+      ...preflight,
+      error: 'Preflight checks failed',
+      message: 'Fix fatal checks before starting a scan'
+    });
+  }
+
   const scanId = require('crypto').randomUUID();
   const startedAt = new Date().toISOString();
   const optionsJson = JSON.stringify(body.options || {});
@@ -687,7 +732,7 @@ function handleStartScan(req, res) {
         () => {}
       );
       startScan({ db, scanId, target: normalized, options: body.options || {} });
-      res.json({ scanId, scan_id: scanId, status: 'queued' });
+      res.json({ scanId, scan_id: scanId, status: 'queued', preflight_status: preflight.overall_status });
     });
   });
 }
@@ -1322,25 +1367,44 @@ app.get('/nodes', (req, res) => {
 app.post('/websites/:websiteId/nodes', (req, res) => {
   const websiteId = req.params.websiteId;
   const { nodeId, type, status, size, headers, technologies, vulnerabilities } = req.body;
+  if (!nodeId) return sendError(res, 400, 'nodeId is required');
   db.serialize(() => {
     db.run('BEGIN TRANSACTION;');
-    db.run('INSERT INTO nodes (website_id, value, type, status, size) VALUES (?, ?, ?, ?, ?)', [websiteId, nodeId, type, status, size], function (err) {
+    // Idempotent node creation/update (nodes(website_id,value) is UNIQUE)
+    db.run('INSERT OR IGNORE INTO nodes (website_id, value, type, status, size) VALUES (?, ?, ?, ?, ?)', [websiteId, nodeId, type, status, size], function (err) {
       if (err) { db.run('ROLLBACK;'); return res.status(500).json({ error: err.message }); }
-      const newNodeId = this.lastID;
-      if (Array.isArray(headers)) {
-        const headerCols = `${headerKeyCol}, ${headerValueCol}`;
-        const headerQuery = `INSERT INTO node_headers (node_id, ${headerCols}) VALUES (?, ?, ?)`;
-        headers.forEach(h => db.run(headerQuery, [newNodeId, h.key, h.value], (e) => { if (e) console.error('Header insert error', e.message); }));
-      }
-      if (Array.isArray(technologies)) {
-        const techQuery = `INSERT INTO node_technologies (node_id, ${techCol}) VALUES (?, ?)`;
-        technologies.forEach(t => db.run(techQuery, [newNodeId, t], (e) => { if (e) console.error('Tech insert error', e.message); }));
-      }
-      if (Array.isArray(vulnerabilities)) {
-        const vulnQuery = `INSERT INTO node_vulnerabilities (node_id, vulnerability) VALUES (?, ?)`;
-        vulnerabilities.forEach(v => db.run(vulnQuery, [newNodeId, v], (e) => { if (e) console.error('Vuln insert error', e.message); }));
-      }
-      db.run('COMMIT;', (cErr) => { if (cErr) { db.run('ROLLBACK;'); return res.status(500).json({ error: cErr.message }); } return res.status(201).json({ id: newNodeId }); });
+      db.get('SELECT id FROM nodes WHERE website_id = ? AND value = ? LIMIT 1', [websiteId, nodeId], (gErr, row) => {
+        if (gErr || !row) { db.run('ROLLBACK;'); return res.status(500).json({ error: (gErr && gErr.message) || 'Failed to resolve node id' }); }
+        const resolvedNodeId = row.id;
+        db.run(
+          'UPDATE nodes SET type = COALESCE(type, ?), status = COALESCE(?, status), size = COALESCE(?, size) WHERE id = ?',
+          [type, status, size, resolvedNodeId],
+          () => {}
+        );
+
+        // Replace child rows to keep this endpoint idempotent
+        db.run('DELETE FROM node_headers WHERE node_id = ?', [resolvedNodeId], () => {});
+        db.run('DELETE FROM node_technologies WHERE node_id = ?', [resolvedNodeId], () => {});
+        db.run('DELETE FROM node_vulnerabilities WHERE node_id = ?', [resolvedNodeId], () => {});
+
+        if (Array.isArray(headers)) {
+          const headerCols = `${headerKeyCol}, ${headerValueCol}`;
+          const headerQuery = `INSERT INTO node_headers (node_id, ${headerCols}) VALUES (?, ?, ?)`;
+          headers.forEach(h => db.run(headerQuery, [resolvedNodeId, h.key, h.value], (e) => { if (e) console.error('Header insert error', e.message); }));
+        }
+        if (Array.isArray(technologies)) {
+          const techQuery = `INSERT INTO node_technologies (node_id, ${techCol}) VALUES (?, ?)`;
+          technologies.forEach(t => db.run(techQuery, [resolvedNodeId, t], (e) => { if (e) console.error('Tech insert error', e.message); }));
+        }
+        if (Array.isArray(vulnerabilities)) {
+          const vulnQuery = `INSERT INTO node_vulnerabilities (node_id, vulnerability) VALUES (?, ?)`;
+          vulnerabilities.forEach(v => db.run(vulnQuery, [resolvedNodeId, v], (e) => { if (e) console.error('Vuln insert error', e.message); }));
+        }
+        db.run('COMMIT;', (cErr) => {
+          if (cErr) { db.run('ROLLBACK;'); return res.status(500).json({ error: cErr.message }); }
+          return res.status(201).json({ id: resolvedNodeId });
+        });
+      });
     });
   });
 });

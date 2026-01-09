@@ -1,3 +1,8 @@
 node_modules/
 .env
 *.log
+build/
+__pycache__/
+**/__pycache__/
+*.pyc
+server/data.db.bak-*

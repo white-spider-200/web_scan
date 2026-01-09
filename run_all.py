@@ -90,6 +90,32 @@ def record_scan_timestamp(website_url: str, started: bool = False, finished: boo
         print(f"[run_all] WARNING: failed to record scan timestamp: {e}")
         return None
 
+def reset_website_graph(website_url: str):
+    """Clear existing nodes/relationships for a website so each scan starts fresh."""
+    if not website_url:
+        return
+    try:
+        if not DB_PATH.exists():
+            return
+        db = sqlite3.connect(str(DB_PATH))
+        try:
+            website_id = _ensure_website_row(db, website_url)
+            # Best-effort cleanup; schema may vary between versions.
+            db.execute(
+                'DELETE FROM node_relationships WHERE source_node_id IN (SELECT id FROM nodes WHERE website_id = ?) OR target_node_id IN (SELECT id FROM nodes WHERE website_id = ?)',
+                (website_id, website_id),
+            )
+            db.execute('DELETE FROM node_headers WHERE node_id IN (SELECT id FROM nodes WHERE website_id = ?)', (website_id,))
+            db.execute('DELETE FROM node_technologies WHERE node_id IN (SELECT id FROM nodes WHERE website_id = ?)', (website_id,))
+            db.execute('DELETE FROM node_vulnerabilities WHERE node_id IN (SELECT id FROM nodes WHERE website_id = ?)', (website_id,))
+            db.execute('DELETE FROM nodes WHERE website_id = ?', (website_id,))
+            db.commit()
+            print(f"[run_all] Cleared previous graph for website_id={website_id} ({website_url})")
+        finally:
+            db.close()
+    except Exception as e:
+        print(f"[run_all] WARNING: failed to reset website graph: {e}")
+
 def try_import_and_run(script_path: Path, target, *args, **kwargs):
     """Try to import the module as recon.<name> and call run(target, *args, **kwargs).
     Returns (ok: bool, output: str).
@@ -122,6 +148,18 @@ def run_subprocess_script(script_path: Path, target, extra_args=None, env_extra=
     env = os.environ.copy()
     if env_extra:
         env.update(env_extra)
+    # Ensure project root is importable for recon.* imports when running scripts by path.
+    try:
+        existing = env.get("PYTHONPATH") or ""
+        root = str(PROJECT_ROOT)
+        if existing:
+            parts = existing.split(os.pathsep)
+            if root not in parts:
+                env["PYTHONPATH"] = root + os.pathsep + existing
+        else:
+            env["PYTHONPATH"] = root
+    except Exception:
+        pass
     try:
         p = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=timeout)
         out = p.stdout
@@ -140,6 +178,18 @@ def run_python_script(script_path: Path, args=None, env_extra=None, timeout=None
     env = os.environ.copy()
     if env_extra:
         env.update(env_extra)
+    # Ensure project root is importable for recon.* imports when running scripts by path.
+    try:
+        existing = env.get("PYTHONPATH") or ""
+        root = str(PROJECT_ROOT)
+        if existing:
+            parts = existing.split(os.pathsep)
+            if root not in parts:
+                env["PYTHONPATH"] = root + os.pathsep + existing
+        else:
+            env["PYTHONPATH"] = root
+    except Exception:
+        pass
     try:
         p = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=timeout)
         out = p.stdout
@@ -207,6 +257,16 @@ def locate_ffuf_output(domain: str):
         return expected
     matches = list(RESULTS_DIR.glob(f"ffuf_subs_{domain.replace('.', '_')}*.json"))
     return matches[0] if matches else None
+
+def locate_html_links_output():
+    matches = list(RESULTS_DIR.glob("html_links_*.json"))
+    if not matches:
+        return None
+    try:
+        matches.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+    except Exception:
+        pass
+    return matches[0]
 
 def run_tool(tool_name: str, target: str, timeout=None, extra_args=None, filename_label: str = None):
     # Support multiple possible locations for tools:
@@ -418,6 +478,9 @@ def main():
         except Exception as e:
             print(f"[run_all] WARNING: failed to fully clean results dir: {e}")
 
+        # Clear DB graph for this website so UI matches the current scan.
+        reset_website_graph(domain)
+
         print("[stage] start start", flush=True)
         # Run ffuf_subs (prefer import)
         ffuf_script = SCRIPTS_DIR / "ffuf_subs.py"
@@ -457,65 +520,14 @@ def main():
             ok, html_json_fname = run_tool("html_link_discovery", domain)
             print(f"[run_all] html_link_discovery(root) -> {html_json_fname} (ok={ok})")
             try:
-                # The html_link_discovery tool may have written the real discovery file as
-                # results/html_links_<label>.json while run_tool returned a wrapper file
-                # (html_link_discovery_<label>.json) containing stdout. Try several
-                # candidate paths and extract the real discovery object.
-                actual_html_path = None
-                candidates = []
-                # the file returned by run_tool may be a wrapper filename
-                try:
-                    if html_json_fname:
-                        candidates.append(RESULTS_DIR / html_json_fname)
-                except Exception:
-                    pass
-                # common html_links file pattern
-                candidates.append(RESULTS_DIR / f"html_links_{domain.replace('.', '_')}.json")
-                # glob any html_links file that contains the domain fragment
-                candidates.extend(list(RESULTS_DIR.glob(f"html_links_*{domain.replace('.', '_')}*.json")))
-
-                data = None
-                for c in candidates:
-                    try:
-                        if not c.exists():
-                            continue
-                        raw = json.loads(c.read_text())
-                        # if this JSON already contains the discovery keys, use it
-                        if isinstance(raw, dict) and raw.get('discovered'):
-                            data = raw
-                            actual_html_path = c
-                            break
-                        # some wrappers store the crawler stdout under 'output'
-                        if isinstance(raw, dict) and isinstance(raw.get('output'), str):
-                            try:
-                                inner = json.loads(raw.get('output'))
-                                if isinstance(inner, dict) and inner.get('discovered'):
-                                    data = inner
-                                    actual_html_path = c
-                                    break
-                            except Exception:
-                                pass
-                        # some other wrappers may embed the payload under different keys
-                        # fall back to using the raw object if it looks like discovery
-                        if isinstance(raw, dict) and (raw.get('discovered') is not None):
-                            data = raw
-                            actual_html_path = c
-                            break
-                    except Exception:
-                        continue
-
-                if data is None:
-                    # final fallback: try to read the original file directly and parse
-                    try:
-                        candidate = RESULTS_DIR / html_json_fname
-                        if candidate.exists():
-                            data = json.loads(candidate.read_text())
-                            actual_html_path = candidate
-                    except Exception:
-                        data = None
-
-                if data is None:
-                    raise ValueError('could not locate html_link_discovery discovery JSON')
+                # html_link_discovery writes its canonical output as results/html_links_<label>.json.
+                # run_tool may return a wrapper filename; always prefer the real html_links file.
+                actual_html_path = locate_html_links_output()
+                if not actual_html_path or not actual_html_path.exists():
+                    raise ValueError('could not locate html_links_*.json output from html_link_discovery')
+                data = json.loads(actual_html_path.read_text())
+                if not (isinstance(data, dict) and data.get('discovered')):
+                    raise ValueError('html_links output missing discovered payload')
 
                 linked_subs = [s for s in data.get("discovered", {}).get("subdomains", []) if s.endswith(domain)]
                 # Show discovered URLs from the website to help verify crawling
@@ -537,7 +549,7 @@ def main():
                     importer = PROJECT_ROOT / 'recon' / 'import_html_links.py'
                     if importer.exists():
                         # Use website URL equal to the domain string (frontend expects this mapping)
-                        imp_arg = str(actual_html_path) if actual_html_path is not None else str(RESULTS_DIR / html_json_fname)
+                        imp_arg = str(actual_html_path)
                         ok_imp, out_imp = run_subprocess_script(importer, domain, extra_args=[imp_arg])
                         print(f"[run_all] import_html_links -> {out_imp[:180]}...")
                         # Also produce a hierarchical visualization JSON for the frontend
@@ -545,8 +557,7 @@ def main():
                             viz_script = PROJECT_ROOT / 'scripts' / 'build_hierarchical_json.py'
                             if viz_script.exists():
                                 viz_out = RESULTS_DIR / 'clean' / f"{domain}_viz.json"
-                                viz_in = imp_arg
-                                ok_viz, out_viz = run_subprocess_script(viz_script, viz_in, extra_args=[str(viz_out)])
+                                ok_viz, out_viz = run_subprocess_script(viz_script, imp_arg, extra_args=[str(viz_out)])
                                 msg = out_viz if isinstance(out_viz, str) else str(out_viz)
                                 print(f"[run_all] build_hierarchical_json -> {msg[:180]}...")
                             else:
@@ -627,6 +638,16 @@ def main():
                 # run simple_fingerprint for this subdomain (it handles http/https itself)
                 ok2, fname2 = run_tool("simple_fingerprint", clean_sd)
                 print(f"  simple_fingerprint -> {fname2} (ok={ok2})")
+                # Import fingerprint metadata (headers/tech/ip) into DB
+                try:
+                    importer = PROJECT_ROOT / 'recon' / 'import_simple_fingerprint.py'
+                    fp_path = RESULTS_DIR / str(fname2)
+                    if importer.exists() and fp_path.exists():
+                        ok_imp, out_imp = run_subprocess_script(importer, domain, extra_args=[str(fp_path)])
+                        msg = out_imp if isinstance(out_imp, str) else str(out_imp)
+                        print(f"  import_simple_fingerprint -> {msg[:180]}...")
+                except Exception as imp_e:
+                    print(f"  import_simple_fingerprint error: {imp_e}")
 
                 return {"subdomain": sd, "dirsearch": (ok, fname), "fingerprint": (ok2, fname2), "dir_timed_out": timed_out, "dir_capped": capped}
             except Exception as e:
@@ -684,6 +705,15 @@ def main():
         # Run simple_fingerprint on root domain as well
         ok, fname = run_tool("simple_fingerprint", domain)
         print(f"[run_all] simple_fingerprint (root) -> {fname} (ok={ok})")
+        # Import root fingerprint metadata into DB
+        try:
+            importer = PROJECT_ROOT / 'recon' / 'import_simple_fingerprint.py'
+            fp_path = RESULTS_DIR / str(fname)
+            if importer.exists() and fp_path.exists():
+                ok_imp, out_imp = run_subprocess_script(importer, domain, extra_args=[str(fp_path)])
+                print(f"[run_all] import_simple_fingerprint(root) -> {str(out_imp)[:180]}...")
+        except Exception as imp_e:
+            print(f"[run_all] import_simple_fingerprint(root) error: {imp_e}")
 
         # Run nuclei against discovered HTTP/HTTPS base URLs
         if do_nuclei:
@@ -729,16 +759,9 @@ def main():
             else:
                 print("[run_all] minmap_format.py not found; skipping viz build step")
 
-            viz_path = RESULTS_DIR / "clean" / f"{sanitize_target(domain)}_viz.json"
-            importer = PROJECT_ROOT / "server" / "import-visualized-data.js"
-            if importer.exists() and viz_path.exists():
-                ok_i, out_i = run_node_script(importer, args=[str(viz_path)])
-                print(f"[run_all] import-visualized-data -> {str(out_i)[:180]}...")
-            else:
-                if not importer.exists():
-                    print("[run_all] import-visualized-data.js not found; skipping DB import")
-                elif not viz_path.exists():
-                    print(f"[run_all] viz JSON not found at {viz_path}; skipping DB import")
+            # NOTE: The DB is populated incrementally by per-tool importers (html links, fingerprint, etc).
+            # Importing viz JSON here would wipe node.details (crawl depth/parent) and other enrichments.
+            print("[run_all] Skipping import-visualized-data (DB is already populated by importers)")
             print("[stage] build_graph done", flush=True)
         except Exception as post_err:
             print(f"[run_all] post-processing error: {post_err}")

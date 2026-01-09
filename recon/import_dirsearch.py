@@ -20,14 +20,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SERVER_DIR = PROJECT_ROOT / 'server'
 DB_PATH = SERVER_DIR / 'data.db'
 
-
-def apex_of(host: str) -> str:
-    host = (host or '').lower()
-    host = host.split(':', 1)[0]
-    parts = host.split('.')
-    if len(parts) >= 2:
-        return '.'.join(parts[-2:])
-    return host
+_IPV4_RE = re.compile(r"^\\d{1,3}(?:\\.\\d{1,3}){3}$")
 
 
 def get_host_from_url_or_host(val: str) -> str:
@@ -47,36 +40,96 @@ def get_host_from_url_or_host(val: str) -> str:
     s = re.sub(r'^https?://', '', s, flags=re.I)
     return (s.split('/')[0]).lower()
 
+def is_in_scope(host: str, root: str) -> bool:
+    def strip_port(v: str) -> str:
+        v = (v or '').strip().lower()
+        if not v:
+            return ''
+        if _IPV4_RE.match(v):
+            return v
+        if ':' in v:
+            return v.split(':', 1)[0]
+        return v
+
+    host_base = strip_port(host)
+    root_base = strip_port(root)
+    if not host_base or not root_base:
+        return False
+    if _IPV4_RE.match(root_base):
+        return host_base == root_base
+    if host_base == root_base:
+        return True
+    return host_base.endswith('.' + root_base)
+
 
 def ensure_website(db, website_url: str) -> int:
     cur = db.cursor()
+    # Idempotent + concurrency-safe (websites.url is UNIQUE)
+    cur.execute('INSERT OR IGNORE INTO websites (url, name) VALUES (?, ?)', (website_url, website_url))
     cur.execute('SELECT id FROM websites WHERE url = ? LIMIT 1', (website_url,))
-    row = cur.fetchone()
-    if row:
-        return row[0]
-    cur.execute('INSERT INTO websites (url, name) VALUES (?, ?)', (website_url, website_url))
-    return cur.lastrowid
-
-
-def get_node_id_by_value(db, website_id: int, value: str):
-    cur = db.cursor()
-    cur.execute('SELECT id FROM nodes WHERE website_id = ? AND value = ? LIMIT 1', (website_id, value))
     row = cur.fetchone()
     return row[0] if row else None
 
 
-def insert_node(db, website_id: int, value: str, ntype: str, status=None, size=None) -> int:
-    node_id = get_node_id_by_value(db, website_id, value)
-    if node_id:
-        # optionally update status/size if provided
-        try:
-            db.execute('UPDATE nodes SET type = COALESCE(type, ?), status = COALESCE(?, status), size = COALESCE(?, size) WHERE id = ?', (ntype, status, size, node_id))
-        except Exception:
-            pass
-        return node_id
+def get_node_by_value(db, website_id: int, value: str):
     cur = db.cursor()
-    cur.execute('INSERT INTO nodes (website_id, value, type, status, size) VALUES (?, ?, ?, ?, ?)', (website_id, value, ntype, status, size))
-    return cur.lastrowid
+    cur.execute('SELECT id, type FROM nodes WHERE website_id = ? AND value = ? LIMIT 1', (website_id, value))
+    row = cur.fetchone()
+    if not row:
+        return None, None
+    return row[0], row[1]
+
+
+def choose_type(existing_type: str, incoming_type: str) -> str:
+    a = (existing_type or '').lower()
+    b = (incoming_type or '').lower()
+    if not a:
+        return incoming_type
+    if not b:
+        return existing_type
+
+    ranks = {
+        'domain': 50,
+        'subdomain': 45,
+        'ip': 40,
+        'endpoint': 30,
+        'path': 30,
+        'file': 30,
+        'directory': 20,
+        'dir': 20,
+        'unknown': 0,
+    }
+    ra = ranks.get(a, 10)
+    rb = ranks.get(b, 10)
+    return incoming_type if rb > ra else existing_type
+
+
+def insert_node(db, website_id: int, value: str, ntype: str, status=None, size=None) -> int:
+    # Concurrency-safe when nodes(website_id,value) is UNIQUE (server migration ensures this).
+    # Also safe to call repeatedly (idempotent).
+    try:
+        db.execute(
+            'INSERT OR IGNORE INTO nodes (website_id, value, type, status, size) VALUES (?, ?, ?, ?, ?)',
+            (website_id, value, ntype, status, size),
+        )
+    except Exception:
+        pass
+
+    node_id, existing_type = get_node_by_value(db, website_id, value)
+    if not node_id:
+        cur = db.cursor()
+        cur.execute('INSERT INTO nodes (website_id, value, type, status, size) VALUES (?, ?, ?, ?, ?)', (website_id, value, ntype, status, size))
+        return cur.lastrowid
+
+    chosen_type = choose_type(existing_type, ntype)
+    try:
+        db.execute(
+            'UPDATE nodes SET type = ?, status = COALESCE(?, status), size = COALESCE(?, size) WHERE id = ?',
+            (chosen_type, status, size, node_id),
+        )
+    except Exception:
+        pass
+    return node_id
 
 
 def insert_rel(db, src_id: int, tgt_id: int, rtype: str = 'contains'):
@@ -220,16 +273,27 @@ def main():
         print('ERROR: Unexpected dirsearch JSON format (no list results)')
         sys.exit(3)
 
-    db = sqlite3.connect(str(DB_PATH))
+    db = sqlite3.connect(str(DB_PATH), timeout=30)
+    try:
+        db.execute('PRAGMA busy_timeout = 5000')
+    except Exception:
+        pass
     inserted = 0
     try:
         website_id = ensure_website(db, website_url)
 
-        # Ensure parent host node exists
-        parent_id = get_node_id_by_value(db, website_id, host)
-        if not parent_id:
-            ntype = 'subdomain' if host != apex_of(host) else 'domain'
-            parent_id = insert_node(db, website_id, host, ntype)
+        root = get_host_from_url_or_host(website_url)
+        if not root:
+            root = host
+        if not is_in_scope(host, root):
+            print(f'ERROR: host {host} is out of scope for website {root}')
+            sys.exit(4)
+        root_id = insert_node(db, website_id, root, 'domain')
+
+        # Ensure parent host node exists and link it under the root website node.
+        parent_id = insert_node(db, website_id, host, 'domain' if host == root else 'subdomain')
+        if host != root:
+            insert_rel(db, root_id, parent_id, 'contains')
 
         schemes = detect_schemes(results)
         print(f'Detected schemes for {host}: {schemes}')
@@ -254,9 +318,10 @@ def main():
                 prev_id = node_id
             inserted += 1
 
-        # Update a convenience counter on the parent host node if column exists
+        # Update a convenience counter on the parent host node if column exists.
+        # Idempotent: set to the current import's count (do not increment).
         try:
-            db.execute('UPDATE nodes SET dirsearch_count = COALESCE(dirsearch_count, 0) + ? WHERE id = ?', (inserted, parent_id))
+            db.execute('UPDATE nodes SET dirsearch_count = ? WHERE id = ?', (inserted, parent_id))
         except Exception:
             pass
 

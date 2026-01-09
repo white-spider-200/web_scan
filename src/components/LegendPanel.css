@@ -1,0 +1,131 @@
+.legend-panel {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 12;
+  width: min(320px, calc(100% - 28px));
+  background: rgba(9, 16, 22, 0.88);
+  border: 1px solid rgba(45, 226, 230, 0.16);
+  border-radius: 14px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.legend-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: rgba(226, 247, 249, 0.92);
+}
+
+.legend-title {
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.legend-caret {
+  color: rgba(226, 247, 249, 0.65);
+  font-size: 13px;
+  user-select: none;
+}
+
+.legend-body {
+  padding: 10px 12px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.legend-section + .legend-section {
+  margin-top: 10px;
+}
+
+.legend-section-title {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(154, 166, 176, 0.9);
+  margin-bottom: 8px;
+}
+
+.legend-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  flex: 0 0 auto;
+}
+
+.legend-label {
+  font-size: 12px;
+  color: rgba(226, 239, 243, 0.92);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.legend-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.legend-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  color: rgba(226, 239, 243, 0.88);
+}
+
+.legend-k {
+  color: rgba(45, 226, 230, 0.92);
+  font-weight: 800;
+}
+
+.legend-v {
+  color: rgba(226, 239, 243, 0.84);
+  text-align: right;
+}
+
+.legend-link {
+  width: 18px;
+  height: 2px;
+  border-radius: 99px;
+  flex: 0 0 auto;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.22);
+}
+
+.legend-panel.collapsed {
+  width: 150px;
+}
+
+@media (max-width: 900px) {
+  .legend-panel {
+    left: 10px;
+    bottom: 10px;
+    width: min(300px, calc(100% - 20px));
+  }
+}
+

@@ -34,6 +34,24 @@
   font-size: 14px;
 }
 
+.graph-toolbar button.wide {
+  width: auto;
+  padding: 0 10px;
+  gap: 8px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.graph-toolbar button.wide .muted {
+  color: rgba(230, 239, 243, 0.72);
+  font-weight: 600;
+}
+
+.graph-toolbar button.wide .value {
+  color: rgba(230, 239, 243, 0.92);
+  font-weight: 800;
+}
+
 .graph-toolbar button:hover {
   transform: translateY(-2px);
   background: rgba(255,255,255,0.06);

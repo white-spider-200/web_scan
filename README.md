@@ -61,6 +61,16 @@ python3 run_all.py example.com
 
 Targets must be a hostname or IP address (no paths).
 
+## Data Integrity
+
+If repeated imports ever create duplicates (broken graphs / inconsistent UI), run:
+
+```bash
+node server/dedupe-nodes.js
+```
+
+This deduplicates nodes safely, enforces a UNIQUE node identity constraint, and writes a `server/data.db.bak-*` backup. Details: `docs/data-integrity.md`.
+
 ## Vulnerability Scanning
 
 The pipeline can run two safe vulnerability sources:

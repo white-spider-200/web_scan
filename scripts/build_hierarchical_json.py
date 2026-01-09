@@ -15,7 +15,12 @@ import re
 from pathlib import Path
 from urllib.parse import urlparse
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 from recon.url_classify import classify_url, should_graph
+from recon.url_canonicalize import canonical_url
 from datetime import datetime
 
 FILE_EXTS = {
@@ -70,7 +75,12 @@ def add_edge(edges, src, tgt):
 def build_hierarchy(discovered):
     page_urls = discovered.get('pages') or discovered.get('urls', []) or []
     api_urls = discovered.get('api') or []
-    urls = [u for u in list(page_urls) + list(api_urls) if should_graph(classify_url(u))]
+    raw_urls = list(page_urls) + list(api_urls)
+    urls = []
+    for u in raw_urls:
+        cu = canonical_url(u, None) or u
+        if cu and should_graph(classify_url(cu)):
+            urls.append(cu)
     nodes = {}
     edges = {}
 

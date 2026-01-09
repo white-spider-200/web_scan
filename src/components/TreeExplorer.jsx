@@ -27,6 +27,7 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
   const [showEmptyGroups, setShowEmptyGroups] = useState(false);
   const [autoCollapseSiblings, setAutoCollapseSiblings] = useState(false);
   const [compactFolders, setCompactFolders] = useState(false);
+  const [autoOpenGroups, setAutoOpenGroups] = useState(true);
   const [branchQuery, setBranchQuery] = useState('');
   const [breadcrumb, setBreadcrumb] = useState([]);
   const nodeRefs = useRef(new Map());
@@ -170,6 +171,19 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
     return 'url';
   };
 
+  const isExpandableNode = (node) => {
+    if (!node?.has_children) return false;
+    const t = String(node.type || '').toLowerCase();
+    return t === 'domain' || t === 'subdomain' || t === 'directory' || t === 'dir';
+  };
+
+  const getDefaultAutoGroups = (node) => {
+    const t = String(node?.type || '').toLowerCase();
+    if (t === 'domain') return ['subdomain', 'directory'];
+    if (t === 'subdomain' || t === 'directory' || t === 'dir') return ['directory'];
+    return [];
+  };
+
   const collapseBranch = (parentId) => {
     const nextExpandedNodes = new Set(expandedNodes);
     const nextExpandedGroups = new Set(expandedGroups);
@@ -200,7 +214,7 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
   };
 
   const toggleNode = (node) => {
-    if (!node?.has_children) return;
+    if (!isExpandableNode(node)) return;
     const isExpanded = expandedNodes.has(node.id);
     if (isExpanded) {
       collapseBranch(node.id);
@@ -211,6 +225,17 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
     }
     setExpandedNodes(prev => new Set(prev).add(node.id));
     if (!countsByParent.has(node.id)) fetchSummary(node.id);
+    if (autoOpenGroups) {
+      const groups = getDefaultAutoGroups(node);
+      if (groups.length) {
+        setExpandedGroups(prev => {
+          const next = new Set(prev);
+          groups.forEach(type => next.add(`group:${node.id}:${type}`));
+          return next;
+        });
+        groups.forEach(type => fetchChildren(node.id, type));
+      }
+    }
   };
 
   const toggleGroup = (groupId, parentId, type, count) => {
@@ -244,7 +269,14 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
       const path = Array.isArray(res.data?.path) ? res.data.path : [];
       setNodesById(prev => {
         const next = new Map(prev);
-        path.forEach(n => next.set(n.id, n));
+        path.forEach(n => {
+          const existing = next.get(n.id);
+          if (!existing) {
+            next.set(n.id, n);
+            return;
+          }
+          next.set(n.id, { ...existing, ...n });
+        });
         return next;
       });
       return path;
@@ -386,7 +418,7 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
     const isExpanded = expandedNodes.has(displayId);
     const isLoading = loading.has(`summary:${displayId}`);
     const error = errors.get(`summary:${displayId}`);
-    const toggleVisible = displayNode.has_children || isLoading;
+    const toggleVisible = isExpandableNode(displayNode) || isLoading;
     const counts = getCounts(displayId);
     const hasCounts = countsByParent.has(displayId);
     return (
@@ -409,7 +441,7 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
             }}
             aria-label={isExpanded ? 'Collapse' : 'Expand'}
           >
-            {isLoading ? '⏳' : (isExpanded ? '▾' : '▸')}
+            {isLoading ? '⏳' : (isExpanded ? '−' : '+')}
           </button>
           <div className="tree-node-icon">{getNodeIcon(displayNode)}</div>
           <div>
@@ -607,6 +639,14 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
               onChange={(e) => setShowEmptyGroups(e.target.checked)}
             />
             Show empty
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={autoOpenGroups}
+              onChange={(e) => setAutoOpenGroups(e.target.checked)}
+            />
+            Auto-open
           </label>
           <label>
             <input

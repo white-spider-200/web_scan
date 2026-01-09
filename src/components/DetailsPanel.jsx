@@ -9,19 +9,6 @@ const STATUS_MAP = {
   '5': { label: 'Server Error', tone: 'alert' }
 };
 
-const formatBytes = (bytes) => {
-  if (typeof bytes !== 'number' || Number.isNaN(bytes)) return 'Unknown';
-  if (bytes === 0) return '0 B';
-  const units = ['B', 'KB', 'MB', 'GB'];
-  let size = bytes;
-  let unitIndex = 0;
-  while (size >= 1024 && unitIndex < units.length - 1) {
-    size /= 1024;
-    unitIndex += 1;
-  }
-  return `${size.toFixed(size >= 10 ? 0 : 1)} ${units[unitIndex]}`;
-};
-
 const formatStatus = (status) => {
   const normalized = String(status || '').trim() || '200';
   const group = normalized[0];
@@ -110,18 +97,25 @@ const iconForType = (type) => {
       return '📁';
     case 'endpoint':
       return '📄';
+    case 'ip':
+      return '🧷';
     default:
       return '🧩';
   }
 };
 
-export const DetailsPanel = ({ node, onClose, scan }) => {
+export const DetailsPanel = ({ node, onClose, scan, relations = [], bookmarked = false, onToggleBookmark }) => {
   const technologies = useMemo(() => extractTechnologies(node), [node]);
   const vulnerabilities = useMemo(() => extractVulnerabilities(node), [node]);
 
-  const [activeTab, setActiveTab] = useState('tech');
+  const [activeTab, setActiveTab] = useState('details');
   const [copyNotice, setCopyNotice] = useState('');
   const [urlNotice, setUrlNotice] = useState('');
+  const notesStorageKey = useMemo(() => {
+    const base = String(node?.value || node?.id || '').trim();
+    return base ? `wrm:notes:${base}` : '';
+  }, [node?.id, node?.value]);
+  const [notes, setNotes] = useState('');
   const [showAllNmap, setShowAllNmap] = useState(false);
   const [showAllNuclei, setShowAllNuclei] = useState(false);
   const [panelWidth, setPanelWidth] = useState(() => {
@@ -138,7 +132,7 @@ export const DetailsPanel = ({ node, onClose, scan }) => {
 
   // Expose panel width to CSS so the graph can reserve space on the right
   useEffect(() => {
-    const w = node ? panelWidth : 0;
+    const w = (node || scan) ? panelWidth : 0;
     if (typeof document !== 'undefined') {
       document.documentElement.style.setProperty('--details-panel-width', `${w}px`);
     }
@@ -148,7 +142,7 @@ export const DetailsPanel = ({ node, onClose, scan }) => {
         document.documentElement.style.setProperty('--details-panel-width', '0px');
       }
     };
-  }, [panelWidth, node]);
+  }, [panelWidth, node, scan]);
 
   useEffect(() => {
     const handleMove = (e) => {
@@ -194,30 +188,35 @@ export const DetailsPanel = ({ node, onClose, scan }) => {
   };
 
   useEffect(() => {
-    setActiveTab('tech');
+    setActiveTab('details');
     setShowAllNmap(false);
     setShowAllNuclei(false);
     setUrlNotice('');
   }, [node]);
 
+  useEffect(() => {
+    if (!notesStorageKey) {
+      setNotes('');
+      return;
+    }
+    try {
+      setNotes(window.localStorage.getItem(notesStorageKey) || '');
+    } catch (e) {
+      setNotes('');
+    }
+  }, [notesStorageKey]);
+
   if (!node && !scan) return null;
 
   const statusInfo = formatStatus(node?.status);
-  const responseTime = node?.responseTime ? `${node.responseTime} ms` : 'Unknown';
-  const responseSize = formatBytes(node?.size);
-  const lastSeen = node?.lastSeen || node?.timestamp || 'Unknown';
-  const urls = Array.isArray(node?.urls) ? node.urls : [];
   const ipAddress = node?.ip || node?.meta?.ip || 'Unknown';
   const server = node?.server || node?.meta?.server || 'Unknown';
-  const port = node?.port || node?.meta?.port || '—';
-  const scheme = node?.protocol || node?.scheme || node?.meta?.scheme || '—';
   const scanContext = {
     baseUrl: scan?.baseUrl || scan?.target || '',
     domain: scan?.domain || scan?.target || ''
   };
   const fullUrl = buildFullUrl(node, scanContext);
   const fullUrlDisplay = fullUrl || 'URL unavailable';
-  const scanFinishedAt = node?.scan_finished_at || node?.meta?.scan_finished_at || '';
   const getDisplayName = (nodeData) => {
     if (!nodeData) return 'Node details';
     if (nodeData.type === 'host') {
@@ -233,8 +232,15 @@ export const DetailsPanel = ({ node, onClose, scan }) => {
   };
   const displayName = getDisplayName(node);
   const nodeType = node?.type || 'node';
-  const totalConnections = (Array.isArray(node?.links) ? node.links.length : 0) +
-    (Array.isArray(node?.edges) ? node.edges.length : 0);
+  const nodeTypeLabel = (function() {
+    const raw = String(nodeType || '').toLowerCase();
+    if (raw === 'domain' || raw === 'root') return 'Domain';
+    if (raw === 'subdomain' || raw === 'host') return 'Subdomain';
+    if (raw === 'directory' || raw === 'dir') return 'Directory';
+    if (raw === 'ip') return 'IP';
+    if (raw === 'endpoint' || raw === 'url' || raw === 'path' || raw === 'file') return 'Endpoint';
+    return raw ? raw[0].toUpperCase() + raw.slice(1) : 'Node';
+  })();
   const copyFullPath = async () => {
     if (!fullUrl) return;
     try {
@@ -298,8 +304,20 @@ export const DetailsPanel = ({ node, onClose, scan }) => {
     }
   };
 
+  const handleNotesChange = (e) => {
+    const next = e.target.value;
+    setNotes(next);
+    if (!notesStorageKey) return;
+    try {
+      window.localStorage.setItem(notesStorageKey, next);
+    } catch (err) {
+      // ignore storage errors
+    }
+  };
+
   // Tabs
   const tabs = [
+    { key: 'details', label: 'Node Details' },
     { key: 'tech', label: 'Technologies' },
     { key: 'security', label: 'Vulnerabilities' }
   ];
@@ -371,19 +389,34 @@ export const DetailsPanel = ({ node, onClose, scan }) => {
         <div className="dp-header-section">
           <div className="dp-heading-line">
             <span className="dp-heading-icon" aria-hidden>{iconForType(nodeType)}</span>
-            <span className="dp-heading-text">{nodeType === 'domain' ? 'Domain' : 'Node'}: {displayName}</span>
+            <div className="dp-heading-text">
+              <div className="dp-heading-kicker">NODE DETAILS</div>
+              <div className="dp-heading-title" title={displayName}>{displayName}</div>
+            </div>
+            {typeof onToggleBookmark === 'function' ? (
+              <button
+                type="button"
+                className={`dp-bookmark ${bookmarked ? 'active' : ''}`}
+                onClick={() => onToggleBookmark(node)}
+                aria-label={bookmarked ? 'Remove bookmark' : 'Bookmark node'}
+                title={bookmarked ? 'Remove bookmark' : 'Bookmark node'}
+              >
+                {bookmarked ? '★' : '☆'}
+              </button>
+            ) : null}
             <button type="button" className="dp-close" onClick={onClose} aria-label="Close details panel">×</button>
           </div>
           <div className="dp-status-line">
-            <span className={`dp-status-pill ${statusInfo.tone}`}>{statusInfo.code} {statusInfo.label}</span>
-            <span className="dp-status-meta">Response Size: {responseSize}</span>
-            <span className="dp-status-meta">Last Seen: {lastSeen}</span>
-            <span className="dp-status-meta dp-status-meta--nowrap" title={server}>
-              <span className="dp-status-label">Server:</span> {server}
-            </span>
+            <span className="dp-type-pill">{nodeTypeLabel}</span>
+            <span className={`dp-status-pill ${statusInfo.tone}`}>{statusInfo.code}</span>
             <span className="dp-status-meta dp-status-meta--nowrap" title={ipAddress}>
-              <span className="dp-status-label">IP:</span> {ipAddress}
+              <span className="dp-status-label">IP</span> {ipAddress}
             </span>
+            {technologies.length ? (
+              <span className="dp-status-meta dp-status-meta--nowrap" title={technologies.join(', ')}>
+                <span className="dp-status-label">Tech</span> {technologies.slice(0, 2).join(', ')}{technologies.length > 2 ? ` +${technologies.length - 2}` : ''}
+              </span>
+            ) : null}
             <button type="button" className="dp-reset-width" onClick={resetWidth} title="Reset width">Reset</button>
           </div>
         </div>
@@ -423,7 +456,94 @@ export const DetailsPanel = ({ node, onClose, scan }) => {
         )}
 
         <div className="dp-tab-content">
-        {/* Overview tab removed per user request */}
+        {activeTab === 'details' && node && (
+          <div className="dp-details-tab">
+            <section className="dp-section">
+              <div className="dp-section-title">Overview</div>
+              <div className="dp-kv-grid">
+                <div className="dp-kv">
+                  <div className="dp-k">Type</div>
+                  <div className="dp-v">{nodeTypeLabel}</div>
+                </div>
+                <div className="dp-kv">
+                  <div className="dp-k">Status</div>
+                  <div className="dp-v">{statusInfo.code}</div>
+                </div>
+                <div className="dp-kv">
+                  <div className="dp-k">IP</div>
+                  <div className="dp-v">{ipAddress}</div>
+                </div>
+                <div className="dp-kv">
+                  <div className="dp-k">Technologies</div>
+                  <div className="dp-v">
+                    {technologies.length ? technologies.join(', ') : '—'}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section className="dp-section">
+              <div className="dp-section-title">Relations</div>
+              {Array.isArray(relations) && relations.length ? (
+                <ul className="dp-relations">
+                  {relations.slice(0, 24).map((rel) => {
+                    const relId = typeof rel === 'string' ? rel : String(rel?.id || rel?.fullLabel || rel?.label || rel?.value || '');
+                    const relLabel = typeof rel === 'string'
+                      ? rel
+                      : (rel?.fullLabel || rel?.label || rel?.value || rel?.id || '');
+                    const relType = typeof rel === 'string' ? '' : String(rel?.type || '').toLowerCase();
+                    return (
+                      <li key={relId} className="dp-relation">
+                        <span className={`dp-relation-dot t-${relType || 'unknown'}`} aria-hidden="true" />
+                        <span className="dp-relation-label" title={relLabel}>{relLabel}</span>
+                        <button type="button" className="dp-copy-button" onClick={() => copyValue(relLabel)}>Copy</button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <div className="dp-empty">No related nodes available</div>
+              )}
+            </section>
+
+            <section className="dp-section">
+              <div className="dp-section-title">Notes</div>
+              <textarea
+                className="dp-notes"
+                value={notes}
+                onChange={handleNotesChange}
+                placeholder="Add analyst notes…"
+                rows={6}
+              />
+            </section>
+
+            <section className="dp-section">
+              <div className="dp-section-title">Evidence</div>
+              <div className="dp-evidence">
+                <div className="dp-evidence-row">
+                  <div className="dp-evidence-k">Full URL</div>
+                  <div className="dp-evidence-v" title={fullUrlDisplay}>{fullUrlDisplay}</div>
+                  <button type="button" className="dp-copy-button" onClick={copyFullPath} disabled={!fullUrl}>Copy</button>
+                </div>
+                <div className="dp-evidence-row">
+                  <div className="dp-evidence-k">IP</div>
+                  <div className="dp-evidence-v">{ipAddress}</div>
+                  <button type="button" className="dp-copy-button" onClick={() => copyValue(ipAddress)} disabled={!ipAddress || ipAddress === 'Unknown'}>Copy</button>
+                </div>
+                <div className="dp-evidence-row">
+                  <div className="dp-evidence-k">Server</div>
+                  <div className="dp-evidence-v" title={server}>{server}</div>
+                  <button type="button" className="dp-copy-button" onClick={() => copyValue(server)} disabled={!server || server === 'Unknown'}>Copy</button>
+                </div>
+                <div className="dp-evidence-row">
+                  <div className="dp-evidence-k">Technologies</div>
+                  <div className="dp-evidence-v" title={technologies.join(', ')}>{technologies.length ? `${technologies.length} detected` : '—'}</div>
+                  <button type="button" className="dp-copy-button" onClick={() => copyValue(technologies.join(', '))} disabled={!technologies.length}>Copy</button>
+                </div>
+              </div>
+            </section>
+          </div>
+        )}
 
         {activeTab === 'tech' && (
           <div className="dp-tech-tab">

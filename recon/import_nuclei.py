@@ -25,12 +25,10 @@ def ensure_details_column(db):
 
 def ensure_website(db, website_url: str) -> int:
     cur = db.cursor()
+    cur.execute("INSERT OR IGNORE INTO websites (url, name) VALUES (?, ?)", (website_url, website_url))
     cur.execute("SELECT id FROM websites WHERE url = ? LIMIT 1", (website_url,))
     row = cur.fetchone()
-    if row:
-        return row[0]
-    cur.execute("INSERT INTO websites (url, name) VALUES (?, ?)", (website_url, website_url))
-    return cur.lastrowid
+    return row[0] if row else None
 
 
 def get_nodes(db, website_id: int):
