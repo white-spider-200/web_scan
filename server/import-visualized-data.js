@@ -2,19 +2,22 @@
 const fs = require('fs');
 const path = require('path');
 const sqlite3 = require('sqlite3');
+const config = require('./config');
+const { normalizeTarget } = require('./validators');
 
-if (process.argv.length < 2) {
+if (process.argv.length < 3) {
   console.error('Usage: node import-visualized-data.js <viz.json>');
   process.exit(2);
 }
 
-const vizPath = path.resolve(process.argv[2] || process.argv[1]);
+const vizPath = path.resolve(process.argv[2]);
 if (!fs.existsSync(vizPath)) {
   console.error('File not found:', vizPath);
   process.exit(2);
 }
 
-const db = new sqlite3.Database(path.join(__dirname, 'data.db'));
+const dbPath = path.resolve(__dirname, config.database.path);
+const db = new sqlite3.Database(dbPath);
 
 const runAsync = (sql, params=[]) => new Promise((resolve, reject) => db.run(sql, params, function(err){ if(err) reject(err); else resolve(this); }));
 const allAsync = (sql, params=[]) => new Promise((resolve, reject) => db.all(sql, params, (err, rows) => err ? reject(err) : resolve(rows)));
@@ -51,7 +54,8 @@ async function importViz(filePath){
   const metaCandidates = ['ip','response_time_ms','title','ports','tls_cert','dirsearch_count','wappalyzer','headers'];
 
   // ensure website row if possible
-  const websiteUrl = (viz.website && viz.website.url) ? viz.website.url : path.basename(filePath).replace(/_viz.json$/i, '');
+  const websiteUrlRaw = (viz.website && viz.website.url) ? viz.website.url : path.basename(filePath).replace(/_viz.json$/i, '');
+  const websiteUrl = normalizeTarget(websiteUrlRaw) || websiteUrlRaw;
   let websiteId = null;
   try {
     const existing = await getAsync('SELECT id FROM websites WHERE url = ?', [websiteUrl]).catch(()=>null);

@@ -2,8 +2,9 @@
 const sqlite3 = require('sqlite3');
 const path = require('path');
 const { ensureNodeValueUniqueness } = require('./modules/dbIntegrity');
+const config = require('./config');
 
-const dbPath = path.join(__dirname, 'data.db');
+const dbPath = path.resolve(__dirname, config.database.path);
 const db = new sqlite3.Database(dbPath);
 
 (async () => {

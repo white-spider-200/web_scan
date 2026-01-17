@@ -2,8 +2,9 @@
 const fs = require('fs');
 const path = require('path');
 const child_process = require('child_process');
+const config = require('./config');
 
-const DB_FILE = path.join(__dirname, 'data.db');
+const DB_FILE = path.resolve(__dirname, config.database.path);
 const SCHEMA_FILE = path.join(__dirname, 'schema.sql');
 
 function fail(msg) {

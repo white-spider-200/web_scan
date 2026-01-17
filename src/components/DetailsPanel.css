@@ -114,6 +114,33 @@
   color: #e9fcff;
 }
 
+.dp-lock{
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(53, 78, 110, 0.18);
+  border: 1px solid rgba(102, 127, 158, 0.35);
+  color: rgba(226, 247, 249, 0.88);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s ease;
+}
+.dp-lock:hover{
+  transform: translateY(-1px);
+  background: rgba(251, 146, 60, 0.18);
+  border-color: rgba(251, 146, 60, 0.42);
+}
+.dp-lock.active{
+  background: rgba(251, 146, 60, 0.24);
+  border-color: rgba(251, 146, 60, 0.58);
+  color: #ffead2;
+}
+
 .dp-close:hover {
   transform: translateY(-1px);
   background: rgba(116, 178, 255, 0.35);

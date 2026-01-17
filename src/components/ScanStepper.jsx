@@ -87,7 +87,7 @@ export const ScanStepper = ({ scan, onClose }) => {
     const minutes = Math.floor(seconds / 60);
     const rem = seconds % 60;
     return `${String(minutes).padStart(2, '0')}:${String(rem).padStart(2, '0')}`;
-  }, [scan.startedAt, scan.lastUpdateAt, scan.status]);
+  }, [scan.startedAt]);
 
   const lastUpdate = useMemo(() => {
     if (!scan.lastUpdateAt) return '—';
@@ -96,7 +96,7 @@ export const ScanStepper = ({ scan, onClose }) => {
     const now = Date.now();
     const seconds = Math.max(0, Math.floor((now - updated) / 1000));
     return `${seconds}s ago`;
-  }, [scan.lastUpdateAt, scan.status]);
+  }, [scan.lastUpdateAt]);
 
   const isStalled = useMemo(() => {
     if (!scan.lastUpdateAt) return false;

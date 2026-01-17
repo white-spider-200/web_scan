@@ -52,7 +52,7 @@ router.get('/full.pdf', async (req, res) => {
   const reportPath = resolveReportPath(scanId);
   if (!reportPath) return res.status(400).send('Invalid scanId');
   try {
-    const raw = fs.readFileSync(reportPath, 'utf8');
+    const raw = await fs.promises.readFile(reportPath, 'utf8');
     const graph = JSON.parse(raw || '{}');
     const report = buildReport(graph, { scanId, generatedAt: new Date().toISOString() });
     const html = renderHtml(report);
@@ -60,12 +60,13 @@ router.get('/full.pdf', async (req, res) => {
     const args = config.pdf.allowNoSandbox ? ['--no-sandbox', '--disable-setuid-sandbox'] : [];
     const browser = await puppeteer.launch({
       headless: 'new',
-      args
+      args,
+      timeout: config.pdf.timeout
     });
     try {
       const page = await browser.newPage();
-      page.setDefaultTimeout(15000);
-      page.setDefaultNavigationTimeout(15000);
+      page.setDefaultTimeout(config.pdf.timeout);
+      page.setDefaultNavigationTimeout(config.pdf.timeout);
       await page.setContent(html, { waitUntil: 'load' });
       const pdf = await page.pdf({
         format: 'A4',
@@ -79,6 +80,7 @@ router.get('/full.pdf', async (req, res) => {
       await browser.close();
     }
   } catch (e) {
+    if (e && e.code === 'ENOENT') return res.status(404).send('Report source not found');
     res.status(500).send('Failed to build PDF');
   }
 });

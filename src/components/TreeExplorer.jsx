@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import './TreeExplorer.css';
 import axios from 'axios';
 
@@ -11,6 +11,48 @@ const typeLabel = (type) => {
   if (type === 'directory' || type === 'dir') return 'directory';
   if (type === 'endpoint' || type === 'path' || type === 'file') return 'url';
   return type;
+};
+
+const normalizeGroupType = (nodeType) => {
+  if (nodeType === 'subdomain') return 'subdomain';
+  if (nodeType === 'directory' || nodeType === 'dir') return 'directory';
+  return 'url';
+};
+
+const getNodeIcon = (node) => {
+  if (!node) return '📄';
+  if (node.type === 'domain') return '🛰';
+  if (node.type === 'subdomain') return '🖥';
+  if (node.type === 'directory' || node.type === 'dir') return '📁';
+  return '📄';
+};
+
+const getOpenUrl = (node) => {
+  if (!node?.value) return null;
+  const raw = String(node.value || '').trim();
+  if (!raw) return null;
+  if (/^https?:\/\//i.test(raw)) return raw;
+  if (raw.startsWith('/')) return null;
+  return `http://${raw}`;
+};
+
+const isExpandableNode = (node) => {
+  if (!node?.has_children) return false;
+  const t = String(node.type || '').toLowerCase();
+  return t === 'domain' || t === 'subdomain' || t === 'directory' || t === 'dir';
+};
+
+const getDefaultAutoGroups = (node) => {
+  const t = String(node?.type || '').toLowerCase();
+  if (t === 'domain') return ['subdomain', 'directory'];
+  if (t === 'subdomain' || t === 'directory' || t === 'dir') return ['directory'];
+  return [];
+};
+
+const buildStatusSummary = (statusCounts) => {
+  const entries = Object.entries(statusCounts || {}).filter(([, v]) => v > 0);
+  if (!entries.length) return '';
+  return entries.slice(0, 3).map(([k, v]) => `${k}:${v}`).join(' • ');
 };
 
 export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onFocus, selectedNodeId }) => {
@@ -34,7 +76,7 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
 
   const DEFAULT_LIMIT = 120;
 
-  const fetchSummary = async (parentId) => {
+  const fetchSummary = useCallback(async (parentId) => {
     if (!websiteId || !parentId) return;
     if (countsByParent.has(parentId)) return;
     setLoading(prev => new Set(prev).add(`summary:${parentId}`));
@@ -61,9 +103,9 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
         return next;
       });
     }
-  };
+  }, [websiteId, countsByParent]);
 
-  const fetchChildren = async (parentId, type, options = {}) => {
+  const fetchChildren = useCallback(async (parentId, type, options = {}) => {
     if (!websiteId || !parentId || !type) return;
     const { append = false, cursor = 0 } = options;
     const key = `${parentId}:${type}`;
@@ -118,7 +160,7 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
         return next;
       });
     }
-  };
+  }, [websiteId, childrenByGroup, DEFAULT_LIMIT]);
 
   useEffect(() => {
     const normalizedRoot = rootNode ? { ...rootNode, id: String(rootNode.id) } : null;
@@ -132,59 +174,23 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
     setSelectedId(null);
     setBreadcrumb([]);
     setBranchQuery('');
-  }, [rootNode?.id]);
+  }, [rootNode]);
 
   useEffect(() => {
     if (selectedNodeId == null) return;
     const nextId = String(selectedNodeId);
     if (nextId !== selectedId) setSelectedId(nextId);
-  }, [selectedNodeId]);
+  }, [selectedNodeId, selectedId]);
 
-  const getGroupChildren = (parentId, type) => {
+  const getGroupChildren = useCallback((parentId, type) => {
     const key = `${parentId}:${type}`;
     const childIds = childrenByGroup.get(key) || [];
     return childIds.map(id => nodesById.get(id)).filter(Boolean);
-  };
+  }, [childrenByGroup, nodesById]);
 
-  const getCounts = (parentId) => countsByParent.get(parentId) || { subdomains: 0, directories: 0, urls: 0, statusCounts: { urls: {} } };
+  const getCounts = useCallback((parentId) => countsByParent.get(parentId) || { subdomains: 0, directories: 0, urls: 0, statusCounts: { urls: {} } }, [countsByParent]);
 
-  const getNodeIcon = (node) => {
-    if (!node) return '📄';
-    if (node.type === 'domain') return '🛰';
-    if (node.type === 'subdomain') return '🖥';
-    if (node.type === 'directory' || node.type === 'dir') return '📁';
-    return '📄';
-  };
-
-  const getOpenUrl = (node) => {
-    if (!node?.value) return null;
-    const raw = String(node.value || '').trim();
-    if (!raw) return null;
-    if (/^https?:\/\//i.test(raw)) return raw;
-    if (raw.startsWith('/')) return null;
-    return `http://${raw}`;
-  };
-
-  const normalizeGroupType = (nodeType) => {
-    if (nodeType === 'subdomain') return 'subdomain';
-    if (nodeType === 'directory' || nodeType === 'dir') return 'directory';
-    return 'url';
-  };
-
-  const isExpandableNode = (node) => {
-    if (!node?.has_children) return false;
-    const t = String(node.type || '').toLowerCase();
-    return t === 'domain' || t === 'subdomain' || t === 'directory' || t === 'dir';
-  };
-
-  const getDefaultAutoGroups = (node) => {
-    const t = String(node?.type || '').toLowerCase();
-    if (t === 'domain') return ['subdomain', 'directory'];
-    if (t === 'subdomain' || t === 'directory' || t === 'dir') return ['directory'];
-    return [];
-  };
-
-  const collapseBranch = (parentId) => {
+  const collapseBranch = useCallback((parentId) => {
     const nextExpandedNodes = new Set(expandedNodes);
     const nextExpandedGroups = new Set(expandedGroups);
     const toVisit = [parentId];
@@ -195,15 +201,16 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
       nextExpandedGroups.delete(`group:${cur}:directory`);
       nextExpandedGroups.delete(`group:${cur}:url`);
       ['subdomain', 'directory', 'url'].forEach(type => {
-        const children = getGroupChildren(cur, type);
-        children.forEach(child => toVisit.push(child.id));
+        const key = `${cur}:${type}`;
+        const childIds = childrenByGroup.get(key) || [];
+        childIds.forEach(childId => toVisit.push(childId));
       });
     }
     setExpandedNodes(nextExpandedNodes);
     setExpandedGroups(nextExpandedGroups);
-  };
+  }, [expandedNodes, expandedGroups, childrenByGroup]);
 
-  const collapseSiblings = (parentId, excludeId) => {
+  const collapseSiblings = useCallback((parentId, excludeId) => {
     if (!parentId) return;
     ['subdomain', 'directory', 'url'].forEach(type => {
       const children = getGroupChildren(parentId, type);
@@ -211,9 +218,9 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
         if (child.id !== excludeId) collapseBranch(child.id);
       });
     });
-  };
+  }, [getGroupChildren, collapseBranch]);
 
-  const toggleNode = (node) => {
+  const toggleNode = useCallback((node) => {
     if (!isExpandableNode(node)) return;
     const isExpanded = expandedNodes.has(node.id);
     if (isExpanded) {
@@ -236,9 +243,9 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
         groups.forEach(type => fetchChildren(node.id, type));
       }
     }
-  };
+  }, [expandedNodes, autoCollapseSiblings, countsByParent, autoOpenGroups, collapseBranch, collapseSiblings, fetchSummary, fetchChildren]);
 
-  const toggleGroup = (groupId, parentId, type, count) => {
+  const toggleGroup = useCallback((groupId, parentId, type, count) => {
     setExpandedGroups(prev => {
       const next = new Set(prev);
       if (next.has(groupId)) {
@@ -254,14 +261,14 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
       }
       return next;
     });
-  };
+  }, [autoCollapseSiblings, fetchChildren]);
 
-  const selectNode = (node) => {
+  const selectNode = useCallback((node) => {
     setSelectedId(node?.id ?? null);
     if (onSelect) onSelect(node);
-  };
+  }, [onSelect]);
 
-  const fetchPath = async (nodeId) => {
+  const fetchPath = useCallback(async (nodeId) => {
     if (!nodeId) return [];
     try {
       const params = new URLSearchParams({ node_id: String(nodeId) });
@@ -283,9 +290,9 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
     } catch (e) {
       return [];
     }
-  };
+  }, []);
 
-  const revealNode = async (nodeId) => {
+  const revealNode = useCallback(async (nodeId) => {
     const path = await fetchPath(nodeId);
     if (!path.length) return;
     setBreadcrumb(path);
@@ -312,7 +319,7 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
         }
       }, 150);
     }
-  };
+  }, [fetchPath, countsByParent, fetchSummary, fetchChildren, onSelect]);
 
   useEffect(() => {
     if (!selectedId) {
@@ -322,15 +329,9 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
     fetchPath(selectedId).then((path) => {
       if (path.length) setBreadcrumb(path);
     });
-  }, [selectedId]);
+  }, [selectedId, fetchPath]);
 
-  const buildStatusSummary = (statusCounts) => {
-    const entries = Object.entries(statusCounts || {}).filter(([, v]) => v > 0);
-    if (!entries.length) return '';
-    return entries.slice(0, 3).map(([k, v]) => `${k}:${v}`).join(' • ');
-  };
-
-  const renderGroupChips = (parentId, counts, depth) => {
+  const renderGroupChips = useCallback((parentId, counts, depth) => {
     const items = [
       { label: 'Subdomains', type: 'subdomain', count: counts.subdomains, icon: '🛰' },
       { label: 'Directories', type: 'directory', count: counts.directories, icon: '📁' },
@@ -363,16 +364,16 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
         })}
       </div>
     );
-  };
+  }, [showEmptyGroups, expandedGroups, loading, toggleGroup]);
 
-  const getMetaText = (node) => {
+  const getMetaText = useCallback((node) => {
     const parts = [typeLabel(node.type)];
     if (node.status != null) parts.push(String(node.status));
     if (node.technologies && node.technologies.length) parts.push(node.technologies[0]);
     return parts.join(' • ');
-  };
+  }, []);
 
-  const shouldRenderNode = (nodeId, term, memo) => {
+  const shouldRenderNode = useCallback((nodeId, term, memo) => {
     if (!term) return true;
     if (!nodeId) return false;
     if (memo.has(nodeId)) return memo.get(nodeId);
@@ -385,9 +386,9 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
     const match = matchesSelf || matchesChild;
     memo.set(nodeId, match);
     return match;
-  };
+  }, [nodesById, getGroupChildren]);
 
-  const getCompactLabel = (nodeId) => {
+  const getCompactLabel = useCallback((nodeId) => {
     if (!compactFolders) return { nodeId, label: nodesById.get(nodeId)?.label };
     let currentId = nodeId;
     let label = nodesById.get(currentId)?.label || '';
@@ -404,9 +405,9 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
       currentId = child.id;
     }
     return { nodeId: currentId, label };
-  };
+  }, [compactFolders, nodesById, countsByParent, getGroupChildren]);
 
-  const renderNode = (nodeId, depth, term, memo) => {
+  const renderNode = useCallback((nodeId, depth, term, memo) => {
     const node = nodesById.get(nodeId);
     if (!node) return null;
     if (term && !shouldRenderNode(nodeId, term, memo)) {
@@ -556,7 +557,7 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
         )}
       </div>
     );
-  };
+  }, [nodesById, shouldRenderNode, getCompactLabel, selectedId, loading, errors, getCounts, selectNode, toggleNode, renderGroupChips, showEmptyGroups, expandedGroups, expandedNodes, countsByParent, getGroupChildren, nextCursorByGroup, fetchChildren, onFocus, getMetaText]);
 
   const graphData = useMemo(() => {
     const nodes = [];
@@ -602,7 +603,7 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
 
     walk(rootId);
     return { nodes, links };
-  }, [rootId, nodesById, childrenByGroup, expandedNodes, expandedGroups]);
+  }, [rootId, nodesById, getGroupChildren, expandedNodes, expandedGroups]);
 
   useEffect(() => {
     if (onGraphUpdate) onGraphUpdate(graphData);
@@ -616,7 +617,7 @@ export const TreeExplorer = ({ rootNode, websiteId, onSelect, onGraphUpdate, onF
     const node = renderNode(renderRoot, 0, term, memo);
     if (!node) return <div className="tree-empty">No matches.</div>;
     return node;
-  }, [rootId, nodesById, childrenByGroup, countsByParent, expandedNodes, expandedGroups, loading, errors, selectedId, branchQuery, showEmptyGroups, compactFolders]);
+  }, [rootId, selectedId, branchQuery, renderNode]);
 
   return (
     <div className="tree-explorer">

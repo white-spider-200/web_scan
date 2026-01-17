@@ -1,9 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import './App.css';
+import './components/SearchImprovements.css';
 import { HierarchicalGraph } from './components/HierarchicalGraph';
 import { TreeExplorer } from './components/TreeExplorer';
 import { DetailsPanel } from './components/DetailsPanel';
 import { LegendPanel } from './components/LegendPanel';
+import { GraphSettingsPanel } from './components/GraphSettingsPanel';
+import { useGraphSettings } from './context/GraphSettingsContext';
 import { StatsPanel } from './components/StatsPanel';
 import axios from 'axios';
 
@@ -284,6 +287,7 @@ export default function App() {
   const [graphData, setGraphData] = useState({ nodes: [], links: [] });
   const [selectedNode, setSelectedNode] = useState(null);
   const [selectedGraphNodeId, setSelectedGraphNodeId] = useState(null);
+  const [lockedNodeIds, setLockedNodeIds] = useState(new Set()); // Track locked nodes to disable physics
   const [currentWebsiteId, setCurrentWebsiteId] = useState(null);
   const [lazyGraphData, setLazyGraphData] = useState({ nodes: [], links: [] });
   const [viewMode, setViewMode] = useState('graph');
@@ -330,11 +334,261 @@ export default function App() {
   const [lockLayout, setLockLayout] = useState(false);
   const [graphLayout, setGraphLayout] = useState('radial');
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+  const [activeSearchIndex, setActiveSearchIndex] = useState(-1);
   const [searchMatches, setSearchMatches] = useState([]); // [{id,label,type}]
   const [searchPick, setSearchPick] = useState(null); // node id
   const [highlightedNodes, setHighlightedNodes] = useState([]); // array of node ids
   const [highlightPath, setHighlightPath] = useState([]); // array of node ids that form the path
   const [loading, setLoading] = useState(false);
+  const searchInputRef = useRef(null);
+  const skipSearchClearRef = useRef(false);
+
+  // Debounce search term
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 250); // 250ms debounce
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  // find shortest path between two node ids using BFS on the graph links
+  const findShortestPath = useCallback((startId, endId) => {
+    if (!graphData || !Array.isArray(graphData.nodes) || !Array.isArray(graphData.links)) return [];
+    const adj = new Map();
+    for (const n of graphData.nodes) adj.set(n.id, new Set());
+    for (const l of graphData.links) {
+      const a = typeof l.source === 'object' ? l.source.id : l.source;
+      const b = typeof l.target === 'object' ? l.target.id : l.target;
+      if (!adj.has(a)) adj.set(a, new Set());
+      if (!adj.has(b)) adj.set(b, new Set());
+      adj.get(a).add(b);
+      adj.get(b).add(a);
+    }
+    const q = [startId];
+    const prev = new Map();
+    prev.set(startId, null);
+    let found = false;
+    for (let i = 0; i < q.length && !found; i++) {
+      const cur = q[i];
+      const nbrs = adj.get(cur) || new Set();
+      for (const nb of nbrs) {
+        if (!prev.has(nb)) {
+          prev.set(nb, cur);
+          q.push(nb);
+          if (nb === endId) { found = true; break; }
+        }
+      }
+    }
+    if (!prev.has(endId)) return [];
+    // reconstruct path
+    const path = [];
+    let cur = endId;
+    while (cur !== null) { path.push(cur); cur = prev.get(cur); }
+    return path.reverse();
+  }, [graphData]);
+
+  const revealGraphNodeInternal = useCallback((nodeId) => {
+    const id = String(nodeId || '').trim();
+    if (!id) return;
+    const nodes = graphData?.nodes || [];
+    const node = nodes.find((n) => String(n.id) === id);
+    if (!node) return;
+
+    const getNodeLevel = (n) => {
+      const lvl = Number(n?.level);
+      if (Number.isFinite(lvl)) return Math.max(1, Math.floor(lvl));
+      const t = String(n?.type || '');
+      if (t === 'host' && n?.role === 'root') return 1;
+      if (t === 'host' && n?.role === 'subdomain') return 2;
+      if (t === 'dir') return 2;
+      if (t === 'path' || t === 'file') return 3;
+      if (t === 'ip') return 3;
+      return 3;
+    };
+
+    const requiredLevel = getNodeLevel(node);
+    try {
+      if (window?.graphInstance?.expandToLevel) {
+        window.graphInstance.expandToLevel(requiredLevel);
+      }
+    } catch (e) {
+      // ignore
+    }
+
+    setSelectedGraphNodeId(id);
+    setHighlightedNodes([id]);
+    const rootNode = nodes.find((n) => n.type === 'host' && n.role === 'root') || nodes.find((n) => n.type === 'host') || nodes[0];
+    if (rootNode?.id) {
+      const path = findShortestPath(rootNode.id, id);
+      setHighlightPath(path);
+    }
+    try {
+      setTimeout(() => {
+        try {
+          window?.graphInstance?.focusOn?.(id, { zoom: 2.05, duration: 520, delay: 80 });
+        } catch (e) {}
+      }, 220);
+    } catch (e) {
+      // ignore
+    }
+  }, [graphData, findShortestPath]);
+
+  const revealGraphNode = useCallback((nodeId) => {
+    const id = String(nodeId || '').trim();
+    if (!id) return;
+    if (viewMode === 'graph' && graphPerspective === 'attack') {
+      setGraphPerspective('sitemap');
+      setTimeout(() => revealGraphNodeInternal(id), 260);
+      return;
+    }
+    revealGraphNodeInternal(id);
+  }, [viewMode, graphPerspective, revealGraphNodeInternal]);
+
+  const executeSearch = useCallback((value) => {
+    const q = String(value || '').trim();
+    if (!q) {
+      if (skipSearchClearRef.current) {
+        skipSearchClearRef.current = false;
+        return;
+      }
+      setHighlightedNodes([]);
+      setHighlightPath([]);
+      setSearchMatches([]);
+      setSearchPick(null);
+      setActiveSearchIndex(-1);
+      return;
+    }
+
+    // if user supplied two terms separated by comma or space, treat as two endpoints
+    const parts = q.split(/[,\s]+/).filter(Boolean);
+    const nodes = graphData.nodes || [];
+    if (parts.length >= 2) {
+      // produce candidate matches (exact first, then substring matches)
+      const termMatches = (term) => {
+        const t = term.toLowerCase();
+        const exact = nodes.filter(n => n.id.toLowerCase() === t);
+        if (exact.length) return exact;
+        const subs = nodes.filter(n => n.id.toLowerCase().includes(t));
+        return subs;
+      };
+
+      const candA = termMatches(parts[0]);
+      const candB = termMatches(parts[1]);
+
+      // set highlighted nodes to all candidates so user sees them
+      const ids = Array.from(new Set([...(candA||[]).map(n=>n.id), ...(candB||[]).map(n=>n.id)]));
+      setHighlightedNodes(ids);
+
+      // try every pair of candidates to find the shortest connecting path
+      let bestPath = null;
+      if ((candA||[]).length && (candB||[]).length) {
+        for (const aNode of candA) {
+          for (const bNode of candB) {
+            if (aNode.id === bNode.id) continue; // same node
+            const p = findShortestPath(aNode.id, bNode.id);
+            if (p && p.length) {
+              if (!bestPath || p.length < bestPath.length) bestPath = p;
+            }
+          }
+        }
+      }
+
+      if (bestPath) {
+        setHighlightPath(bestPath);
+      } else {
+        setHighlightPath([]);
+      }
+      setSearchMatches([]);
+      setSearchPick(null);
+      return;
+    }
+
+    // otherwise find all nodes that contain the query text
+    const qLower = q.toLowerCase();
+    const matchNodes = nodes.filter(n => String(n.id).toLowerCase().includes(qLower));
+    const matches = matchNodes.map(n => n.id);
+    setHighlightedNodes(matches);
+    const top = matchNodes
+      .slice(0, 12)
+      .map((n) => ({ id: n.id, label: n.label || n.id, type: n.type || '' }));
+    setSearchMatches(top);
+    setSearchPick(top[0]?.id || null);
+    setActiveSearchIndex(top.length > 0 ? 0 : -1);
+
+    // if exactly one match, compute path from root to it
+    if (matches.length === 1) {
+      const rootNode = (nodes.find(n => n.type === 'host' && n.role === 'root') || nodes.find(n => n.type === 'host') || nodes[0]);
+      if (rootNode) {
+        const path = findShortestPath(rootNode.id, matches[0]);
+        setHighlightPath(path);
+      } else setHighlightPath([]);
+    } else {
+      setHighlightPath([]);
+    }
+  }, [graphData, findShortestPath]);
+
+  // Run search when debounced term changes
+  useEffect(() => {
+    executeSearch(debouncedSearchTerm);
+  }, [debouncedSearchTerm, executeSearch]);
+
+  const handleSearchInput = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const clearSearch = () => {
+    setSearchTerm('');
+    setDebouncedSearchTerm('');
+    setSearchMatches([]);
+    setHighlightedNodes([]);
+    setHighlightPath([]);
+    setSearchPick(null);
+    setActiveSearchIndex(-1);
+    searchInputRef.current?.focus();
+  };
+
+  const handleSelectMatch = useCallback((matchId) => {
+    skipSearchClearRef.current = true;
+    setSearchTerm('');
+    setDebouncedSearchTerm('');
+    setSearchMatches([]);
+    setActiveSearchIndex(-1);
+    revealGraphNode(matchId);
+  }, [revealGraphNode]);
+
+  const handleSearchKeyDown = (e) => {
+    if (!searchMatches.length) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveSearchIndex((prev) => (prev + 1) % searchMatches.length);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveSearchIndex((prev) => (prev - 1 + searchMatches.length) % searchMatches.length);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (activeSearchIndex >= 0 && activeSearchIndex < searchMatches.length) {
+        handleSelectMatch(searchMatches[activeSearchIndex].id);
+      }
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      // If matches are shown, clear matches but keep text? Or clear everything?
+      // Standard behavior: clear results first, then text.
+      if (searchMatches.length) {
+        setSearchMatches([]);
+      } else {
+        clearSearch();
+      }
+    }
+  };
+
+  // Sync active search pick with active index
+  useEffect(() => {
+    if (activeSearchIndex >= 0 && activeSearchIndex < searchMatches.length) {
+      setSearchPick(searchMatches[activeSearchIndex].id);
+    }
+  }, [activeSearchIndex, searchMatches]);
   const [error, setError] = useState(null);
   const [scanProgress, setScanProgress] = useState(null);
   const [scanStatus, setScanStatus] = useState({ status: 'idle', stage: '', stageLabel: '', currentTarget: '', message: '', logTail: [], updatedAt: '', startedAt: '', stageMeta: {}, rootNode: null });
@@ -351,6 +605,8 @@ export default function App() {
   const [scansOpen, setScansOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [graphPanelOpen, setGraphPanelOpen] = useState(false);
+  const { scope, filters: graphFilters, layout: graphLayoutSettings, display: graphDisplay } = useGraphSettings();
   const [scansLoading, setScansLoading] = useState(false);
   const [scansError, setScansError] = useState('');
   const [scansList, setScansList] = useState([]);
@@ -639,7 +895,7 @@ export default function App() {
     }
   };
 
-  const applyFiltersFromNodes = (nodes) => {
+  const applyFiltersFromNodes = useCallback((nodes) => {
     const statuses = {};
     const techs = {};
     (nodes || []).forEach(n => {
@@ -652,9 +908,9 @@ export default function App() {
     });
     if (Object.keys(statuses).length) setStatusFilters(statuses);
     if (Object.keys(techs).length) setTechFilters(techs);
-  };
+  }, []);
 
-  const buildGraphFromNodes = (nodes, websiteId, relationships = [], scanTarget = '') => {
+  const buildGraphFromNodes = useCallback((nodes, websiteId, relationships = [], scanTarget = '') => {
     const transformedNodes = nodes.map(node => ({
       ...node,
       id: String(node.id),
@@ -876,7 +1132,42 @@ export default function App() {
     setGraphData({ nodes: enrichedNodes.concat(extraNodes), links: edges.concat(extraLinks) });
     setCurrentWebsiteId(websiteId);
     applyFiltersFromNodes(transformedNodes);
-  };
+  }, [applyFiltersFromNodes]);
+
+  // Advanced Graph Query Effect
+  useEffect(() => {
+    if (!graphPanelOpen) return;
+    if (!currentWebsiteId) return;
+    if (scope.mode === 'local' && !selectedGraphNodeId) return;
+
+    const timer = setTimeout(async () => {
+      setLoading(true);
+      try {
+        const center = selectedGraphNodeId || (selectedNode ? selectedNode.id : null);
+        const payload = {
+          websiteId: currentWebsiteId,
+          mode: scope.mode,
+          centerId: scope.mode === 'local' ? center : undefined,
+          hops: scope.localDepth,
+          filters: {
+            types: Object.keys(graphFilters.nodeTypes).filter(k => graphFilters.nodeTypes[k]),
+            minRisk: graphFilters.minRiskScore
+          }
+        };
+
+        const res = await axios.post('http://localhost:3001/api/graph/query', payload);
+        const { nodes, links } = res.data;
+        
+        buildGraphFromNodes(nodes, currentWebsiteId, links, target);
+      } catch (e) {
+        console.error("Advanced graph query failed", e);
+      } finally {
+        setLoading(false);
+      }
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [graphPanelOpen, scope, graphFilters, currentWebsiteId, selectedGraphNodeId, buildGraphFromNodes, target, selectedNode]);
 
   const buildClusteredGraph = (data, pinnedIds = null) => {
     if (!data?.nodes?.length || !data?.links?.length) return data;
@@ -1598,7 +1889,7 @@ export default function App() {
     }
   };
 
-  const loadScanById = async (scanId, summaryOnly = true) => {
+  const loadScanById = useCallback(async (scanId, summaryOnly = true) => {
     setLoading(true);
     setError(null);
     try {
@@ -1656,183 +1947,12 @@ export default function App() {
     } finally {
       setLoading(false);
     }
-  };
-
-  // find shortest path between two node ids using BFS on the graph links
-  const findShortestPath = (startId, endId) => {
-    if (!graphData || !Array.isArray(graphData.nodes) || !Array.isArray(graphData.links)) return [];
-    const adj = new Map();
-    for (const n of graphData.nodes) adj.set(n.id, new Set());
-    for (const l of graphData.links) {
-      const a = typeof l.source === 'object' ? l.source.id : l.source;
-      const b = typeof l.target === 'object' ? l.target.id : l.target;
-      if (!adj.has(a)) adj.set(a, new Set());
-      if (!adj.has(b)) adj.set(b, new Set());
-      adj.get(a).add(b);
-      adj.get(b).add(a);
-    }
-    const q = [startId];
-    const prev = new Map();
-    prev.set(startId, null);
-    let found = false;
-    for (let i = 0; i < q.length && !found; i++) {
-      const cur = q[i];
-      const nbrs = adj.get(cur) || new Set();
-      for (const nb of nbrs) {
-        if (!prev.has(nb)) {
-          prev.set(nb, cur);
-          q.push(nb);
-          if (nb === endId) { found = true; break; }
-        }
-      }
-    }
-    if (!prev.has(endId)) return [];
-    // reconstruct path
-    const path = [];
-    let cur = endId;
-    while (cur !== null) { path.push(cur); cur = prev.get(cur); }
-    return path.reverse();
-  };
-
-  const handleSearch = (value) => {
-    setSearchTerm(value);
-    const q = String(value || '').trim();
-    if (!q) {
-      setHighlightedNodes([]);
-      setHighlightPath([]);
-      setSearchMatches([]);
-      setSearchPick(null);
-      return;
-    }
-
-    // if user supplied two terms separated by comma or space, treat as two endpoints
-    const parts = q.split(/[,\s]+/).filter(Boolean);
-    const nodes = graphData.nodes || [];
-    if (parts.length >= 2) {
-      // produce candidate matches (exact first, then substring matches)
-      const termMatches = (term) => {
-        const t = term.toLowerCase();
-        const exact = nodes.filter(n => n.id.toLowerCase() === t);
-        if (exact.length) return exact;
-        const subs = nodes.filter(n => n.id.toLowerCase().includes(t));
-        return subs;
-      };
-
-      const candA = termMatches(parts[0]);
-      const candB = termMatches(parts[1]);
-
-      // set highlighted nodes to all candidates so user sees them
-      const ids = Array.from(new Set([...(candA||[]).map(n=>n.id), ...(candB||[]).map(n=>n.id)]));
-      setHighlightedNodes(ids);
-
-      // try every pair of candidates to find the shortest connecting path
-      let bestPath = null;
-      if ((candA||[]).length && (candB||[]).length) {
-        for (const aNode of candA) {
-          for (const bNode of candB) {
-            if (aNode.id === bNode.id) continue; // same node
-            const p = findShortestPath(aNode.id, bNode.id);
-            if (p && p.length) {
-              if (!bestPath || p.length < bestPath.length) bestPath = p;
-            }
-          }
-        }
-      }
-
-      if (bestPath) {
-        setHighlightPath(bestPath);
-      } else {
-        setHighlightPath([]);
-      }
-      setSearchMatches([]);
-      setSearchPick(null);
-      return;
-    }
-
-    // otherwise find all nodes that contain the query text
-    const qLower = q.toLowerCase();
-    const matchNodes = nodes.filter(n => String(n.id).toLowerCase().includes(qLower));
-    const matches = matchNodes.map(n => n.id);
-    setHighlightedNodes(matches);
-    const top = matchNodes
-      .slice(0, 12)
-      .map((n) => ({ id: n.id, label: n.label || n.id, type: n.type || '' }));
-    setSearchMatches(top);
-    setSearchPick(top[0]?.id || null);
-
-    // if exactly one match, compute path from root to it
-    if (matches.length === 1) {
-      const rootNode = (nodes.find(n => n.type === 'host' && n.role === 'root') || nodes.find(n => n.type === 'host') || nodes[0]);
-      if (rootNode) {
-        const path = findShortestPath(rootNode.id, matches[0]);
-        setHighlightPath(path);
-      } else setHighlightPath([]);
-    } else {
-      setHighlightPath([]);
-    }
-  };
+  }, [buildGraphFromNodes]);
 
   const graphLabelForId = (id) => {
     const nodes = graphData?.nodes || [];
     const match = nodes.find((n) => String(n.id) === String(id));
     return match?.label || match?.fullLabel || match?.id || String(id);
-  };
-
-  const revealGraphNodeInternal = (nodeId) => {
-    const id = String(nodeId || '').trim();
-    if (!id) return;
-    const nodes = graphData?.nodes || [];
-    const node = nodes.find((n) => String(n.id) === id);
-    if (!node) return;
-
-    const getNodeLevel = (n) => {
-      const lvl = Number(n?.level);
-      if (Number.isFinite(lvl)) return Math.max(1, Math.floor(lvl));
-      const t = String(n?.type || '');
-      if (t === 'host' && n?.role === 'root') return 1;
-      if (t === 'host' && n?.role === 'subdomain') return 2;
-      if (t === 'dir') return 2;
-      if (t === 'path' || t === 'file') return 3;
-      if (t === 'ip') return 3;
-      return 3;
-    };
-
-    const requiredLevel = getNodeLevel(node);
-    try {
-      if (window?.graphInstance?.expandToLevel) {
-        window.graphInstance.expandToLevel(requiredLevel);
-      }
-    } catch (e) {
-      // ignore
-    }
-
-    setSelectedGraphNodeId(id);
-    setHighlightedNodes([id]);
-    const rootNode = nodes.find((n) => n.type === 'host' && n.role === 'root') || nodes.find((n) => n.type === 'host') || nodes[0];
-    if (rootNode?.id) {
-      const path = findShortestPath(rootNode.id, id);
-      setHighlightPath(path);
-    }
-    try {
-      setTimeout(() => {
-        try {
-          window?.graphInstance?.focusOn?.(id, { zoom: 2.05, duration: 520, delay: 80 });
-        } catch (e) {}
-      }, 220);
-    } catch (e) {
-      // ignore
-    }
-  };
-
-  const revealGraphNode = (nodeId) => {
-    const id = String(nodeId || '').trim();
-    if (!id) return;
-    if (viewMode === 'graph' && graphPerspective === 'attack') {
-      setGraphPerspective('sitemap');
-      setTimeout(() => revealGraphNodeInternal(id), 260);
-      return;
-    }
-    revealGraphNodeInternal(id);
   };
 
   const exportBaseName = useMemo(() => {
@@ -1895,7 +2015,23 @@ export default function App() {
     });
   }, []);
 
+  const toggleLock = useCallback((nodeId) => {
+    const id = String(nodeId || '').trim();
+    if (!id) return;
+    setLockedNodeIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }, []);
+
   const isBookmarked = (nodeId) => bookmarkedNodeIds.has(String(nodeId || '').trim());
+
+  const isLocked = (nodeId) => lockedNodeIds.has(String(nodeId || '').trim());
 
   const bookmarkItems = useMemo(() => {
     const items = Object.values(bookmarks || {}).filter(Boolean);
@@ -2284,7 +2420,7 @@ export default function App() {
     const status = String(scanStatus?.status || '');
     if (status && status !== 'completed' && status !== 'done') return;
     loadScanById(scanId, false);
-  }, [viewMode, scanId, fullGraphLoaded, scanStatus?.status]);
+  }, [viewMode, scanId, fullGraphLoaded, scanStatus?.status, loadScanById]);
 
   useEffect(() => {
     const nodes = graphData?.nodes || [];
@@ -2501,16 +2637,42 @@ export default function App() {
 
           <div className="top-nav-field top-nav-search">
             <div className="top-nav-field-label">Search</div>
-            <input
-              value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
-              type="text"
-              placeholder="Search nodes, paths, IPs…"
-              className="ui-input sm top-nav-input"
-            />
+            <div className="top-nav-search-wrapper">
+              <input
+                ref={searchInputRef}
+                value={searchTerm}
+                onChange={handleSearchInput}
+                onKeyDown={handleSearchKeyDown}
+                type="text"
+                placeholder="Search nodes, paths, IPs…"
+                className="ui-input sm top-nav-input"
+              />
+              {searchTerm && (
+                <button
+                  type="button"
+                  className="top-nav-search-clear"
+                  onClick={clearSearch}
+                  aria-label="Clear search"
+                >
+                  ×
+                </button>
+              )}
+            </div>
             {(function() {
               const term = String(searchTerm || '').trim();
-              if (!term || !searchMatches.length) return null;
+              const hasMatches = searchMatches.length > 0;
+              if (!term && !hasMatches) return null;
+              
+              if (term && !hasMatches && debouncedSearchTerm === term && !highlightPath.length) {
+                 return (
+                   <div className="search-popover" role="listbox" aria-label="Search results">
+                     <div className="search-popover-empty">No results found</div>
+                   </div>
+                 );
+              }
+
+              if (!hasMatches && !highlightPath.length) return null;
+
               return (
                 <div className="search-popover" role="listbox" aria-label="Search results">
                   <div className="search-popover-header">
@@ -2519,22 +2681,36 @@ export default function App() {
                       type="button"
                       className="ui-btn secondary xs"
                       disabled={!searchPick}
-                      onClick={() => searchPick && revealGraphNode(searchPick)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        searchPick && revealGraphNode(searchPick);
+                      }}
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
                     >
                       Reveal
                     </button>
                   </div>
                   <div className="search-popover-list">
-                    {searchMatches.map((m) => (
+                    {searchMatches.map((m, idx) => (
                       <button
                         key={m.id}
                         type="button"
                         role="option"
                         aria-selected={String(searchPick) === String(m.id)}
-                        className={`search-popover-item ${String(searchPick) === String(m.id) ? 'active' : ''}`}
-                        onClick={() => {
-                          setSearchPick(m.id);
-                          revealGraphNode(m.id);
+                        className={`search-popover-item ${activeSearchIndex === idx ? 'active' : ''}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleSelectMatch(m.id);
+                        }}
+                        onMouseEnter={() => setActiveSearchIndex(idx)}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
                         }}
                         title={m.label}
                       >
@@ -2549,7 +2725,19 @@ export default function App() {
                       <div className="search-popover-path-items">
                         {highlightPath.slice(Math.max(0, highlightPath.length - 7)).map((id, idx, arr) => (
                           <span key={id} className="search-popover-path-item">
-                            <button type="button" className="search-popover-path-btn" onClick={() => revealGraphNode(id)}>
+                            <button
+                              type="button"
+                              className="search-popover-path-btn"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                revealGraphNode(id);
+                              }}
+                              onMouseDown={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                              }}
+                            >
                               {graphLabelForId(id)}
                             </button>
                             {idx < arr.length - 1 ? <span className="search-popover-path-sep">›</span> : null}
@@ -2672,6 +2860,15 @@ export default function App() {
           </div>
           <button
             type="button"
+            className={`ui-btn icon ghost ${graphPanelOpen ? 'active' : ''}`}
+            onClick={() => setGraphPanelOpen(!graphPanelOpen)}
+            aria-label="Graph Controls"
+            title="Graph Controls"
+          >
+            🎛
+          </button>
+          <button
+            type="button"
             className="ui-btn icon ghost"
             onClick={() => setSettingsOpen(true)}
             aria-label="Settings"
@@ -2681,6 +2878,8 @@ export default function App() {
           </button>
         </div>
       </header>
+
+      {graphPanelOpen && <GraphSettingsPanel onClose={() => setGraphPanelOpen(false)} />}
 
       <div className="app-body">
         <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
@@ -3263,6 +3462,7 @@ export default function App() {
                 disableLevelSystem={viewMode === 'tree'}
                 selectedNodeId={(viewMode === 'graph' ? selectedGraphNodeId : selectedNode?.id) || null}
                 bookmarkedNodeIds={bookmarkedNodeIds}
+                lockedNodeIds={lockedNodeIds}
                 lockLayout={lockLayout}
                 onToggleLock={setLockLayout}
                 layoutPreset={graphLayout}
@@ -3311,6 +3511,16 @@ export default function App() {
                       return;
                     }
                     setSelectedGraphNodeId(node?.id || null);
+
+                    // Update highlight path to clicked node
+                    const rootNode = (graphData?.nodes || []).find((n) => n.type === 'host' && n.role === 'root') || graphData?.nodes?.[0];
+                    if (rootNode?.id && node?.id) {
+                       const path = findShortestPath(rootNode.id, node.id);
+                       setHighlightPath(path);
+                    } else {
+                       setHighlightPath([]);
+                    }
+
                     const apiId = node.apiId || node.id;
                     if (currentWebsiteId && apiId !== undefined && apiId !== null) {
                       const encodedNodeId = encodeURIComponent(apiId);
@@ -3349,6 +3559,19 @@ export default function App() {
                 const label = graphNode ? (graphNode.fullLabel || graphNode.label || graphNode.id) : (selectedNode.value || selectedNode.id);
                 const type = graphNode ? (graphNode.type === 'host' ? (graphNode.role === 'subdomain' ? 'subdomain' : 'domain') : graphNode.type) : String(selectedNode.type || '');
                 toggleBookmark(id, { label, type });
+              };
+            })()}
+            locked={(function() {
+              if (!selectedNode) return false;
+              const id = viewMode === 'graph' ? (selectedGraphNodeId || '') : String(selectedNode.id || '');
+              return id ? isLocked(id) : false;
+            })()}
+            onToggleLock={(function() {
+              if (!selectedNode) return null;
+              return () => {
+                const id = viewMode === 'graph' ? (selectedGraphNodeId || '') : String(selectedNode.id || '');
+                if (!id) return;
+                toggleLock(id);
               };
             })()}
             relations={(function() {

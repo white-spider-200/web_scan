@@ -90,6 +90,16 @@ def is_file_segment(segment: str) -> bool:
         'pdf','xml','json','txt','csv','zip','gz','tar','rar','7z','mp4','woff','woff2','ttf','eot'
     )
 
+def url_ext(u: str) -> str:
+    try:
+        p = urlparse(u)
+        name = (p.path or '').rsplit('/', 1)[-1]
+        if '.' in name:
+            return name.rsplit('.', 1)[-1].lower()
+    except Exception:
+        pass
+    return ''
+
 def ensure_website(db, website_url: str) -> int:
     cur = db.cursor()
     cur.execute('INSERT OR IGNORE INTO websites (url, name) VALUES (?, ?)', (website_url, website_url))
@@ -229,6 +239,8 @@ def main():
     discovered = data.get('discovered', {})
     page_urls = discovered.get('pages') or discovered.get('urls') or []
     api_urls = discovered.get('api') or []
+    feed_urls = discovered.get('feeds') or []
+    asset_urls = discovered.get('assets') or []
     dirs_by_host = discovered.get('directories_by_host', {}) or {}
     crawl_graph = data.get('crawl_graph') or {}
     crawl_nodes = {}
@@ -380,8 +392,118 @@ def main():
                         "crawl_kind": meta.get("kind")
                     })
 
+        # Assets (default: only high-signal static files like JS/CSS)
+        for raw in asset_urls:
+            try:
+                if url_ext(raw) not in ('js', 'css'):
+                    continue
+            except Exception:
+                continue
+            nu = normalize_url(raw)
+            p = urlparse(nu)
+            host = (p.hostname or '').lower()
+            if p.port:
+                host = f'{host}:{p.port}'
+            if not host:
+                continue
+            if not is_in_scope(host, root):
+                continue
+            parent_id = ensure_host_node(db, website_id, root=root, host=host) or root_id
+
+            segs = split_path_segments(p.path or '/')
+            if not segs and p.query:
+                node_value = f"{host}/?{p.query}"
+                node_id = insert_node(db, website_id, node_value, 'file')
+                insert_rel(db, parent_id, node_id, 'contains')
+                meta = crawl_nodes.get(nu) or {}
+                merge_details(db, node_id, {
+                    "link_type": "asset",
+                    "crawl_depth": meta.get("depth"),
+                    "crawl_parent": meta.get("parent"),
+                    "crawl_score": meta.get("score"),
+                    "crawl_kind": meta.get("kind")
+                })
+                continue
+            cumulative = ''
+            prev_id = parent_id
+            is_dir_path = (p.path or '').endswith('/')
+            for i, seg in enumerate(segs):
+                cumulative = cumulative + '/' + seg if cumulative else '/' + seg
+                node_value = f"{host}{cumulative}"
+                is_last = (i == len(segs) - 1)
+                if not is_last or is_dir_path:
+                    ntype = 'directory'
+                else:
+                    ntype = 'file'
+                node_id = insert_node(db, website_id, node_value, ntype)
+                insert_rel(db, prev_id, node_id, 'contains')
+                prev_id = node_id
+                if is_last:
+                    meta = crawl_nodes.get(nu) or {}
+                    merge_details(db, node_id, {
+                        "link_type": "asset",
+                        "crawl_depth": meta.get("depth"),
+                        "crawl_parent": meta.get("parent"),
+                        "crawl_score": meta.get("score"),
+                        "crawl_kind": meta.get("kind")
+                    })
+
+        for raw in feed_urls:
+            nu = normalize_url(raw)
+            p = urlparse(nu)
+            host = (p.hostname or '').lower()
+            if p.port:
+                host = f'{host}:{p.port}'
+            if not host:
+                continue
+            if not is_in_scope(host, root):
+                continue
+            parent_id = ensure_host_node(db, website_id, root=root, host=host) or root_id
+
+            segs = split_path_segments(p.path or '/')
+            if not segs and p.query:
+                node_value = f"{host}/?{p.query}"
+                node_id = insert_node(db, website_id, node_value, 'endpoint')
+                insert_rel(db, parent_id, node_id, 'contains')
+                meta = crawl_nodes.get(nu) or {}
+                merge_details(db, node_id, {
+                    "link_type": "feed",
+                    "crawl_depth": meta.get("depth"),
+                    "crawl_parent": meta.get("parent"),
+                    "crawl_score": meta.get("score"),
+                    "crawl_kind": meta.get("kind")
+                })
+                continue
+            cumulative = ''
+            prev_id = parent_id
+            for i, seg in enumerate(segs):
+                cumulative = cumulative + '/' + seg if cumulative else '/' + seg
+                node_value = f"{host}{cumulative}"
+                is_last = (i == len(segs) - 1)
+                if is_last and is_file_segment(seg):
+                    ntype = 'endpoint'
+                else:
+                    ntype = 'directory'
+                node_id = insert_node(db, website_id, node_value, ntype)
+                insert_rel(db, prev_id, node_id, 'contains')
+                prev_id = node_id
+                if is_last:
+                    meta = crawl_nodes.get(nu) or {}
+                    merge_details(db, node_id, {
+                        "link_type": "feed",
+                        "crawl_depth": meta.get("depth"),
+                        "crawl_parent": meta.get("parent"),
+                        "crawl_score": meta.get("score"),
+                        "crawl_kind": meta.get("kind")
+                    })
+
         db.commit()
-        print(f'Imported hierarchical paths from {len(page_urls)} pages, {len(api_urls)} api endpoints, and {sum(len(v) for v in dirs_by_host.values())} directory hints into DB for {website_url}')
+        imported_asset_count = 0
+        try:
+            imported_asset_count = sum(1 for u in asset_urls if url_ext(u) in ('js', 'css'))
+        except Exception:
+            imported_asset_count = 0
+        print(f'Imported hierarchical paths from {len(page_urls)} pages, {len(api_urls)} api endpoints, {len(feed_urls)} feeds, {imported_asset_count} JS/CSS assets, and {sum(len(v) for v in dirs_by_host.values())} directory hints into DB for {website_url}')
     finally:
         db.close()
 

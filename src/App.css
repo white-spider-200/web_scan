@@ -97,7 +97,7 @@ html,body,#root{
   min-width:0;
 }
 
-.top-nav-search{flex:1; position:relative}
+.top-nav-search{flex:1; position:relative; pointer-events: auto;}
 
 .top-nav-field-label{
   font-size: 11px;
@@ -123,6 +123,7 @@ html,body,#root{
   padding: 10px;
   box-shadow: 0 20px 55px rgba(0,0,0,0.5);
   backdrop-filter: blur(10px);
+  pointer-events: auto;
 }
 :root[data-theme='light'] .search-popover{
   background: rgba(255, 255, 255, 0.98);
@@ -150,6 +151,7 @@ html,body,#root{
   max-height: 240px;
   overflow:auto;
   padding-right: 4px;
+  pointer-events: auto;
 }
 
 .search-popover-item{
@@ -164,6 +166,7 @@ html,body,#root{
   color: rgba(226,247,249,0.92);
   cursor: pointer;
   text-align:left;
+  pointer-events: auto;
 }
 :root[data-theme='light'] .search-popover-item{
   background: rgba(245, 250, 255, 0.92);

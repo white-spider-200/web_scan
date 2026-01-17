@@ -1,0 +1,50 @@
+{
+  "target": "sst.wise.com",
+  "probes": [
+    {
+      "url": "https://sst.wise.com",
+      "ok": true,
+      "error": null,
+      "status_code": 200,
+      "headers": {
+        "x-cloud-trace-context": "e566e6846a5d3a8b632cbbcf66ab7432",
+        "date": "Mon, 12 Jan 2026 09:21:28 GMT",
+        "content-type": "text/html",
+        "server": "Google Frontend",
+        "Content-Length": "0",
+        "Via": "1.1 google",
+        "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+      },
+      "title": null,
+      "redirects": [],
+      "body_snippet": "",
+      "resolved_ip": "34.95.85.136",
+      "response_time_ms": 230,
+      "content_length": 0,
+      "tls_cert": {
+        "pem": "-----BEGIN CERTIFICATE-----\nMIIFQTCCBCmgAwIBAgIQFRQInAtEzn0KENaKT6k3ujANBgkqhkiG9w0BAQsFADA7\nMQswCQYDVQQGEwJVUzEeMBwGA1UEChMVR29vZ2xlIFRydXN0IFNlcnZpY2VzMQww\nCgYDVQQDEwNXUjMwHhcNMjUxMTE5MTgzMjA1WhcNMjYwMjE3MTkyNTM4WjAfMR0w\nGwYDVQQDExRwcmV2aWV3LXNzdC53aXNlLmNvbTCCASIwDQYJKoZIhvcNAQEBBQAD\nggEPADCCAQoCggEBAMdY0RgZME3GNDh6Tm4njxLQfROs2pXvfD8yhU9SZWuLuHQU\nPq4QO7IWTeqE2a88fGWdVeZBm/MRwkbrQeOKbQ9j/VEywMHpALtkrvUPvQ0xfc8F\n9t8SUBHxSxkFNg3XKzOfWEPjb0QSdURlGAEFN7bhIbWL2I8vmHJrkVJrsiXbZk7z\nG0KsaVTqgLeR20uBSWmcBng2lCY+on2EbV57c9YgARssCXvvO/PTaDaGaTzOclR7\nPhDRD4iIBPhxEAOYDWZ1rmO0IcFtnleedanfPzHwmIvSjGg3icsSF7qpDQX/MPaK\nj7T7JKguJvDgEQNcc9lNhsmMtxZoYCvO7giLMQ0CAwEAAaOCAlswggJXMA4GA1Ud\nDwEB/wQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAAMB0G\nA1UdDgQWBBSAml25tLIoUQcrMg2Fn15xTYTi1zAfBgNVHSMEGDAWgBTHgfX9jojZ\nADxNY6JQMSSgziP+IzBeBggrBgEFBQcBAQRSMFAwJwYIKwYBBQUHMAGGG2h0dHA6\nLy9vLnBraS5nb29nL3Mvd3IzL0ZSUTAlBggrBgEFBQcwAoYZaHR0cDovL2kucGtp\nLmdvb2cvd3IzLmNydDAtBgNVHREEJjAkghRwcmV2aWV3LXNzdC53aXNlLmNvbYIM\nc3N0Lndpc2UuY29tMBMGA1UdIAQMMAowCAYGZ4EMAQIBMDYGA1UdHwQvMC0wK6Ap\noCeGJWh0dHA6Ly9jLnBraS5nb29nL3dyMy9PamhHY3ZBLXA0dy5jcmwwggEEBgor\nBgEEAdZ5AgQCBIH1BIHyAPAAdgCWl2S/VViXrfdDh2g3CEJ36fA61fak8zZuRqQ/\nD8qpxgAAAZqdmknuAAAEAwBHMEUCIQD94M5GdYq4w/ggr22H+hFOBdnhnVNffwSU\nppcrXzmdPAIgPZIX8aMbjM/halC6GhUpnia3FqYY1yAbJW7XrxUDCroAdgAWgy2r\n8KklDw/wOqVF/8i/yCPQh0v2BCkn+OcfMxP1+gAAAZqdmknpAAAEAwBHMEUCIQC1\n7oBy9ee3PF8xRJR/A9Rizh8lfRcYK8eMc9+//CfoyAIgdav85nLm/jNQLzYYZmrM\nqS68g1SykmEbPVeayGdQZJYwDQYJKoZIhvcNAQELBQADggEBAFOjf/+f12kFciLq\niJwBbSR9dGWiosyNAFLh7oeQmfb9vSZUoSjmfeLllrS88kmD6zTtcES+yAbl1CiR\nvW0IIrrn3TLxmeeVOpPtip34zQ3pJyIftBfrQt2sxqNKEq+DNrMCXhyaNAS7EuZd\neosGiBxeSltkR0FjjS0jkytKno2vfIX4H3UOn1ou9pSHxtF3JouQ5HA/4Dbo1AoT\nWGH++k4mVF9U3ioZlAdO0ZPa5ieXKI0dv6gA+KEoeNYF+CjUjhsMydDQXNCAnqF1\nhVV/eG4e9tNcrC5PDWNKwVPcDgVDQgf48RO1cAr4YtL2fqOKBQBNvD9j75pjOUxN\nozUjJ2o=\n-----END CERTIFICATE-----\n"
+      },
+      "tech": [],
+      "wappalyzer": {
+        "error": "wappalyzer not installed"
+      },
+      "server_banner": "Google Frontend",
+      "banner_probe": [
+        {
+          "port": 443,
+          "tls": true,
+          "ok": true,
+          "banner": "HTTP/1.0 200 OK\r\ndate: Mon, 12 Jan 2026 09:21:43 GMT\r\ncontent-type: text/html\r\nserver: Google Frontend\r\nVia: 1.1 google\r\nAlt-Svc: h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000\r\n\r\n",
+          "error": null
+        },
+        {
+          "port": 80,
+          "tls": false,
+          "ok": true,
+          "banner": null,
+          "error": null
+        }
+      ]
+    }
+  ]
+}

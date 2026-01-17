@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { GraphSettingsProvider } from './context/GraphSettingsContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <GraphSettingsProvider>
+      <App />
+    </GraphSettingsProvider>
   </React.StrictMode>
 );
 

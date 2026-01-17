@@ -1,0 +1,36 @@
+{
+  "target": "files.wise.com",
+  "status": 200,
+  "content_length": null,
+  "ip": null,
+  "response_time_ms": 257,
+  "title": "Wise - Files",
+  "headers": {
+    "Date": "Mon, 12 Jan 2026 09:21:23 GMT",
+    "Content-Type": "text/html;charset=UTF-8",
+    "Transfer-Encoding": "chunked",
+    "Connection": "keep-alive",
+    "CF-RAY": "9bcb95567ed832a8-AMM",
+    "access-control-allow-origin": "https://ffol.filecloud.com",
+    "vary": "Accept-Encoding",
+    "Content-Encoding": "gzip",
+    "access-control-allow-credentials": "true",
+    "x-frame-options": "SAMEORIGIN",
+    "x-content-type-options": "nosniff",
+    "strict-transport-security": "max-age=31536000",
+    "x-xss-protection": "1; mode=block",
+    "content-security-policy": "default-src 'self' blob: *.live.com *.amazonaws.com *.core.windows.net www.google.com http://127.0.0.1:34320/v1/fileassociations *.autodesk.com;     connect-src 'self' *.amazonaws.com *.core.windows.net blob: data: http://127.0.0.1:34320/v1/fileassociations *.autodesk.com;     style-src 'unsafe-inline' 'self' *.autodesk.com;     script-src 'unsafe-inline' 'unsafe-eval' 'self' www.google.com www.gstatic.com  teams.microsoft.com *.teams.microsoft.com *.skype.com *.autodesk.com;     frame-src 'self' blob: www.google.com *.live.com docs.google.com accounts.google.com;     font-src 'self' data: *.autodesk.com;     img-src www.gstatic.com 'self' data: blob: *.duosecurity.com *.live.com *.amazonaws.com *.core.windows.net *.office.net *.autodesk.com;     frame-ancestors 'self' teams.microsoft.com *.teams.microsoft.com *.skype.com *.my.salesforce.com;     worker-src 'self' blob: *.autodesk.com",
+    "Cache-Control": "no-cache=\"Set-Cookie\"",
+    "cf-cache-status": "DYNAMIC",
+    "accept-ch": "Sec-CH-UA-Platform-Version, Sec-CH-UA-Arch, Sec-CH-UA-Model, Sec-CH-UA-Bitness",
+    "Server": "cloudflare",
+    "alt-svc": "h3=\":443\"; ma=86400"
+  },
+  "technologies": [
+    "cloudflare"
+  ],
+  "wappalyzer": {
+    "error": "wappalyzer not installed"
+  },
+  "tls_cert": null
+}

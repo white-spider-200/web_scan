@@ -1,0 +1,22 @@
+{
+  "target": "gtm.wise.com",
+  "status": 200,
+  "content_length": 0,
+  "ip": "216.239.32.21",
+  "response_time_ms": 504,
+  "title": null,
+  "headers": {
+    "Date": "Mon, 12 Jan 2026 09:21:12 GMT",
+    "Content-Length": "0",
+    "Via": "1.1 google"
+  },
+  "technologies": [],
+  "wappalyzer": {
+    "error": "wappalyzer not installed"
+  },
+  "tls_cert": {
+    "common_name": null,
+    "valid_from": null,
+    "valid_to": null
+  }
+}

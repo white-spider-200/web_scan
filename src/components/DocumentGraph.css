@@ -1,0 +1,307 @@
+.document-graph-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: #0a0e1a;
+  overflow: hidden;
+}
+
+.document-graph-container .loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: #e6eff3;
+  font-size: 16px;
+  background: #0a0e1a;
+}
+
+.graph-toolbar {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.graph-toolbar .controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: rgba(9, 11, 13, 0.7);
+  padding: 6px 8px;
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(2, 6, 23, 0.45);
+}
+
+.graph-toolbar button {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #e6eff3;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 160ms ease;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.graph-toolbar button:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+.graph-toolbar button.home-button {
+  font-size: 16px;
+}
+
+.graph-toolbar button.lock-button {
+  transition: all 160ms ease;
+}
+
+.graph-toolbar button.lock-button.locked {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.graph-toolbar button.lock-button.locked:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.3);
+}
+
+.graph-toolbar button.lock-button.unlocked:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+.graph-toolbar .search-panel {
+  display: flex;
+  gap: 8px;
+  background: rgba(9, 11, 13, 0.7);
+  padding: 8px;
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(2, 6, 23, 0.45);
+}
+
+.search-input,
+.filter-select {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #e6eff3;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  transition: all 160ms ease;
+}
+
+.search-input::placeholder {
+  color: rgba(230, 239, 243, 0.5);
+}
+
+.search-input:focus,
+.filter-select:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 12px rgba(45, 226, 230, 0.2);
+}
+
+.search-input {
+  min-width: 200px;
+}
+
+.filter-select {
+  min-width: 120px;
+}
+
+.graph-toolbar .stats {
+  background: rgba(9, 11, 13, 0.7);
+  color: #e6eff3;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.node-details {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  max-height: 400px;
+  background: rgba(9, 11, 13, 0.95);
+  border: 1px solid rgba(45, 226, 230, 0.3);
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 12px 32px rgba(2, 6, 23, 0.6);
+  z-index: 9;
+  overflow-y: auto;
+  color: #e6eff3;
+}
+
+.node-details .close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #e6eff3;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 160ms ease;
+}
+
+.node-details .close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.node-details h3 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  word-break: break-word;
+}
+
+.node-details .detail-row {
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+
+.node-details label {
+  display: block;
+  color: rgba(230, 239, 243, 0.7);
+  font-weight: 600;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.node-details .tag {
+  display: inline-block;
+  background: rgba(45, 226, 230, 0.15);
+  border: 1px solid rgba(45, 226, 230, 0.3);
+  color: #2de2e6;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.node-details .code {
+  display: block;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 11px;
+  color: #a0e7e5;
+  word-break: break-all;
+  overflow-x: auto;
+}
+
+.node-details .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.node-details .para {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(230, 239, 243, 0.8);
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+/* Scrollbar styling */
+.node-details::-webkit-scrollbar {
+  width: 6px;
+}
+
+.node-details::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.node-details::-webkit-scrollbar-thumb {
+  background: rgba(45, 226, 230, 0.3);
+  border-radius: 3px;
+}
+
+.node-details::-webkit-scrollbar-thumb:hover {
+  background: rgba(45, 226, 230, 0.5);
+}
+
+/* Color legend */
+.color-legend {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(9, 11, 13, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 12px;
+  z-index: 9;
+  font-size: 11px;
+  color: #e6eff3;
+}
+
+.color-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.color-legend-item:last-child {
+  margin-bottom: 0;
+}
+
+.color-legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.color-legend-dot.file {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.color-legend-dot.heading {
+  background: rgba(45, 226, 230, 0.95);
+  box-shadow: 0 0 8px rgba(45, 226, 230, 0.3);
+}
+
+.color-legend-dot.function {
+  background: rgba(251, 146, 60, 0.95);
+  box-shadow: 0 0 8px rgba(251, 146, 60, 0.3);
+}
+
+.color-legend-dot.class {
+  background: rgba(99, 102, 241, 0.95);
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.3);
+}

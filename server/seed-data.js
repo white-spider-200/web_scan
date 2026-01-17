@@ -1,5 +1,9 @@
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./data.db');
+const path = require('path');
+const config = require('./config');
+
+const dbPath = path.resolve(__dirname, config.database.path);
+const db = new sqlite3.Database(dbPath);
 
 // Clear existing data
 function clearTables() {
@@ -25,7 +29,7 @@ async function seedData() {
     
     // Add example website
     db.run(`INSERT INTO websites (id, url, name) VALUES (?, ?, ?)`,
-        [1, 'https://example.com', 'Example Corp'],
+        [1, 'example.com', 'Example Corp'],
         function(err) {
             if (err) {
                 console.error('Error adding website:', err.message);

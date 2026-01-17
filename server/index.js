@@ -1,7 +1,6 @@
 const fs = require('fs');
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const reportRoutes = require('./routes/report');
@@ -9,7 +8,7 @@ const { startScan, cancelScan } = require('./scanRunner');
 const { runPreflight } = require('./modules/preflight');
 const { ensureNodeValueUniqueness } = require('./modules/dbIntegrity');
 const config = require('./config');
-const { normalizeTarget, isValidTarget } = require('./validators');
+const { normalizeTarget, isValidTarget, isValidScanId } = require('./validators');
 
 if (config.cors.allowAll) {
   console.warn('[config] CORS is set to allow all origins. Restrict this in production.');
@@ -20,6 +19,7 @@ if (config.pdf.allowNoSandbox) {
 
 const app = express();
 const PORT = config.port;
+const DB_PATH = path.resolve(__dirname, config.database.path);
 
 app.disable('x-powered-by');
 app.use((req, res, next) => {
@@ -29,7 +29,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(bodyParser.json({ limit: config.bodyLimit }));
+app.use(express.json({ limit: config.bodyLimit }));
 app.use(cors({
   origin(origin, cb) {
     if (!origin) return cb(null, true);
@@ -43,12 +43,18 @@ app.use(cors({
 // rate limiters are defined later after helper setup
 
 // Open DB
-const db = new sqlite3.Database(path.join(__dirname, 'data.db'), (err) => {
+const db = new sqlite3.Database(DB_PATH, (err) => {
   if (err) {
     console.error('Failed to open DB:', err.message);
     process.exit(1);
   }
   console.log('Connected to SQLite database.');
+  try {
+    db.configure('busyTimeout', config.database.timeout);
+  } catch (e) {
+    // ignore
+  }
+  db.run('PRAGMA foreign_keys = ON');
   ensureSchema();
   // Ensure websites/nodes/scans tables have the meta columns we expect, then detect header/tech column names
   ensureWebsiteColumns(() =>
@@ -58,7 +64,7 @@ const db = new sqlite3.Database(path.join(__dirname, 'data.db'), (err) => {
           ensureScanStagesTable(() =>
             ensureScanLogsTable(() =>
               backfillLegacyScans(() => {
-                ensureNodeValueUniqueness({ db, dbPath: path.join(__dirname, 'data.db') })
+                ensureNodeValueUniqueness({ db, dbPath: DB_PATH })
                   .then((r) => {
                     if (r && (r.migrated || r.created_unique_index)) {
                       console.log(`[db] node uniqueness ensured (deduped_groups=${r.deduped_groups}, deduped_nodes=${r.deduped_nodes})`);
@@ -223,7 +229,7 @@ app.use('/api/report', reportLimiter, reportRoutes);
 app.get('/system/preflight', apiLimiter, async (req, res) => {
   try {
     const projectRoot = path.resolve(__dirname, '..');
-    const dbPath = path.join(__dirname, 'data.db');
+    const dbPath = DB_PATH;
     const result = await runPreflight({ projectRoot, dbPath, db });
     res.json(result);
   } catch (err) {
@@ -291,16 +297,23 @@ function ensureScansColumns(cb) {
     if (!names.includes('options_json')) adds.push('options_json TEXT');
     if (!names.includes('error')) adds.push('error TEXT');
 
-    if (adds.length === 0) {
-      if (names.includes('started_at')) {
-        db.run('CREATE INDEX IF NOT EXISTS idx_scans_started_at ON scans(started_at)');
+    const ensureIndexes = () => {
+      if (names.includes('started_at') || adds.some(a => a.startsWith('started_at'))) {
+        db.run('CREATE INDEX IF NOT EXISTS idx_scans_started_at ON scans(started_at)', () => {});
       }
+    };
+
+    if (adds.length === 0) {
+      ensureIndexes();
       return cb && cb();
     }
 
     let i = 0;
     const next = () => {
-      if (i >= adds.length) return cb && cb();
+      if (i >= adds.length) {
+        ensureIndexes();
+        return cb && cb();
+      }
       const sql = `ALTER TABLE scans ADD COLUMN ${adds[i]}`;
       db.run(sql, (aErr) => {
         if (aErr && !/duplicate column/i.test(aErr.message)) console.error('Error adding column to scans:', aErr.message);
@@ -308,9 +321,6 @@ function ensureScansColumns(cb) {
       });
     };
     next();
-    if (names.includes('started_at') || adds.some(a => a.startsWith('started_at'))) {
-      db.run('CREATE INDEX IF NOT EXISTS idx_scans_started_at ON scans(started_at)');
-    }
   });
 }
 
@@ -570,9 +580,19 @@ app.get('/websites', (req, res) => {
 // Create a new website
 app.post('/websites', (req, res) => {
   const { url, name } = req.body;
-  db.run('INSERT INTO websites (url, name) VALUES (?, ?)', [url, name], function (err) {
-    if (err) return res.status(500).json({ error: err.message });
-    res.status(201).json({ id: this.lastID, url, name });
+  const rawUrl = String(url || '').trim();
+  if (!rawUrl) return sendError(res, 400, 'url is required');
+  if (!isValidTarget(rawUrl)) return sendError(res, 400, 'Invalid url', 'Expected a hostname or IP without paths');
+  const normalizedUrl = normalizeTarget(rawUrl);
+  const cleanName = name != null ? String(name).trim() : null;
+  db.run('INSERT INTO websites (url, name) VALUES (?, ?)', [normalizedUrl, cleanName], function (err) {
+    if (err) {
+      if (String(err.message || '').includes('UNIQUE constraint failed: websites.url')) {
+        return sendError(res, 409, 'Website already exists');
+      }
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(201).json({ id: this.lastID, url: normalizedUrl, name: cleanName });
   });
 });
 
@@ -696,7 +716,7 @@ async function handleStartScan(req, res) {
   let preflight;
   try {
     const projectRoot = path.resolve(__dirname, '..');
-    const dbPath = path.join(__dirname, 'data.db');
+    const dbPath = DB_PATH;
     preflight = await runPreflight({ projectRoot, dbPath, db });
   } catch (err) {
     console.error('Preflight failed:', err && err.message ? err.message : err);
@@ -742,6 +762,7 @@ app.post('/api/scans/start', scanLimiter, handleStartScan);
 
 app.get('/api/scans/:scanId/status', (req, res) => {
   const scanId = req.params.scanId;
+  if (!isValidScanId(scanId)) return sendError(res, 400, 'Invalid scanId');
   db.get('SELECT * FROM scans WHERE scan_id = ? LIMIT 1', [scanId], (err, scanRow) => {
     if (err) return res.status(500).json({ error: err.message });
     if (!scanRow) return res.status(404).json({ error: 'Scan not found' });
@@ -807,6 +828,7 @@ app.get('/api/scans/:scanId/status', (req, res) => {
 
 app.post('/api/scans/:scanId/cancel', (req, res) => {
   const scanId = req.params.scanId;
+  if (!isValidScanId(scanId)) return sendError(res, 400, 'Invalid scanId');
   db.get('SELECT status FROM scans WHERE scan_id = ? LIMIT 1', [scanId], (err, row) => {
     if (err) return res.status(500).json({ error: err.message });
     if (!row) return res.status(404).json({ error: 'Scan not found' });
@@ -946,6 +968,7 @@ app.get('/api/scans/domain/:domain', (req, res) => {
 // Fetch a scan by ID with full graph data
 app.get('/api/scans/:scanId', async (req, res) => {
   const scanId = req.params.scanId;
+  if (!isValidScanId(scanId)) return sendError(res, 400, 'Invalid scanId');
   db.get('SELECT * FROM scans WHERE scan_id = ? LIMIT 1', [scanId], async (err, scanRow) => {
     if (err) return res.status(500).json({ error: err.message });
     if (!scanRow) return res.status(404).json({ error: 'Scan not found' });
@@ -1235,9 +1258,17 @@ app.get('/websites/:websiteId/viz', (req, res) => {
   db.get('SELECT url FROM websites WHERE id = ? LIMIT 1', [websiteId], (err, row) => {
     if (err) return res.status(500).json({ error: err.message });
     if (!row || !row.url) return res.status(404).json({ error: 'Website not found' });
-    const vizPath = path.resolve(__dirname, '..', 'results', 'clean', `${row.url}_viz.json`);
+    const baseDir = path.resolve(__dirname, '..', 'results', 'clean');
+    const normalized = normalizeTarget(row.url);
+    const filenameBase = normalized || String(row.url || '').trim();
+    const safeBase = String(filenameBase || '').replace(/[\\/]/g, '_').replace(/\0/g, '').slice(0, 180);
+    if (!safeBase) return sendError(res, 400, 'Invalid website url');
+    const vizPath = path.join(baseDir, `${safeBase}_viz.json`);
+    if (!vizPath.startsWith(baseDir + path.sep)) {
+      return sendError(res, 400, 'Invalid viz path');
+    }
     fs.readFile(vizPath, 'utf8', (rErr, data) => {
-      if (rErr) return res.status(404).json({ error: 'Viz file not found', path: vizPath });
+      if (rErr) return res.status(404).json({ error: 'Viz file not found' });
       try {
         const parsed = JSON.parse(data);
         res.json(parsed);
@@ -1377,7 +1408,7 @@ app.post('/websites/:websiteId/nodes', (req, res) => {
         if (gErr || !row) { db.run('ROLLBACK;'); return res.status(500).json({ error: (gErr && gErr.message) || 'Failed to resolve node id' }); }
         const resolvedNodeId = row.id;
         db.run(
-          'UPDATE nodes SET type = COALESCE(type, ?), status = COALESCE(?, status), size = COALESCE(?, size) WHERE id = ?',
+          'UPDATE nodes SET type = COALESCE(?, type), status = COALESCE(?, status), size = COALESCE(?, size) WHERE id = ?',
           [type, status, size, resolvedNodeId],
           () => {}
         );
@@ -1456,6 +1487,121 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
+app.post('/api/graph/query', apiLimiter, async (req, res) => {
+  const {
+    websiteId,
+    mode = 'global',
+    centerId,
+    hops = 1,
+    filters = {}
+  } = req.body;
+
+  if (!websiteId && !centerId) {
+    return sendError(res, 400, 'websiteId or centerId is required');
+  }
+
+  const typeFilter = Array.isArray(filters.types) && filters.types.length 
+    ? `AND n.type IN (${filters.types.map(t => `'${t}'`).join(',')})` 
+    : '';
+  
+  const statusFilter = Array.isArray(filters.status) && filters.status.length
+    ? `AND n.status IN (${filters.status.map(s => parseInt(s, 10)).filter(n => !isNaN(n)).join(',')})`
+    : '';
+
+  try {
+    let nodes = [];
+    
+    if (mode === 'local' && centerId) {
+      // Recursive CTE for Local Mode (BFS)
+      const query = `
+        WITH RECURSIVE bfs_tree(id, depth) AS (
+          SELECT id, 0 FROM nodes WHERE id = ?
+          UNION
+          SELECT 
+            CASE WHEN r.source_node_id = b.id THEN r.target_node_id ELSE r.source_node_id END, 
+            b.depth + 1
+          FROM nodes n
+          JOIN node_relationships r ON (r.source_node_id = n.id OR r.target_node_id = n.id)
+          JOIN bfs_tree b ON n.id = b.id
+          WHERE b.depth < ?
+        )
+        SELECT DISTINCT n.* 
+        FROM nodes n
+        JOIN bfs_tree b ON n.id = b.id
+        WHERE 1=1 ${typeFilter} ${statusFilter}
+        LIMIT 2000
+      `;
+      
+      nodes = await new Promise((resolve, reject) => {
+        db.all(query, [centerId, hops], (err, rows) => err ? reject(err) : resolve(rows || []));
+      });
+    } else {
+      // Global Mode
+      const query = `
+        SELECT * FROM nodes n 
+        WHERE website_id = ? 
+        ${typeFilter} ${statusFilter}
+        LIMIT 5000
+      `;
+      nodes = await new Promise((resolve, reject) => {
+        db.all(query, [websiteId], (err, rows) => err ? reject(err) : resolve(rows || []));
+      });
+    }
+
+    if (nodes.length === 0) {
+      return res.json({ nodes: [], links: [] });
+    }
+
+    const nodeIds = nodes.map(n => n.id);
+    // SQLite limit for variables is usually 999 or 32766 depending on version. 
+    // Splitting into chunks if necessary, but 5000 nodes might hit limits if we map 2 params per link check?
+    // Actually `IN (...)` counts as variables.
+    
+    // Optimization: Fetch all links for website, then filter in JS? 
+    // Or just fetch links where source/target are in the ID set.
+    
+    // Chunked fetching for links to avoid SQL variable limit
+    const chunkSize = 900;
+    const links = [];
+    const uniqueLinks = new Set();
+
+    for (let i = 0; i < nodeIds.length; i += chunkSize) {
+      const chunk = nodeIds.slice(i, i + chunkSize);
+      const placeholders = chunk.map(() => '?').join(',');
+      const linkQuery = `
+        SELECT * FROM node_relationships 
+        WHERE source_node_id IN (${placeholders}) 
+        OR target_node_id IN (${placeholders})
+      `;
+      
+      const chunkLinks = await new Promise((resolve, reject) => {
+        db.all(linkQuery, chunk.concat(chunk), (err, rows) => err ? reject(err) : resolve(rows || []));
+      });
+
+      // We only want links where BOTH ends are in our node set (for a clean graph), 
+      // OR maybe allow "dangling" edges to show there's more? 
+      // Standard graph view: only show edges between visible nodes.
+      const nodeIdSet = new Set(nodeIds);
+      
+      chunkLinks.forEach(l => {
+        if (nodeIdSet.has(l.source_node_id) && nodeIdSet.has(l.target_node_id)) {
+          const key = `${l.source_node_id}-${l.target_node_id}`;
+          if (!uniqueLinks.has(key)) {
+            uniqueLinks.add(key);
+            links.push(l);
+          }
+        }
+      });
+    }
+
+    res.json({ nodes, links });
+
+  } catch (err) {
+    console.error('[graph] Query failed', err);
+    sendError(res, 500, 'Graph query failed', err.message);
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

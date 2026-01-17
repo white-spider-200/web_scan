@@ -1,0 +1,6799 @@
+{
+  "nodes": [
+    {
+      "id": "f1a97ccd",
+      "type": "file",
+      "path": "SECURITY.md",
+      "title": "SECURITY.md",
+      "file_type": "markdown",
+      "tags": [
+        "markdown",
+        "document"
+      ],
+      "first_para": "# Security Policy",
+      "x": 300.0,
+      "y": 0.0
+    },
+    {
+      "id": "52f9cb9a",
+      "type": "heading",
+      "path": "SECURITY.md",
+      "title": "Security Policy",
+      "level": 1,
+      "first_para": "This project is maintained as a single active version. Update to the latest commit before reporting issues.",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": 150.0,
+      "y": 0.0
+    },
+    {
+      "id": "251bb5e0",
+      "type": "heading",
+      "path": "SECURITY.md",
+      "title": "Supported Versions",
+      "level": 2,
+      "first_para": "This project is maintained as a single active version. Update to the latest commit before reporting issues.",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 149.69800147078266,
+      "y": 9.513587948484677
+    },
+    {
+      "id": "dc4f90d3",
+      "type": "heading",
+      "path": "SECURITY.md",
+      "title": "Reporting a Vulnerability",
+      "level": 2,
+      "first_para": "Please report security issues privately and do not open public issues.",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 148.7932219246193,
+      "y": 18.98886803606239
+    },
+    {
+      "id": "fe5382f9",
+      "type": "heading",
+      "path": "SECURITY.md",
+      "title": "Configuration Expectations",
+      "level": 2,
+      "first_para": "- Run the API on a trusted network segment.",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 147.28930458940602,
+      "y": 28.38768665406153
+    },
+    {
+      "id": "04c6e90f",
+      "type": "file",
+      "path": "README.md",
+      "title": "README.md",
+      "file_type": "markdown",
+      "tags": [
+        "markdown",
+        "document"
+      ],
+      "first_para": "# Web Recon Map",
+      "x": 299.0978823503376,
+      "y": 23.24772620157928
+    },
+    {
+      "id": "53324c3a",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Web Recon Map",
+      "level": 1,
+      "first_para": "Web Recon Map is a full-stack toolkit for running web reconnaissance scans and visualizing results as an interactive graph. It combines a Python-based recon orchestrator, a Node/Express API backed by",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": 145.19230520945345,
+      "y": 37.67219807716188
+    },
+    {
+      "id": "c2a08dc1",
+      "type": "heading",
+      "path": "README.md",
+      "title": "What This Repo Includes",
+      "level": 2,
+      "first_para": "- Recon orchestration that runs subdomain discovery, HTTP scanning, and link discovery.",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 142.5106676611418,
+      "y": 46.805016854773065
+    },
+    {
+      "id": "a4ce12f5",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Repository Layout",
+      "level": 2,
+      "first_para": "- `src/` React UI (graph + report views).",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 139.2551899524109,
+      "y": 55.74936834904913
+    },
+    {
+      "id": "ea76c27d",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Quick Start (UI + API)",
+      "level": 2,
+      "first_para": "1) Install client dependencies and start the UI:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 135.43898074299318,
+      "y": 64.46923681337574
+    },
+    {
+      "id": "034ad29b",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Configuration",
+      "level": 2,
+      "first_para": "Copy `.env.example` to `.env` and adjust as needed:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 131.07740656046775,
+      "y": 72.92951041507031
+    },
+    {
+      "id": "b9d31908",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Run a Recon Scan",
+      "level": 2,
+      "first_para": "The orchestrator writes results into `server/data.db` and the `results/` folder.",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 126.18802992467718,
+      "y": 81.09612261833963
+    },
+    {
+      "id": "517bfa03",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Initialize the SQLite DB (safe to run multiple times)",
+      "level": 1,
+      "first_para": "node server/init_and_import.js",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": 120.7905386296588,
+      "y": 88.93618935819606
+    },
+    {
+      "id": "dd2a4070",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Run a full scan for a domain and import into SQLite",
+      "level": 1,
+      "first_para": "node server/init_and_import.js example.com",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": 114.90666646784672,
+      "y": 96.41814145298089
+    },
+    {
+      "id": "180e3d1c",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Or run the Python orchestrator directly",
+      "level": 1,
+      "first_para": "python3 run_all.py example.com",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": 108.56010571576053,
+      "y": 103.51185172231679
+    },
+    {
+      "id": "7c042610",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Data Integrity",
+      "level": 2,
+      "first_para": "If repeated imports ever create duplicates (broken graphs / inconsistent UI), run:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 101.77641173356983,
+      "y": 110.18875629863
+    },
+    {
+      "id": "c5e80327",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Vulnerability Scanning",
+      "level": 2,
+      "first_para": "The pipeline can run two safe vulnerability sources:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 94.58290006267838,
+      "y": 116.42196964376352
+    },
+    {
+      "id": "090fb7f9",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Install Nuclei",
+      "level": 3,
+      "first_para": "Follow the official install guide: https://github.com/projectdiscovery/nuclei#installation",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": 87.00853643567974,
+      "y": 122.18639280755035
+    },
+    {
+      "id": "6fa04aed",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Enable/Disable",
+      "level": 3,
+      "first_para": "```bash",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": 79.08382014157536,
+      "y": 127.45881449242715
+    },
+    {
+      "id": "bb62c93b",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Disable nmap vuln scanning",
+      "level": 1,
+      "first_para": "python3 run_all.py example.com --disable-nmap-vuln",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": 70.8406612159024,
+      "y": 132.2180045171373
+    },
+    {
+      "id": "781bd372",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Disable nuclei scanning",
+      "level": 1,
+      "first_para": "python3 run_all.py example.com --disable-nuclei",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": 62.31225195028296,
+      "y": 136.44479930317775
+    },
+    {
+      "id": "044b80e3",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Configuration Options",
+      "level": 3,
+      "first_para": "```bash",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": 53.532933238780785,
+      "y": 140.122179039766
+    },
+    {
+      "id": "b36cf7bd",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Lower/raise the CVSS threshold for vulners output (default 7.0)",
+      "level": 1,
+      "first_para": "python3 run_all.py example.com --nmap-vuln-mincvss 5.0",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": 44.53805629924124,
+      "y": 143.23533621661107
+    },
+    {
+      "id": "4175be43",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Set nuclei severity filters (default medium,high,critical)",
+      "level": 1,
+      "first_para": "python3 run_all.py example.com --nuclei-severities medium,high,critical",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": 35.36384032641409,
+      "y": 145.77173524853126
+    },
+    {
+      "id": "8cac3f1c",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Point nuclei to a template path (optional, e.g. cves/)",
+      "level": 1,
+      "first_para": "python3 run_all.py example.com --nuclei-templates cves/",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": 26.047226650039594,
+      "y": 147.7211629518312
+    },
+    {
+      "id": "c33bd98e",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Update nuclei templates before scan (optional)",
+      "level": 1,
+      "first_para": "python3 run_all.py example.com --nuclei-update-templates",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": 16.625729985151665,
+      "y": 149.0757696691881
+    },
+    {
+      "id": "08bf2481",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Output Schemas",
+      "level": 3,
+      "first_para": "Nmap NSE output:",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": 7.13728737356136,
+      "y": 149.8301008774512
+    },
+    {
+      "id": "9e7fbec4",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Docs",
+      "level": 2,
+      "first_para": "- Architecture notes: `docs/architecture.md`",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -2.379894575221204,
+      "y": 149.98111915108126
+    },
+    {
+      "id": "0aa7dd7f",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Notes",
+      "level": 2,
+      "first_para": "- The API expects a local SQLite DB at `server/data.db`.",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -11.88749352851828,
+      "y": 149.52821639279136
+    },
+    {
+      "id": "e7890f99",
+      "type": "heading",
+      "path": "README.md",
+      "title": "Tests",
+      "level": 2,
+      "first_para": "```bash",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -21.34722574099275,
+      "y": 148.47321628213993
+    },
+    {
+      "id": "934e0568",
+      "type": "file",
+      "path": "docs/architecture.md",
+      "title": "architecture.md",
+      "file_type": "markdown",
+      "tags": [
+        "markdown",
+        "document"
+      ],
+      "first_para": "",
+      "x": 296.3969548430427,
+      "y": 46.355637842352145
+    },
+    {
+      "id": "1e49b5f8",
+      "type": "file",
+      "path": "docs/web_recon_system_diagram.md",
+      "title": "web_recon_system_diagram.md",
+      "file_type": "markdown",
+      "tags": [
+        "markdown",
+        "document"
+      ],
+      "first_para": "# Web Recon \u2013 System Diagram",
+      "x": 291.91346117394716,
+      "y": 69.18476122273205
+    },
+    {
+      "id": "a0e3597d",
+      "type": "heading",
+      "path": "docs/web_recon_system_diagram.md",
+      "title": "Web Recon \u2013 System Diagram",
+      "level": 1,
+      "first_para": "This diagram illustrates the end-to-end architecture and data flow of the Web Recon cybersecurity tool.",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": -30.721000209778577,
+      "y": 146.8203669322168
+    },
+    {
+      "id": "bb1f070f",
+      "type": "heading",
+      "path": "docs/web_recon_system_diagram.md",
+      "title": "Legend & Notes",
+      "level": 2,
+      "first_para": "- User Frontend: HTML/JS UI where the user enters a domain, sets options, and views results.",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -39.97107205350525,
+      "y": 144.5763237839913
+    },
+    {
+      "id": "c16704a7",
+      "type": "heading",
+      "path": "docs/web_recon_system_diagram.md",
+      "title": "Data Normalization",
+      "level": 2,
+      "first_para": "- URLs are parsed into hierarchical nodes:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -49.06019449761322,
+      "y": 141.75012280720028
+    },
+    {
+      "id": "4acf57f6",
+      "type": "heading",
+      "path": "docs/web_recon_system_diagram.md",
+      "title": "Export Paths",
+      "level": 2,
+      "first_para": "- JSON: API returns structured data for the UI or external tools.",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -57.95176885396927,
+      "y": 138.35314411568723
+    },
+    {
+      "id": "1d1a6927",
+      "type": "file",
+      "path": "docs/project_report.md",
+      "title": "project_report.md",
+      "file_type": "markdown",
+      "tags": [
+        "markdown",
+        "document"
+      ],
+      "first_para": "# Web Recon Map \u2014 Project Report",
+      "x": 285.6743656015246,
+      "y": 91.59779930853392
+    },
+    {
+      "id": "836b9581",
+      "type": "heading",
+      "path": "docs/project_report.md",
+      "title": "1. Project purpose",
+      "level": 2,
+      "first_para": "Web Recon Map is an automated reconnaissance toolchain and visualization platform. It runs web scanning tools, cleans and normalizes results into a \"viz\" JSON format, imports those visualizations into",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -66.60999189086611,
+      "y": 134.39906614370037
+    },
+    {
+      "id": "631c93eb",
+      "type": "heading",
+      "path": "docs/project_report.md",
+      "title": "2. High-level architecture",
+      "level": 2,
+      "first_para": "Components:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -74.99999999999997,
+      "y": 129.9038105676658
+    },
+    {
+      "id": "361882b9",
+      "type": "heading",
+      "path": "docs/project_report.md",
+      "title": "3. Notable files and locations",
+      "level": 2,
+      "first_para": "- `recon/` \u2014 scanner helpers: `ffuf_subs.py`, `dirsearch/`, `nmap_http.py`, `simple_fingerprint.py`",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -83.08800957991654,
+      "y": 124.88547819521571
+    },
+    {
+      "id": "d28c6a5e",
+      "type": "heading",
+      "path": "docs/project_report.md",
+      "title": "4. Recent fixes & changes (summary)",
+      "level": 2,
+      "first_para": "These changes were implemented to improve robustness and ensure the frontend can display full scan metadata.",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -90.84145307064998,
+      "y": 119.36427607962484
+    },
+    {
+      "id": "8be0e521",
+      "type": "heading",
+      "path": "docs/project_report.md",
+      "title": "5. Verification performed",
+      "level": 2,
+      "first_para": "Actions taken and observed results (representative):",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -98.22911009179275,
+      "y": 113.36243615313874
+    },
+    {
+      "id": "42f53b7c",
+      "type": "heading",
+      "path": "docs/project_report.md",
+      "title": "6. How to reproduce (quick steps)",
+      "level": 2,
+      "first_para": "1. Ensure dependencies installed:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -105.22123315594821,
+      "y": 106.9041257068294
+    },
+    {
+      "id": "f5d784dc",
+      "type": "heading",
+      "path": "docs/project_report.md",
+      "title": "7. Known limitations & recommendations",
+      "level": 2,
+      "first_para": "- Add a UNIQUE index on `(website_id, value)` to prevent future duplicate node insertion. Before adding the index, run `dedupe-nodes.js` to remove existing duplicates.",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -111.7896674513632,
+      "y": 100.01535007744376
+    },
+    {
+      "id": "6b523b3e",
+      "type": "heading",
+      "path": "docs/project_report.md",
+      "title": "8. Suggested next work items",
+      "level": 2,
+      "first_para": "1. Add a migration that runs dedupe then creates a unique index on `(website_id, value)`.",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -117.90796421141809,
+      "y": 92.72384793309082
+    },
+    {
+      "id": "7e6c2c9c",
+      "type": "heading",
+      "path": "docs/project_report.md",
+      "title": "9. Commit message (suggested)",
+      "level": 2,
+      "first_para": "```",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -123.5514872144749,
+      "y": 85.05897957941563
+    },
+    {
+      "id": "f7a0c0cb",
+      "type": "file",
+      "path": "docs/data-integrity.md",
+      "title": "data-integrity.md",
+      "file_type": "markdown",
+      "tags": [
+        "markdown",
+        "document"
+      ],
+      "first_para": "# Data Integrity (Duplicates + Idempotent Imports)",
+      "x": 277.7171907806671,
+      "y": 113.45995745149274
+    },
+    {
+      "id": "0c57d04d",
+      "type": "heading",
+      "path": "docs/data-integrity.md",
+      "title": "Data Integrity (Duplicates + Idempotent Imports)",
+      "level": 1,
+      "first_para": "1. **Race conditions during parallel imports**",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": -128.69751198524654,
+      "y": 77.05160873601099
+    },
+    {
+      "id": "5607208d",
+      "type": "heading",
+      "path": "docs/data-integrity.md",
+      "title": "Why duplicates happened",
+      "level": 2,
+      "first_para": "1. **Race conditions during parallel imports**",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -133.3253172982385,
+      "y": 68.73397825911158
+    },
+    {
+      "id": "d370e240",
+      "type": "heading",
+      "path": "docs/data-integrity.md",
+      "title": "Stable node identity model",
+      "level": 2,
+      "first_para": "Node identity is **(website_id, value)**.",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -137.41626861481043,
+      "y": 60.1395803109921
+    },
+    {
+      "id": "f6baec8f",
+      "type": "heading",
+      "path": "docs/data-integrity.md",
+      "title": "What enforces this in the app",
+      "level": 2,
+      "first_para": "- On server startup, `server/modules/dbIntegrity.js`:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -140.95389311788622,
+      "y": 51.3030214988504
+    },
+    {
+      "id": "ec0c131a",
+      "type": "heading",
+      "path": "docs/data-integrity.md",
+      "title": "Rollback",
+      "level": 2,
+      "first_para": "If the migration fails or the graph looks wrong:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -143.9239460421746,
+      "y": 42.25988352621445
+    },
+    {
+      "id": "a9250f40",
+      "type": "file",
+      "path": "web_recon/README.md",
+      "title": "README.md",
+      "file_type": "markdown",
+      "tags": [
+        "markdown",
+        "document"
+      ],
+      "first_para": "# Web Recon Project",
+      "x": 268.0897920970237,
+      "y": 134.63975406013864
+    },
+    {
+      "id": "143f940c",
+      "type": "heading",
+      "path": "web_recon/README.md",
+      "title": "Web Recon Project",
+      "level": 1,
+      "first_para": "This project is designed for web reconnaissance, focusing on subdomain enumeration, directory discovery, and vulnerability analysis. It utilizes various tools and scripts to gather information about a",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": -146.31446803281105,
+      "y": 33.04657991798112
+    },
+    {
+      "id": "76c3be78",
+      "type": "heading",
+      "path": "web_recon/README.md",
+      "title": "Project Structure",
+      "level": 2,
+      "first_para": "```",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -148.11583330145913,
+      "y": 23.700209396002485
+    },
+    {
+      "id": "372c3a99",
+      "type": "heading",
+      "path": "web_recon/README.md",
+      "title": "Setup Instructions",
+      "level": 2,
+      "first_para": "1. **Clone the Repository**:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -149.3207883859627,
+      "y": 14.258406495627431
+    },
+    {
+      "id": "ffbbc53e",
+      "type": "heading",
+      "path": "web_recon/README.md",
+      "title": "Usage Examples",
+      "level": 2,
+      "first_para": "- To scan for subdomains of `example.com`:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -149.92448135747776,
+      "y": 4.7591900247102155
+    },
+    {
+      "id": "e72d1e19",
+      "type": "heading",
+      "path": "web_recon/README.md",
+      "title": "Contributing",
+      "level": 2,
+      "first_para": "Contributions are welcome! Please submit a pull request or open an issue for any enhancements or bug fixes.",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -149.92448135747776,
+      "y": -4.759190024710179
+    },
+    {
+      "id": "198be26d",
+      "type": "heading",
+      "path": "web_recon/README.md",
+      "title": "License",
+      "level": 2,
+      "first_para": "This project is licensed under the MIT License. See the LICENSE file for details.",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -149.3207883859627,
+      "y": -14.258406495627394
+    },
+    {
+      "id": "50237007",
+      "type": "file",
+      "path": "server/schema-documentation.md",
+      "title": "schema-documentation.md",
+      "file_type": "markdown",
+      "tags": [
+        "markdown",
+        "document"
+      ],
+      "first_para": "# Web Recon Map Database Schema",
+      "x": 256.85006985907995,
+      "y": 155.00981134555886
+    },
+    {
+      "id": "35e5cc56",
+      "type": "heading",
+      "path": "server/schema-documentation.md",
+      "title": "Web Recon Map Database Schema",
+      "level": 1,
+      "first_para": "This document describes the database schema for the Web Recon Map application, which has been enhanced to support multi-website capability with proper normalization and relationships.",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": -148.11583330145913,
+      "y": -23.700209396002514
+    },
+    {
+      "id": "8742213d",
+      "type": "heading",
+      "path": "server/schema-documentation.md",
+      "title": "Overview",
+      "level": 2,
+      "first_para": "This document describes the database schema for the Web Recon Map application, which has been enhanced to support multi-website capability with proper normalization and relationships.",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -146.31446803281105,
+      "y": -33.046579917981084
+    },
+    {
+      "id": "0d4610d6",
+      "type": "heading",
+      "path": "server/schema-documentation.md",
+      "title": "Entity Relationship Diagram",
+      "level": 2,
+      "first_para": "```mermaid",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -143.92394604217463,
+      "y": -42.25988352621441
+    },
+    {
+      "id": "4d3324d8",
+      "type": "heading",
+      "path": "server/schema-documentation.md",
+      "title": "Table Descriptions",
+      "level": 2,
+      "first_para": "Stores information about target websites.",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -140.95389311788625,
+      "y": -51.3030214988503
+    },
+    {
+      "id": "1d0f75c2",
+      "type": "heading",
+      "path": "server/schema-documentation.md",
+      "title": "WEBSITES",
+      "level": 3,
+      "first_para": "Stores information about target websites.",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": -137.41626861481046,
+      "y": -60.13958031099201
+    },
+    {
+      "id": "fc656687",
+      "type": "heading",
+      "path": "server/schema-documentation.md",
+      "title": "NODES",
+      "level": 3,
+      "first_para": "Stores information about discovered nodes (endpoints, directories, subdomains, etc.).",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": -133.32531729823856,
+      "y": -68.73397825911148
+    },
+    {
+      "id": "dcff47a6",
+      "type": "heading",
+      "path": "server/schema-documentation.md",
+      "title": "NODE_HEADERS",
+      "level": 3,
+      "first_para": "Stores HTTP headers for each node.",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": -128.69751198524654,
+      "y": -77.05160873601096
+    },
+    {
+      "id": "a6140378",
+      "type": "heading",
+      "path": "server/schema-documentation.md",
+      "title": "NODE_TECHNOLOGIES",
+      "level": 3,
+      "first_para": "Stores detected technologies for each node.",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": -123.55148721447492,
+      "y": -85.05897957941559
+    },
+    {
+      "id": "961451d3",
+      "type": "heading",
+      "path": "server/schema-documentation.md",
+      "title": "NODE_VULNERABILITIES",
+      "level": 3,
+      "first_para": "Stores potential vulnerabilities for each node.",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": -117.90796421141816,
+      "y": -92.72384793309074
+    },
+    {
+      "id": "c3096b64",
+      "type": "heading",
+      "path": "server/schema-documentation.md",
+      "title": "NODE_RELATIONSHIPS",
+      "level": 3,
+      "first_para": "Stores relationships between nodes for graph visualization.",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": -111.78966745136321,
+      "y": -100.01535007744373
+    },
+    {
+      "id": "0a61b49e",
+      "type": "heading",
+      "path": "server/schema-documentation.md",
+      "title": "Indexes",
+      "level": 2,
+      "first_para": "The following indexes have been created to optimize query performance:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -105.22123315594824,
+      "y": -106.90412570682939
+    },
+    {
+      "id": "6683267f",
+      "type": "heading",
+      "path": "server/schema-documentation.md",
+      "title": "Foreign Key Constraints",
+      "level": 2,
+      "first_para": "- `nodes.website_id` REFERENCES `websites.id` ON DELETE CASCADE",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -98.22911009179273,
+      "y": -113.36243615313877
+    },
+    {
+      "id": "f0e9becf",
+      "type": "heading",
+      "path": "server/schema-documentation.md",
+      "title": "Migration Notes",
+      "level": 2,
+      "first_para": "The schema was migrated from a single `nodes` table to the new normalized structure. Existing data was preserved by:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -90.84145307064999,
+      "y": -119.36427607962482
+    },
+    {
+      "id": "f78129ad",
+      "type": "heading",
+      "path": "server/schema-documentation.md",
+      "title": "API Endpoints",
+      "level": 2,
+      "first_para": "The server now provides the following endpoints for interacting with the new schema:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -83.08800957991657,
+      "y": -124.8854781952157
+    },
+    {
+      "id": "de39e9e7",
+      "type": "file",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "IMPROVEMENTS.md",
+      "file_type": "markdown",
+      "tags": [
+        "markdown",
+        "document"
+      ],
+      "first_para": "# Server Improvements Documentation",
+      "x": 244.06562107889027,
+      "y": 174.44762138640797
+    },
+    {
+      "id": "b54257f1",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "Server Improvements Documentation",
+      "level": 1,
+      "first_para": "This document outlines the improvements made to the web recon server to enhance code quality, maintainability, and robustness.",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": -75.00000000000007,
+      "y": -129.90381056766574
+    },
+    {
+      "id": "c7690ffa",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "New Modules",
+      "level": 2,
+      "first_para": "A promise-based wrapper around SQLite3 for better error handling and cleaner async/await patterns.",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -66.6099918908661,
+      "y": -134.3990661437004
+    },
+    {
+      "id": "dfffbe04",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "1. **Database Module** (`modules/database.js`)",
+      "level": 3,
+      "first_para": "A promise-based wrapper around SQLite3 for better error handling and cleaner async/await patterns.",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": -57.9517688539693,
+      "y": -138.3531441156872
+    },
+    {
+      "id": "e150e4c8",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "2. **Schema Module** (`modules/schema.js`)",
+      "level": 3,
+      "first_para": "Centralized schema definitions and initialization logic.",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": -49.06019449761328,
+      "y": -141.75012280720026
+    },
+    {
+      "id": "e05b9983",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "3. **Validation Module** (`modules/validation.js`)",
+      "level": 3,
+      "first_para": "API validation middleware and utilities for request validation.",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": -39.971072053505324,
+      "y": -144.57632378399128
+    },
+    {
+      "id": "d93dc0d8",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "4. **Logger Module** (`modules/logger.js`)",
+      "level": 3,
+      "first_para": "Structured logging with file support and color output.",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": -30.72100020977858,
+      "y": -146.8203669322168
+    },
+    {
+      "id": "120b7918",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "5. **Error Handling Module** (`modules/errors.js`)",
+      "level": 3,
+      "first_para": "Centralized error handling utilities.",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": -21.347225740992783,
+      "y": -148.4732162821399
+    },
+    {
+      "id": "a67debb5",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "6. **Route Helpers Module** (`modules/routeHelpers.js`)",
+      "level": 3,
+      "first_para": "Common utilities for route handlers.",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": -11.887493528518318,
+      "y": -149.52821639279134
+    },
+    {
+      "id": "fce88a46",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "Enhanced Modules",
+      "level": 2,
+      "first_para": "**Improvements:**",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": -2.379894575221141,
+      "y": -149.98111915108126
+    },
+    {
+      "id": "c05385a6",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "Config Module (`config.js`)",
+      "level": 3,
+      "first_para": "**Improvements:**",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": 7.137287373561358,
+      "y": -149.8301008774512
+    },
+    {
+      "id": "70ddcb8e",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "Validators Module (`validators.js`)",
+      "level": 3,
+      "first_para": "**Improvements:**",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": 16.62572998515163,
+      "y": -149.0757696691881
+    },
+    {
+      "id": "d2c686e4",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "Best Practices Implemented",
+      "level": 2,
+      "first_para": "- Centralized error handling with standard response format",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 26.047226650039494,
+      "y": -147.72116295183122
+    },
+    {
+      "id": "5a534ce8",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "1. **Error Handling**",
+      "level": 3,
+      "first_para": "- Centralized error handling with standard response format",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": 35.36384032641399,
+      "y": -145.7717352485313
+    },
+    {
+      "id": "c03e3848",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "2. **Validation**",
+      "level": 3,
+      "first_para": "- Input validation at the middleware level",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": 44.53805629924124,
+      "y": -143.23533621661107
+    },
+    {
+      "id": "dcfc2001",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "3. **Logging**",
+      "level": 3,
+      "first_para": "- Structured logging with timestamps",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": 53.53293323878075,
+      "y": -140.12217903976602
+    },
+    {
+      "id": "03776c5d",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "4. **Security**",
+      "level": 3,
+      "first_para": "- Input sanitization",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": 62.312251950282906,
+      "y": -136.44479930317777
+    },
+    {
+      "id": "b184c16a",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "5. **Code Organization**",
+      "level": 3,
+      "first_para": "- Separation of concerns",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": 70.84066121590232,
+      "y": -132.21800451713733
+    },
+    {
+      "id": "26e72fba",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "6. **Database**",
+      "level": 3,
+      "first_para": "- Promise-based operations",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": 79.08382014157536,
+      "y": -127.45881449242715
+    },
+    {
+      "id": "0e3159eb",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "Environment Variables",
+      "level": 2,
+      "first_para": "New environment variables you can configure:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 87.00853643567969,
+      "y": -122.18639280755038
+    },
+    {
+      "id": "4da6b628",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "Logging",
+      "level": 1,
+      "first_para": "LOG_LEVEL=info              # debug, info, warn, error",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": 94.5829000626783,
+      "y": -116.42196964376357
+    },
+    {
+      "id": "8309f6a1",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "Database",
+      "level": 1,
+      "first_para": "DATABASE_PATH=./data.db     # Database file path",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": 101.77641173356974,
+      "y": -110.18875629863007
+    },
+    {
+      "id": "148a3393",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "PDF",
+      "level": 1,
+      "first_para": "PDF_TIMEOUT_MS=30000        # PDF generation timeout",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": 108.56010571576043,
+      "y": -103.5118517223169
+    },
+    {
+      "id": "7d5be8ec",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "Migration Guide",
+      "level": 2,
+      "first_para": "The improvements are backward compatible. However, you can gradually migrate to the new modules:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 114.90666646784659,
+      "y": -96.41814145298103
+    },
+    {
+      "id": "f12e501a",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "For Existing Code Using index.js",
+      "level": 3,
+      "first_para": "The improvements are backward compatible. However, you can gradually migrate to the new modules:",
+      "tags": [
+        "markdown",
+        "h3"
+      ],
+      "x": 120.79053862965881,
+      "y": -88.93618935819603
+    },
+    {
+      "id": "9dde911b",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "Future Improvements",
+      "level": 2,
+      "first_para": "1. **Connection Pooling**: Use a connection pool for better concurrent performance",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 126.18802992467718,
+      "y": -81.09612261833962
+    },
+    {
+      "id": "8eae13ed",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "File Structure",
+      "level": 2,
+      "first_para": "```",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 131.07740656046775,
+      "y": -72.92951041507033
+    },
+    {
+      "id": "7e6b6b81",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "Testing the Improvements",
+      "level": 2,
+      "first_para": "```bash",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 135.43898074299315,
+      "y": -64.46923681337579
+    },
+    {
+      "id": "143b36fa",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "Start the server with debug logging",
+      "level": 1,
+      "first_para": "LOG_LEVEL=debug npm start",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": 139.25518995241086,
+      "y": -55.74936834904921
+    },
+    {
+      "id": "4a8692e5",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "Test an endpoint",
+      "level": 1,
+      "first_para": "curl -X POST http://localhost:3001/api/scans \\",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": 142.5106676611418,
+      "y": -46.80501685477306
+    },
+    {
+      "id": "fca067b5",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "Check logs",
+      "level": 1,
+      "first_para": "tail -f server.log",
+      "tags": [
+        "markdown",
+        "h1"
+      ],
+      "x": 145.19230520945345,
+      "y": -37.67219807716191
+    },
+    {
+      "id": "7544e02a",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "Performance Notes",
+      "level": 2,
+      "first_para": "- Promise-based async/await is more efficient than callback chains",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 147.289304589406,
+      "y": -28.387686654061596
+    },
+    {
+      "id": "dbed38ac",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "Backward Compatibility",
+      "level": 2,
+      "first_para": "All improvements are **100% backward compatible** with existing code. You can:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 148.79322192461927,
+      "y": -18.988868036062488
+    },
+    {
+      "id": "df445c28",
+      "type": "heading",
+      "path": "server/IMPROVEMENTS.md",
+      "title": "Contributing",
+      "level": 2,
+      "first_para": "When adding new features:",
+      "tags": [
+        "markdown",
+        "h2"
+      ],
+      "x": 149.69800147078266,
+      "y": -9.513587948484812
+    },
+    {
+      "id": "7d62b4cd",
+      "type": "file",
+      "path": "server/README.md",
+      "title": "README.md",
+      "file_type": "markdown",
+      "tags": [
+        "markdown",
+        "document"
+      ],
+      "first_para": "",
+      "x": 229.8133329356934,
+      "y": 192.83628290596178
+    },
+    {
+      "id": "c0cacee6",
+      "type": "file",
+      "path": "clean_from_raw.py",
+      "title": "clean_from_raw.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "import os",
+      "x": 214.17892036736973,
+      "y": 210.06520433015055
+    },
+    {
+      "id": "30aba34c",
+      "type": "class",
+      "path": "clean_from_raw.py",
+      "title": "classify_finding",
+      "tags": [
+        "python",
+        "class"
+      ],
+      "first_para": "",
+      "x": 75.0,
+      "y": 0.0
+    },
+    {
+      "id": "f155eacf",
+      "type": "function",
+      "path": "clean_from_raw.py",
+      "title": "process_ffuf_dirs",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 74.96611045619389,
+      "y": 2.254391951222594
+    },
+    {
+      "id": "7610ab6d",
+      "type": "function",
+      "path": "clean_from_raw.py",
+      "title": "process_subdomains",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 74.86447245147367,
+      "y": 4.5067465607175325
+    },
+    {
+      "id": "525d36df",
+      "type": "function",
+      "path": "clean_from_raw.py",
+      "title": "detect_and_clean_one",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 74.69517783825572,
+      "y": 6.755028327946004
+    },
+    {
+      "id": "c2494d51",
+      "type": "function",
+      "path": "clean_from_raw.py",
+      "title": "parse_nmap_xml",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 74.45837961166562,
+      "y": 8.997205433082971
+    },
+    {
+      "id": "ebe60de8",
+      "type": "function",
+      "path": "clean_from_raw.py",
+      "title": "parse_nmap_json",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 74.15429177127335,
+      "y": 11.231251573215749
+    },
+    {
+      "id": "57d43bf0",
+      "type": "function",
+      "path": "clean_from_raw.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 73.78318912769726,
+      "y": 13.45514779355685
+    },
+    {
+      "id": "8411f003",
+      "type": "file",
+      "path": "run_all.py",
+      "title": "run_all.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "import os",
+      "x": 197.2564105707191,
+      "y": 226.0307688982982
+    },
+    {
+      "id": "5847616d",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "write_file",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 73.3454070542519,
+      "y": 15.666884312016155
+    },
+    {
+      "id": "1b847e03",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "_utc_now_iso",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 72.84134118386406,
+      "y": 17.864462335483527
+    },
+    {
+      "id": "533fb474",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "_ensure_website_row",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 72.271447051531,
+      "y": 20.045895866180473
+    },
+    {
+      "id": "7da3b489",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "record_scan_timestamp",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 71.6362396826437,
+      "y": 22.20921349644836
+    },
+    {
+      "id": "4c8bb381",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "reset_website_graph",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 70.9362931275476,
+      "y": 24.35246019035126
+    },
+    {
+      "id": "60bbdcc7",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "try_import_and_run",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 70.17223994276112,
+      "y": 26.473699050483294
+    },
+    {
+      "id": "f341d310",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "run_subprocess_script",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 69.34477061932097,
+      "y": 28.571013068383827
+    },
+    {
+      "id": "1f4df31e",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "run_python_script",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 68.45463295877072,
+      "y": 30.642506856978606
+    },
+    {
+      "id": "364a8c1f",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "run_node_script",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 67.50263139735681,
+      "y": 32.686308363481146
+    },
+    {
+      "id": "8714e3db",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "extract_subdomains_from_ffuf_json",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 66.48962627904241,
+      "y": 34.70057056120652
+    },
+    {
+      "id": "3c3fd71d",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "locate_ffuf_output",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 65.4165330779964,
+      "y": 36.68347311876839
+    },
+    {
+      "id": "455f8ac0",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "locate_html_links_output",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 64.28432157125997,
+      "y": 38.633224045151096
+    },
+    {
+      "id": "7ac76620",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "run_tool",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 63.09401496233859,
+      "y": 40.54806130916982
+    },
+    {
+      "id": "830a3d0d",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "_sanitize_label",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 61.84668895651136,
+      "y": 42.426254431855476
+    },
+    {
+      "id": "6fec7c93",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "detect_schemes_fast",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 60.543470788693334,
+      "y": 44.26610605032519
+    },
+    {
+      "id": "8fc1580c",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "probe",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 59.18553820472952,
+      "y": 46.065953451725086
+    },
+    {
+      "id": "6ea598cf",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "sanitize_target",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 57.77411839704098,
+      "y": 47.824170075859044
+    },
+    {
+      "id": "ac119670",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "normalize_base_url",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 56.31048689558507,
+      "y": 49.53916698514563
+    },
+    {
+      "id": "bf8c91b8",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "build_nuclei_targets",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 54.79596641513206,
+      "y": 51.20939430057458
+    },
+    {
+      "id": "eeb9843f",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "count_dirsearch_results",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 53.231925659899744,
+      "y": 52.83334260236529
+    },
+    {
+      "id": "c4c1c537",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 51.61977808662651,
+      "y": 54.40954429406143
+    },
+    {
+      "id": "f10095ad",
+      "type": "function",
+      "path": "run_all.py",
+      "title": "process_subdomain",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 49.96098062720051,
+      "y": 55.93657492882895
+    },
+    {
+      "id": "b69fd6d5",
+      "type": "file",
+      "path": "minmap_format.py",
+      "title": "minmap_format.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "import os",
+      "x": 179.14757751083584,
+      "y": 240.6369578265131
+    },
+    {
+      "id": "3295ed31",
+      "type": "function",
+      "path": "minmap_format.py",
+      "title": "load_json",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 48.257032371999536,
+      "y": 57.41305449675874
+    },
+    {
+      "id": "17528bff",
+      "type": "function",
+      "path": "minmap_format.py",
+      "title": "register_node",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 46.50947321513126,
+      "y": 58.837648672010914
+    },
+    {
+      "id": "ab30c475",
+      "type": "function",
+      "path": "minmap_format.py",
+      "title": "ensure_basic_node",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 44.71988246279836,
+      "y": 60.209070018673266
+    },
+    {
+      "id": "d5b1dc7e",
+      "type": "function",
+      "path": "minmap_format.py",
+      "title": "ensure_relationship",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 42.88987740604607,
+      "y": 61.526079154244336
+    },
+    {
+      "id": "2935bda4",
+      "type": "function",
+      "path": "minmap_format.py",
+      "title": "add_path_segments",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 41.02111185918202,
+      "y": 62.78748586968964
+    },
+    {
+      "id": "20b2a145",
+      "type": "file",
+      "path": "recon/nmap_http.py",
+      "title": "nmap_http.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "import subprocess",
+      "x": 159.96132984050735,
+      "y": 253.79592777595232
+    },
+    {
+      "id": "dabd37e7",
+      "type": "function",
+      "path": "recon/nmap_http.py",
+      "title": "parse_nmap_xml",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 39.11527466518925,
+      "y": 63.99215020505878
+    },
+    {
+      "id": "b948f369",
+      "type": "function",
+      "path": "recon/nmap_http.py",
+      "title": "run",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 37.174088169483035,
+      "y": 65.13898347969135
+    },
+    {
+      "id": "8918366c",
+      "type": "file",
+      "path": "recon/gobuster_then_ffuf.py",
+      "title": "gobuster_then_ffuf.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "",
+      "x": 139.81305591076168,
+      "y": 265.4285391529973
+    },
+    {
+      "id": "176b8e5f",
+      "type": "file",
+      "path": "recon/run_nuclei.py",
+      "title": "run_nuclei.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": 118.82392981174706,
+      "y": 275.4648320640822
+    },
+    {
+      "id": "888443fc",
+      "type": "function",
+      "path": "recon/run_nuclei.py",
+      "title": "_utc_now_iso",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 35.199306663390914,
+      "y": 66.22694927608069
+    },
+    {
+      "id": "a53efe9e",
+      "type": "function",
+      "path": "recon/run_nuclei.py",
+      "title": "_sanitize_label",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 33.19271479876242,
+      "y": 67.25506437650638
+    },
+    {
+      "id": "28a66c20",
+      "type": "function",
+      "path": "recon/run_nuclei.py",
+      "title": "_normalize_url",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 31.15612597514148,
+      "y": 68.22239965158887
+    },
+    {
+      "id": "f56dbd67",
+      "type": "function",
+      "path": "recon/run_nuclei.py",
+      "title": "_parse_jsonl",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 29.09138070095888,
+      "y": 69.12808089996335
+    },
+    {
+      "id": "21a1177d",
+      "type": "function",
+      "path": "recon/run_nuclei.py",
+      "title": "run",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 27.00034493022571,
+      "y": 69.97128963831405
+    },
+    {
+      "id": "b3d35661",
+      "type": "function",
+      "path": "recon/run_nuclei.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 24.884908376231397,
+      "y": 70.75126384105494
+    },
+    {
+      "id": "aac65fcb",
+      "type": "file",
+      "path": "recon/import_nuclei.py",
+      "title": "import_nuclei.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": 97.12018261749634,
+      "y": 283.8444470627251
+    },
+    {
+      "id": "b4db65de",
+      "type": "function",
+      "path": "recon/import_nuclei.py",
+      "title": "ensure_details_column",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 22.74698280376969,
+      "y": 71.46729862898839
+    },
+    {
+      "id": "1fd2e4bc",
+      "type": "function",
+      "path": "recon/import_nuclei.py",
+      "title": "ensure_website",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 20.588500301436394,
+      "y": 72.1187469063194
+    },
+    {
+      "id": "84d29e85",
+      "type": "function",
+      "path": "recon/import_nuclei.py",
+      "title": "get_nodes",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 18.411411535559942,
+      "y": 72.70501994544978
+    },
+    {
+      "id": "87191ab7",
+      "type": "function",
+      "path": "recon/import_nuclei.py",
+      "title": "normalize_matched",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 16.217683987343047,
+      "y": 73.22558791902375
+    },
+    {
+      "id": "db4c4d95",
+      "type": "function",
+      "path": "recon/import_nuclei.py",
+      "title": "merge_details",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 14.009300174808228,
+      "y": 73.67998037874412
+    },
+    {
+      "id": "6afea43c",
+      "type": "function",
+      "path": "recon/import_nuclei.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 11.788255861154253,
+      "y": 74.06778668052638
+    },
+    {
+      "id": "9eb0df36",
+      "type": "file",
+      "path": "recon/ffuf_subs.py",
+      "title": "ffuf_subs.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "import os",
+      "x": 74.83234321739434,
+      "y": 290.51698815834175
+    },
+    {
+      "id": "b98bd58f",
+      "type": "function",
+      "path": "recon/ffuf_subs.py",
+      "title": "clean_old_results",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 9.556558251142866,
+      "y": 74.38865635560649
+    },
+    {
+      "id": "728f6506",
+      "type": "function",
+      "path": "recon/ffuf_subs.py",
+      "title": "run",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 7.316224177145137,
+      "y": 74.64229942726682
+    },
+    {
+      "id": "1389e6e4",
+      "type": "file",
+      "path": "recon/run_nmap_vuln.py",
+      "title": "run_nmap_vuln.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": 52.094453300079124,
+      "y": 295.4423259036624
+    },
+    {
+      "id": "60fc5f95",
+      "type": "function",
+      "path": "recon/run_nmap_vuln.py",
+      "title": "_utc_now_iso",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 5.069278276487464,
+      "y": 74.82848667289439
+    },
+    {
+      "id": "acb58bd8",
+      "type": "function",
+      "path": "recon/run_nmap_vuln.py",
+      "title": "_sanitize_label",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 2.817751161744054,
+      "y": 74.94704983113405
+    },
+    {
+      "id": "0fc1679b",
+      "type": "function",
+      "path": "recon/run_nmap_vuln.py",
+      "title": "_service_string",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 0.5636775856291436,
+      "y": 74.99788175394995
+    },
+    {
+      "id": "5f8a124a",
+      "type": "function",
+      "path": "recon/run_nmap_vuln.py",
+      "title": "_parse_vulners_table",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -1.6909053978519188,
+      "y": 74.98093650345743
+    },
+    {
+      "id": "702f326b",
+      "type": "function",
+      "path": "recon/run_nmap_vuln.py",
+      "title": "_parse_script_output",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -3.9439602743315647,
+      "y": 74.89622939343805
+    },
+    {
+      "id": "a334841b",
+      "type": "function",
+      "path": "recon/run_nmap_vuln.py",
+      "title": "parse_nmap_vuln_xml",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -6.19345091042492,
+      "y": 74.74383697550024
+    },
+    {
+      "id": "ad11e446",
+      "type": "function",
+      "path": "recon/run_nmap_vuln.py",
+      "title": "run",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -8.437344393826546,
+      "y": 74.52389696989795
+    },
+    {
+      "id": "5e9dbd1b",
+      "type": "function",
+      "path": "recon/run_nmap_vuln.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -10.673612870496376,
+      "y": 74.23660814106996
+    },
+    {
+      "id": "157bcd3d",
+      "type": "file",
+      "path": "recon/simple_fingerprint.py",
+      "title": "simple_fingerprint.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": 29.043261210953748,
+      "y": 298.59083873794975
+    },
+    {
+      "id": "26557482",
+      "type": "function",
+      "path": "recon/simple_fingerprint.py",
+      "title": "banner_probe",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -12.900235377274374,
+      "y": 73.88223011801226
+    },
+    {
+      "id": "9436cc8a",
+      "type": "function",
+      "path": "recon/simple_fingerprint.py",
+      "title": "fetch_cert_info",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -15.115199668267648,
+      "y": 73.46108315964584
+    },
+    {
+      "id": "2b7457b6",
+      "type": "function",
+      "path": "recon/simple_fingerprint.py",
+      "title": "try_requests",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -17.31650403335968,
+      "y": 72.97354786539186
+    },
+    {
+      "id": "92ec4aa8",
+      "type": "function",
+      "path": "recon/simple_fingerprint.py",
+      "title": "extract_title",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -19.502159107198207,
+      "y": 72.42006483121598
+    },
+    {
+      "id": "f39757f6",
+      "type": "function",
+      "path": "recon/simple_fingerprint.py",
+      "title": "detect_tech",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -21.67018966702667,
+      "y": 71.8011342514524
+    },
+    {
+      "id": "b670d443",
+      "type": "function",
+      "path": "recon/simple_fingerprint.py",
+      "title": "clean_label",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -23.81863641773494,
+      "y": 71.11731546676766
+    },
+    {
+      "id": "1bd54599",
+      "type": "function",
+      "path": "recon/simple_fingerprint.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -25.945557762515705,
+      "y": 70.3692264586727
+    },
+    {
+      "id": "fe53cecc",
+      "type": "file",
+      "path": "recon/js_route_discovery.py",
+      "title": "js_route_discovery.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": 5.817399531547331,
+      "y": 299.94359113455045
+    },
+    {
+      "id": "a06a7f32",
+      "type": "function",
+      "path": "recon/js_route_discovery.py",
+      "title": "_origin",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -28.04903155752671,
+      "y": 69.55754329103976
+    },
+    {
+      "id": "f35f802f",
+      "type": "class",
+      "path": "recon/js_route_discovery.py",
+      "title": "_classify_url",
+      "tags": [
+        "python",
+        "class"
+      ],
+      "first_para": "",
+      "x": -30.127156848972707,
+      "y": 68.68299949912931
+    },
+    {
+      "id": "ff21d379",
+      "type": "function",
+      "path": "recon/js_route_discovery.py",
+      "title": "_normalize_candidate",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -32.17805559103772,
+      "y": 67.74638542667856
+    },
+    {
+      "id": "97ff0dcf",
+      "type": "function",
+      "path": "recon/js_route_discovery.py",
+      "title": "extract_script_urls",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -34.19987434311477,
+      "y": 66.74854751165121
+    },
+    {
+      "id": "49c4539f",
+      "type": "function",
+      "path": "recon/js_route_discovery.py",
+      "title": "_fetch_js",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -36.19078594479947,
+      "y": 65.69038752129345
+    },
+    {
+      "id": "8a69b66c",
+      "type": "function",
+      "path": "recon/js_route_discovery.py",
+      "title": "extract_js_endpoints",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -38.148991167133374,
+      "y": 64.57286173718786
+    },
+    {
+      "id": "25b736b0",
+      "type": "function",
+      "path": "recon/js_route_discovery.py",
+      "title": "discover_js_routes",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -40.07272033860548,
+      "y": 63.39698009104152
+    },
+    {
+      "id": "dd1443d3",
+      "type": "file",
+      "path": "recon/import_nmap_vuln.py",
+      "title": "import_nmap_vuln.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": -17.443448673142733,
+      "y": 299.49244748138045
+    },
+    {
+      "id": "717dbcc8",
+      "type": "function",
+      "path": "recon/import_nmap_vuln.py",
+      "title": "ensure_details_column",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -41.9602349444417,
+      "y": 62.16380525198931
+    },
+    {
+      "id": "92e11691",
+      "type": "function",
+      "path": "recon/import_nmap_vuln.py",
+      "title": "ensure_website",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -43.80982919773757,
+      "y": 60.87445166623729
+    },
+    {
+      "id": "dc681811",
+      "type": "function",
+      "path": "recon/import_nmap_vuln.py",
+      "title": "get_nodes",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -45.61983158101382,
+      "y": 59.53008454991421
+    },
+    {
+      "id": "7f371386",
+      "type": "function",
+      "path": "recon/import_nmap_vuln.py",
+      "title": "parse_host_port",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -47.388606356802285,
+      "y": 58.131918836040825
+    },
+    {
+      "id": "a59eea8c",
+      "type": "function",
+      "path": "recon/import_nmap_vuln.py",
+      "title": "merge_details",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -49.114555045896374,
+      "y": 56.68121807656937
+    },
+    {
+      "id": "c27fa4e0",
+      "type": "function",
+      "path": "recon/import_nmap_vuln.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -50.79611787193056,
+      "y": 55.179293300484886
+    },
+    {
+      "id": "55a9f151",
+      "type": "file",
+      "path": "recon/import_dirsearch.py",
+      "title": "import_dirsearch.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": -40.59938992503925,
+      "y": 297.2401210094536
+    },
+    {
+      "id": "0a7d4605",
+      "type": "function",
+      "path": "recon/import_dirsearch.py",
+      "title": "get_host_from_url_or_host",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -52.4317751709834,
+      "y": 53.62750182900047
+    },
+    {
+      "id": "8b6348e3",
+      "type": "function",
+      "path": "recon/import_dirsearch.py",
+      "title": "is_in_scope",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -54.020048764929875,
+      "y": 52.02724604891747
+    },
+    {
+      "id": "400780bb",
+      "type": "function",
+      "path": "recon/import_dirsearch.py",
+      "title": "strip_port",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -55.559503297302264,
+      "y": 50.37997214525887
+    },
+    {
+      "id": "731bbfa0",
+      "type": "function",
+      "path": "recon/import_dirsearch.py",
+      "title": "ensure_website",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -57.04874753045225,
+      "y": 48.68716879432113
+    },
+    {
+      "id": "3041982a",
+      "type": "function",
+      "path": "recon/import_dirsearch.py",
+      "title": "get_node_by_value",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -58.48643560284182,
+      "y": 46.95036581832602
+    },
+    {
+      "id": "5ae7e7c3",
+      "type": "function",
+      "path": "recon/import_dirsearch.py",
+      "title": "choose_type",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -59.8712682453267,
+      "y": 45.1711328028879
+    },
+    {
+      "id": "f893bf5a",
+      "type": "function",
+      "path": "recon/import_dirsearch.py",
+      "title": "insert_node",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -61.20199395533349,
+      "y": 43.35107767854593
+    },
+    {
+      "id": "7be6b3b1",
+      "type": "function",
+      "path": "recon/import_dirsearch.py",
+      "title": "insert_rel",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -62.47741012786907,
+      "y": 41.49184526764317
+    },
+    {
+      "id": "c4b6c265",
+      "type": "class",
+      "path": "recon/import_dirsearch.py",
+      "title": "classify_type_from_segment",
+      "tags": [
+        "python",
+        "class"
+      ],
+      "first_para": "",
+      "x": -63.696364142340094,
+      "y": 39.595115797865915
+    },
+    {
+      "id": "ae078076",
+      "type": "function",
+      "path": "recon/import_dirsearch.py",
+      "title": "split_path_segments",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -64.85775440420068,
+      "y": 37.66260338378626
+    },
+    {
+      "id": "c88ecf5f",
+      "type": "function",
+      "path": "recon/import_dirsearch.py",
+      "title": "normalize_host",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -65.96053134048667,
+      "y": 35.69605447778053
+    },
+    {
+      "id": "b2a169c1",
+      "type": "function",
+      "path": "recon/import_dirsearch.py",
+      "title": "detect_schemes",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -67.003698348337,
+      "y": 33.697246291723324
+    },
+    {
+      "id": "64cd01a5",
+      "type": "function",
+      "path": "recon/import_dirsearch.py",
+      "title": "choose_scheme",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -67.98631269564471,
+      "y": 31.667985190883517
+    },
+    {
+      "id": "dd640c9d",
+      "type": "function",
+      "path": "recon/import_dirsearch.py",
+      "title": "parse_dirsearch_item",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -68.90748637302403,
+      "y": 29.61010506147364
+    },
+    {
+      "id": "895093ff",
+      "type": "function",
+      "path": "recon/import_dirsearch.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -69.76638689632316,
+      "y": 27.52546565332818
+    },
+    {
+      "id": "abe8f5c4",
+      "type": "file",
+      "path": "recon/import_html_links.py",
+      "title": "import_html_links.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": -63.51116166882314,
+      "y": 293.2001574751907
+    },
+    {
+      "id": "c2fc7e0e",
+      "type": "function",
+      "path": "recon/import_html_links.py",
+      "title": "get_host",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -70.56223805895782,
+      "y": 25.415950899208266
+    },
+    {
+      "id": "b0044b44",
+      "type": "function",
+      "path": "recon/import_html_links.py",
+      "title": "strip_port",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -71.29432063338567,
+      "y": 23.283467212251683
+    },
+    {
+      "id": "ce21c445",
+      "type": "function",
+      "path": "recon/import_html_links.py",
+      "title": "is_in_scope",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -71.9619730210873,
+      "y": 21.129941763107226
+    },
+    {
+      "id": "3ef8624d",
+      "type": "function",
+      "path": "recon/import_html_links.py",
+      "title": "normalize_url",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -72.56459185046702,
+      "y": 18.957320738309395
+    },
+    {
+      "id": "a78ac25e",
+      "type": "function",
+      "path": "recon/import_html_links.py",
+      "title": "split_path_segments",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -73.10163252213236,
+      "y": 16.7675675814687
+    },
+    {
+      "id": "63f9e228",
+      "type": "function",
+      "path": "recon/import_html_links.py",
+      "title": "is_file_segment",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -73.57260970106019,
+      "y": 14.56266121886603
+    },
+    {
+      "id": "3b6abfe9",
+      "type": "function",
+      "path": "recon/import_html_links.py",
+      "title": "url_ext",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -73.97709775520418,
+      "y": 12.34459427105502
+    },
+    {
+      "id": "2f361ac1",
+      "type": "function",
+      "path": "recon/import_html_links.py",
+      "title": "ensure_website",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -74.31473114014753,
+      "y": 10.11537125208894
+    },
+    {
+      "id": "ee0080e5",
+      "type": "function",
+      "path": "recon/import_html_links.py",
+      "title": "get_nodes_map",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -74.58520472945318,
+      "y": 7.877006757998519
+    },
+    {
+      "id": "be2e9036",
+      "type": "function",
+      "path": "recon/import_html_links.py",
+      "title": "ensure_host_node",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -74.78827409041307,
+      "y": 5.631523646159133
+    },
+    {
+      "id": "fdbf267b",
+      "type": "function",
+      "path": "recon/import_html_links.py",
+      "title": "insert_node",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -74.92375570494707,
+      "y": 3.380951207191702
+    },
+    {
+      "id": "23081acd",
+      "type": "function",
+      "path": "recon/import_html_links.py",
+      "title": "choose_type",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -74.99152713545224,
+      "y": 1.1273233310497737
+    },
+    {
+      "id": "15641d4e",
+      "type": "function",
+      "path": "recon/import_html_links.py",
+      "title": "merge_details",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -74.99152713545224,
+      "y": -1.1273233310497888
+    },
+    {
+      "id": "9483cb2c",
+      "type": "function",
+      "path": "recon/import_html_links.py",
+      "title": "insert_rel",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -74.92375570494707,
+      "y": -3.380951207191684
+    },
+    {
+      "id": "ef4c3b87",
+      "type": "function",
+      "path": "recon/import_html_links.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -74.78827409041307,
+      "y": -5.631523646159115
+    },
+    {
+      "id": "b446e62d",
+      "type": "file",
+      "path": "recon/debug_classify_urls.py",
+      "title": "debug_classify_urls.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": -86.04096981332707,
+      "y": 287.39685369464667
+    },
+    {
+      "id": "c46626fe",
+      "type": "function",
+      "path": "recon/debug_classify_urls.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -74.58520472945318,
+      "y": -7.877006757998501
+    },
+    {
+      "id": "683fe2c7",
+      "type": "file",
+      "path": "recon/url_canonicalize.py",
+      "title": "url_canonicalize.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": -108.05331744141311,
+      "y": 279.86511141960017
+    },
+    {
+      "id": "d0ad7ec1",
+      "type": "function",
+      "path": "recon/url_canonicalize.py",
+      "title": "is_ip_hostname",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -74.31473114014753,
+      "y": -10.11537125208892
+    },
+    {
+      "id": "750f25e8",
+      "type": "function",
+      "path": "recon/url_canonicalize.py",
+      "title": "_normalize_path",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -73.97709775520418,
+      "y": -12.344594271055033
+    },
+    {
+      "id": "84b9f2c1",
+      "type": "function",
+      "path": "recon/url_canonicalize.py",
+      "title": "_filter_and_sort_query_pairs",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -73.57260970106019,
+      "y": -14.562661218866012
+    },
+    {
+      "id": "89268f20",
+      "type": "function",
+      "path": "recon/url_canonicalize.py",
+      "title": "canonicalize_url",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -73.10163252213238,
+      "y": -16.767567581468683
+    },
+    {
+      "id": "5bac1a47",
+      "type": "function",
+      "path": "recon/url_canonicalize.py",
+      "title": "canonical_url",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -72.56459185046702,
+      "y": -18.957320738309377
+    },
+    {
+      "id": "867e72a5",
+      "type": "function",
+      "path": "recon/url_canonicalize.py",
+      "title": "_normalize_value_token",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -71.96197302108732,
+      "y": -21.129941763107205
+    },
+    {
+      "id": "7458d4a5",
+      "type": "function",
+      "path": "recon/url_canonicalize.py",
+      "title": "_normalize_path_segment",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -71.29432063338567,
+      "y": -23.2834672122517
+    },
+    {
+      "id": "f79273ce",
+      "type": "function",
+      "path": "recon/url_canonicalize.py",
+      "title": "url_pattern_key",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -70.56223805895783,
+      "y": -25.41595089920822
+    },
+    {
+      "id": "a61ee1d8",
+      "type": "function",
+      "path": "recon/url_canonicalize.py",
+      "title": "query_param_count",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -69.76638689632316,
+      "y": -27.525465653328162
+    },
+    {
+      "id": "7bdac891",
+      "type": "file",
+      "path": "recon/html_link_discovery.py",
+      "title": "html_link_discovery.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": -129.4158197043761,
+      "y": 270.65022743431126
+    },
+    {
+      "id": "3ae974be",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "clean_label",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -68.90748637302404,
+      "y": -29.610105061473625
+    },
+    {
+      "id": "60369c87",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "apex_of",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -67.98631269564473,
+      "y": -31.6679851908835
+    },
+    {
+      "id": "3b1c1061",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "is_http_url",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -67.00369834833701,
+      "y": -33.69724629172331
+    },
+    {
+      "id": "1cc01643",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "absolute_url",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -65.96053134048668,
+      "y": -35.696054477780514
+    },
+    {
+      "id": "4b4ee6fb",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "_parse_rel_tokens",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -64.8577544042007,
+      "y": -37.66260338378621
+    },
+    {
+      "id": "aad7bc7d",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "_is_feed_mime",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -63.69636414234012,
+      "y": -39.59511579786587
+    },
+    {
+      "id": "edaf7072",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "_extract_base_href_bs4",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -62.47741012786908,
+      "y": -41.491845267643164
+    },
+    {
+      "id": "ab40fb8b",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "_extract_base_href_regex",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -61.2019939553335,
+      "y": -43.351077678545906
+    },
+    {
+      "id": "088999f1",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "extract_links",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -59.87126824532669,
+      "y": -45.171132802887904
+    },
+    {
+      "id": "a0380f0f",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "extract_search_targets",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -58.48643560284183,
+      "y": -46.950365818326006
+    },
+    {
+      "id": "4eff0abb",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "normalize_existing",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -57.04874753045229,
+      "y": -48.687168794321096
+    },
+    {
+      "id": "dfa4b2de",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "build_query_urls",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -55.55950329730229,
+      "y": -50.379972145258826
+    },
+    {
+      "id": "6130b5ef",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "headless_discover",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -54.02004876492988,
+      "y": -52.02724604891746
+    },
+    {
+      "id": "12ae444e",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "_host_in_scope",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -52.431775170983414,
+      "y": -53.62750182900046
+    },
+    {
+      "id": "756aba45",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "_priority_score",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -50.79611787193058,
+      "y": -55.17929330048487
+    },
+    {
+      "id": "fdd7ad21",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "crawl",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -49.11455504589639,
+      "y": -56.681218076569365
+    },
+    {
+      "id": "d6e1ae88",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "budget_hit",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -47.38860635680229,
+      "y": -58.13191883604082
+    },
+    {
+      "id": "d958136d",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "add_discovered",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -45.61983158101384,
+      "y": -59.53008454991419
+    },
+    {
+      "id": "d634d2de",
+      "type": "function",
+      "path": "recon/html_link_discovery.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -43.809829197737585,
+      "y": -60.87445166623728
+    },
+    {
+      "id": "a8ab3956",
+      "type": "file",
+      "path": "recon/url_classify.py",
+      "title": "url_classify.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": -149.99999999999994,
+      "y": 259.8076211353316
+    },
+    {
+      "id": "afdf4f46",
+      "type": "function",
+      "path": "recon/url_classify.py",
+      "title": "normalize_url",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -41.960234944441744,
+      "y": -62.16380525198928
+    },
+    {
+      "id": "16790244",
+      "type": "class",
+      "path": "recon/url_classify.py",
+      "title": "classify_url",
+      "tags": [
+        "python",
+        "class"
+      ],
+      "first_para": "",
+      "x": -40.072720338605464,
+      "y": -63.39698009104153
+    },
+    {
+      "id": "1040b102",
+      "type": "function",
+      "path": "recon/url_classify.py",
+      "title": "is_asset",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -38.14899116713336,
+      "y": -64.57286173718786
+    },
+    {
+      "id": "5d661689",
+      "type": "function",
+      "path": "recon/url_classify.py",
+      "title": "should_graph",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -36.19078594479946,
+      "y": -65.69038752129345
+    },
+    {
+      "id": "a5219a38",
+      "type": "file",
+      "path": "recon/import_simple_fingerprint.py",
+      "title": "import_simple_fingerprint.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": -169.68206264596154,
+      "y": 247.40250123273205
+    },
+    {
+      "id": "d552fafa",
+      "type": "function",
+      "path": "recon/import_simple_fingerprint.py",
+      "title": "get_host",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -34.19987434311479,
+      "y": -66.74854751165121
+    },
+    {
+      "id": "26228ba7",
+      "type": "function",
+      "path": "recon/import_simple_fingerprint.py",
+      "title": "is_in_scope",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -32.17805559103774,
+      "y": -67.74638542667856
+    },
+    {
+      "id": "6ef6d3d0",
+      "type": "function",
+      "path": "recon/import_simple_fingerprint.py",
+      "title": "strip_port",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -30.12715684897274,
+      "y": -68.6829994991293
+    },
+    {
+      "id": "e7c838e2",
+      "type": "function",
+      "path": "recon/import_simple_fingerprint.py",
+      "title": "ensure_website",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -28.04903155752676,
+      "y": -69.55754329103975
+    },
+    {
+      "id": "e115396c",
+      "type": "function",
+      "path": "recon/import_simple_fingerprint.py",
+      "title": "get_node_id_by_value",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -25.94555776251571,
+      "y": -70.3692264586727
+    },
+    {
+      "id": "ebd9d6e9",
+      "type": "function",
+      "path": "recon/import_simple_fingerprint.py",
+      "title": "choose_type",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -23.81863641773494,
+      "y": -71.11731546676766
+    },
+    {
+      "id": "6d2c0564",
+      "type": "function",
+      "path": "recon/import_simple_fingerprint.py",
+      "title": "upsert_node",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -21.670189667026687,
+      "y": -71.8011342514524
+    },
+    {
+      "id": "96394ab9",
+      "type": "function",
+      "path": "recon/import_simple_fingerprint.py",
+      "title": "insert_rel",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -19.50215910719824,
+      "y": -72.42006483121597
+    },
+    {
+      "id": "f7c018f9",
+      "type": "function",
+      "path": "recon/import_simple_fingerprint.py",
+      "title": "detect_columns",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -17.31650403335973,
+      "y": -72.97354786539185
+    },
+    {
+      "id": "40a08153",
+      "type": "function",
+      "path": "recon/import_simple_fingerprint.py",
+      "title": "merge_details",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -15.115199668267698,
+      "y": -73.46108315964582
+    },
+    {
+      "id": "a24c295b",
+      "type": "function",
+      "path": "recon/import_simple_fingerprint.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -12.900235377274376,
+      "y": -73.88223011801226
+    },
+    {
+      "id": "a4570ff3",
+      "type": "file",
+      "path": "scripts/extract_graph.py",
+      "title": "extract_graph.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": -188.3436374016295,
+      "y": 233.50947357724803
+    },
+    {
+      "id": "d8eb086b",
+      "type": "function",
+      "path": "scripts/extract_graph.py",
+      "title": "__init__",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -10.673612870496392,
+      "y": -74.23660814106995
+    },
+    {
+      "id": "82e91a44",
+      "type": "function",
+      "path": "scripts/extract_graph.py",
+      "title": "generate_node_id",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -8.437344393826566,
+      "y": -74.52389696989793
+    },
+    {
+      "id": "365e080e",
+      "type": "function",
+      "path": "scripts/extract_graph.py",
+      "title": "get_relative_path",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -6.193450910424955,
+      "y": -74.74383697550024
+    },
+    {
+      "id": "ca3b53a6",
+      "type": "function",
+      "path": "scripts/extract_graph.py",
+      "title": "normalize_path",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -3.9439602743316162,
+      "y": -74.89622939343805
+    },
+    {
+      "id": "efcc854e",
+      "type": "function",
+      "path": "scripts/extract_graph.py",
+      "title": "extract_markdown_metadata",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": -1.6909053978519704,
+      "y": -74.98093650345743
+    },
+    {
+      "id": "bf3d1b39",
+      "type": "function",
+      "path": "scripts/extract_graph.py",
+      "title": "extract_code_metadata",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 0.5636775856291419,
+      "y": -74.99788175394995
+    },
+    {
+      "id": "6e8047cf",
+      "type": "function",
+      "path": "scripts/extract_graph.py",
+      "title": "process_file",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 2.817751161744036,
+      "y": -74.94704983113405
+    },
+    {
+      "id": "72dced55",
+      "type": "function",
+      "path": "scripts/extract_graph.py",
+      "title": "scan_directory",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 5.069278276487446,
+      "y": -74.82848667289439
+    },
+    {
+      "id": "8e6c0fd3",
+      "type": "function",
+      "path": "scripts/extract_graph.py",
+      "title": "resolve_links",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 7.316224177145085,
+      "y": -74.64229942726682
+    },
+    {
+      "id": "f440a2ad",
+      "type": "function",
+      "path": "scripts/extract_graph.py",
+      "title": "calculate_positions",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 9.556558251142814,
+      "y": -74.3886563556065
+    },
+    {
+      "id": "9de914f2",
+      "type": "function",
+      "path": "scripts/extract_graph.py",
+      "title": "export_json",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 11.788255861154202,
+      "y": -74.0677866805264
+    },
+    {
+      "id": "5a5745d7",
+      "type": "function",
+      "path": "scripts/extract_graph.py",
+      "title": "run",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 14.009300174808208,
+      "y": -73.67998037874412
+    },
+    {
+      "id": "6a832ec0",
+      "type": "file",
+      "path": "scripts/filter_dirsearch_baseline.py",
+      "title": "filter_dirsearch_baseline.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": -205.87249136062005,
+      "y": 218.21209247191464
+    },
+    {
+      "id": "18621249",
+      "type": "function",
+      "path": "scripts/filter_dirsearch_baseline.py",
+      "title": "fingerprint_response",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 16.217683987343026,
+      "y": -73.22558791902375
+    },
+    {
+      "id": "9ed5dbad",
+      "type": "function",
+      "path": "scripts/filter_dirsearch_baseline.py",
+      "title": "probe_baseline",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 18.41141153555991,
+      "y": -72.70501994544979
+    },
+    {
+      "id": "76997740",
+      "type": "function",
+      "path": "scripts/filter_dirsearch_baseline.py",
+      "title": "load_dirsearch",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 20.588500301436408,
+      "y": -72.11874690631939
+    },
+    {
+      "id": "c8a5b7c0",
+      "type": "function",
+      "path": "scripts/filter_dirsearch_baseline.py",
+      "title": "filter_dirsearch",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 22.746982803769704,
+      "y": -71.46729862898839
+    },
+    {
+      "id": "d11ab4b7",
+      "type": "file",
+      "path": "scripts/build_hierarchical_json.py",
+      "title": "build_hierarchical_json.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": -222.16320393270132,
+      "y": 201.60235816665676
+    },
+    {
+      "id": "69e7ea7e",
+      "type": "function",
+      "path": "scripts/build_hierarchical_json.py",
+      "title": "apex_of",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 24.884908376231397,
+      "y": -70.75126384105495
+    },
+    {
+      "id": "78ff4acc",
+      "type": "function",
+      "path": "scripts/build_hierarchical_json.py",
+      "title": "get_host",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 27.000344930225694,
+      "y": -69.97128963831405
+    },
+    {
+      "id": "a7f01fe4",
+      "type": "function",
+      "path": "scripts/build_hierarchical_json.py",
+      "title": "split_segments",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 29.091380700958844,
+      "y": -69.12808089996336
+    },
+    {
+      "id": "d35dbded",
+      "type": "function",
+      "path": "scripts/build_hierarchical_json.py",
+      "title": "is_file_segment",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 31.156125975141453,
+      "y": -68.22239965158889
+    },
+    {
+      "id": "10b22aa8",
+      "type": "function",
+      "path": "scripts/build_hierarchical_json.py",
+      "title": "add_node",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 33.192714798762374,
+      "y": -67.25506437650641
+    },
+    {
+      "id": "9cc0012f",
+      "type": "function",
+      "path": "scripts/build_hierarchical_json.py",
+      "title": "add_edge",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 35.19930666339086,
+      "y": -66.22694927608072
+    },
+    {
+      "id": "0f7baf34",
+      "type": "function",
+      "path": "scripts/build_hierarchical_json.py",
+      "title": "build_hierarchy",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 37.17408816948297,
+      "y": -65.13898347969138
+    },
+    {
+      "id": "7712ee2d",
+      "type": "function",
+      "path": "scripts/build_hierarchical_json.py",
+      "title": "_utc_now_iso",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 39.115274665189176,
+      "y": -63.99215020505882
+    },
+    {
+      "id": "19cfa4be",
+      "type": "function",
+      "path": "scripts/build_hierarchical_json.py",
+      "title": "normalize_matched_url",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 41.02111185918199,
+      "y": -62.78748586968966
+    },
+    {
+      "id": "6c216cc1",
+      "type": "function",
+      "path": "scripts/build_hierarchical_json.py",
+      "title": "load_nmap_vuln",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 42.88987740604608,
+      "y": -61.526079154244314
+    },
+    {
+      "id": "243a8151",
+      "type": "function",
+      "path": "scripts/build_hierarchical_json.py",
+      "title": "load_nuclei_vuln",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 44.71988246279837,
+      "y": -60.20907001867326
+    },
+    {
+      "id": "742c933f",
+      "type": "function",
+      "path": "scripts/build_hierarchical_json.py",
+      "title": "attach_vulns",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 46.50947321513126,
+      "y": -58.837648672010914
+    },
+    {
+      "id": "1c732f3e",
+      "type": "function",
+      "path": "scripts/build_hierarchical_json.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 48.25703237199953,
+      "y": -57.41305449675875
+    },
+    {
+      "id": "02bb9126",
+      "type": "file",
+      "path": "scripts/url_to_tree.py",
+      "title": "url_to_tree.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": -237.11780085562776,
+      "y": 183.7801635579609
+    },
+    {
+      "id": "04948468",
+      "type": "function",
+      "path": "scripts/url_to_tree.py",
+      "title": "normalize_url",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 49.96098062720049,
+      "y": -55.93657492882896
+    },
+    {
+      "id": "1bb4b2ea",
+      "type": "function",
+      "path": "scripts/url_to_tree.py",
+      "title": "split_segments",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 51.61977808662648,
+      "y": -54.40954429406146
+    },
+    {
+      "id": "ae8f4e60",
+      "type": "class",
+      "path": "scripts/url_to_tree.py",
+      "title": "classify_segment",
+      "tags": [
+        "python",
+        "class"
+      ],
+      "first_para": "",
+      "x": 53.23192565989971,
+      "y": -52.83334260236533
+    },
+    {
+      "id": "15081113",
+      "type": "function",
+      "path": "scripts/url_to_tree.py",
+      "title": "url_to_tree",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 54.795966415132014,
+      "y": -51.209394300574615
+    },
+    {
+      "id": "bd519a61",
+      "type": "function",
+      "path": "scripts/url_to_tree.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 56.310486895585015,
+      "y": -49.53916698514568
+    },
+    {
+      "id": "d84c0a30",
+      "type": "file",
+      "path": "scripts/url_tree_hierarchical.py",
+      "title": "url_tree_hierarchical.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": -250.6463434238809,
+      "y": 164.85269342124187
+    },
+    {
+      "id": "47938fe8",
+      "type": "function",
+      "path": "scripts/url_tree_hierarchical.py",
+      "title": "__init__",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 57.77411839704092,
+      "y": -47.82417007585911
+    },
+    {
+      "id": "1951096e",
+      "type": "function",
+      "path": "scripts/url_tree_hierarchical.py",
+      "title": "to_obj",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 59.185538204729546,
+      "y": -46.06595345172505
+    },
+    {
+      "id": "d01bad94",
+      "type": "function",
+      "path": "scripts/url_tree_hierarchical.py",
+      "title": "insert_path",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 60.54347078869335,
+      "y": -44.26610605032516
+    },
+    {
+      "id": "5acaabd0",
+      "type": "function",
+      "path": "scripts/url_tree_hierarchical.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 61.846688956511365,
+      "y": -42.426254431855455
+    },
+    {
+      "id": "42563e6d",
+      "type": "file",
+      "path": "scripts/merge_ffuf_dirs.py",
+      "title": "merge_ffuf_dirs.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "",
+      "x": -262.6674693906273,
+      "y": 144.93377978899147
+    },
+    {
+      "id": "9494e504",
+      "type": "file",
+      "path": "scripts/self_check_html_discovery.py",
+      "title": "self_check_html_discovery.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "#!/usr/bin/env python3",
+      "x": -273.10888228984396,
+      "y": 124.14321735154178
+    },
+    {
+      "id": "7b62b8f3",
+      "type": "function",
+      "path": "scripts/self_check_html_discovery.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 63.09401496233859,
+      "y": -40.54806130916981
+    },
+    {
+      "id": "af6ad3b8",
+      "type": "file",
+      "path": "web_recon/recon/nmap.py",
+      "title": "nmap.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "import os",
+      "x": -281.9077862357725,
+      "y": 102.60604299770067
+    },
+    {
+      "id": "a17462e5",
+      "type": "function",
+      "path": "web_recon/recon/nmap.py",
+      "title": "run_nmap",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 64.28432157125997,
+      "y": -38.6332240451511
+    },
+    {
+      "id": "f7178fb0",
+      "type": "file",
+      "path": "web_recon/recon/ffuf_subs.py",
+      "title": "ffuf_subs.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "# filepath: /web_recon/recon/run_all.py",
+      "x": -289.0112635847641,
+      "y": 80.45178382819125
+    },
+    {
+      "id": "80a8618b",
+      "type": "function",
+      "path": "web_recon/recon/ffuf_subs.py",
+      "title": "load_results",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 65.41653307799639,
+      "y": -36.683473118768404
+    },
+    {
+      "id": "19ed5cb6",
+      "type": "function",
+      "path": "web_recon/recon/ffuf_subs.py",
+      "title": "run_ffuf",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 66.4896262790424,
+      "y": -34.70057056120655
+    },
+    {
+      "id": "b4f2d013",
+      "type": "function",
+      "path": "web_recon/recon/ffuf_subs.py",
+      "title": "run_dirsearch",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 67.5026313973568,
+      "y": -32.68630836348119
+    },
+    {
+      "id": "5f25bc2b",
+      "type": "function",
+      "path": "web_recon/recon/ffuf_subs.py",
+      "title": "run_nmap",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 68.4546329587707,
+      "y": -30.642506856978653
+    },
+    {
+      "id": "a776901c",
+      "type": "function",
+      "path": "web_recon/recon/ffuf_subs.py",
+      "title": "run_whatweb",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 69.34477061932094,
+      "y": -28.57101306838389
+    },
+    {
+      "id": "c703a4d1",
+      "type": "function",
+      "path": "web_recon/recon/ffuf_subs.py",
+      "title": "run_webanalyze",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 70.1722399427611,
+      "y": -26.473699050483365
+    },
+    {
+      "id": "6543854a",
+      "type": "function",
+      "path": "web_recon/recon/ffuf_subs.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 70.93629312754761,
+      "y": -24.352460190351216
+    },
+    {
+      "id": "01240f89",
+      "type": "file",
+      "path": "web_recon/recon/whatweb.py",
+      "title": "whatweb.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "import os",
+      "x": -294.3765931882154,
+      "y": 57.813678164426946
+    },
+    {
+      "id": "672fae69",
+      "type": "function",
+      "path": "web_recon/recon/whatweb.py",
+      "title": "run_whatweb",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 71.6362396826437,
+      "y": -22.20921349644833
+    },
+    {
+      "id": "e007c001",
+      "type": "file",
+      "path": "web_recon/recon/webanalyze.py",
+      "title": "webanalyze.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "import requests",
+      "x": -297.9715073225829,
+      "y": 34.827874237569105
+    },
+    {
+      "id": "7c8d86f7",
+      "type": "function",
+      "path": "web_recon/recon/webanalyze.py",
+      "title": "analyze_web_application",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 72.271447051531,
+      "y": -20.04589586618045
+    },
+    {
+      "id": "2dc2b995",
+      "type": "function",
+      "path": "web_recon/recon/webanalyze.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 72.84134118386406,
+      "y": -17.864462335483516
+    },
+    {
+      "id": "834455c5",
+      "type": "file",
+      "path": "web_recon/recon/run_all.py",
+      "title": "run_all.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "import os",
+      "x": -299.774385751269,
+      "y": 11.63261137704505
+    },
+    {
+      "id": "2a86a3e8",
+      "type": "function",
+      "path": "web_recon/recon/run_all.py",
+      "title": "run_ffuf",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 73.3454070542519,
+      "y": -15.666884312016155
+    },
+    {
+      "id": "714ca2da",
+      "type": "function",
+      "path": "web_recon/recon/run_all.py",
+      "title": "run_dirsearch",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 73.78318912769726,
+      "y": -13.455147793556863
+    },
+    {
+      "id": "718d8f63",
+      "type": "function",
+      "path": "web_recon/recon/run_all.py",
+      "title": "run_nmap",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 74.15429177127335,
+      "y": -11.231251573215776
+    },
+    {
+      "id": "23fef0e3",
+      "type": "function",
+      "path": "web_recon/recon/run_all.py",
+      "title": "run_whatweb",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 74.45837961166562,
+      "y": -8.997205433083009
+    },
+    {
+      "id": "40b3c277",
+      "type": "function",
+      "path": "web_recon/recon/run_all.py",
+      "title": "run_webanalyze",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 74.6951778382557,
+      "y": -6.755028327946054
+    },
+    {
+      "id": "3d26dc08",
+      "type": "function",
+      "path": "web_recon/recon/run_all.py",
+      "title": "main",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 74.86447245147367,
+      "y": -4.506746560717594
+    },
+    {
+      "id": "d131df56",
+      "type": "file",
+      "path": "web_recon/recon/dirsearch.py",
+      "title": "dirsearch.py",
+      "file_type": "python",
+      "tags": [
+        "python",
+        "script"
+      ],
+      "first_para": "import os",
+      "x": -299.774385751269,
+      "y": -11.632611377044844
+    },
+    {
+      "id": "ef56b35a",
+      "type": "function",
+      "path": "web_recon/recon/dirsearch.py",
+      "title": "run_dirsearch",
+      "tags": [
+        "python",
+        "function"
+      ],
+      "first_para": "",
+      "x": 74.96611045619389,
+      "y": -2.2543919512226007
+    },
+    {
+      "id": "158e440b",
+      "type": "file",
+      "path": "src/setupTests.js",
+      "title": "setupTests.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "// jest-dom adds custom jest matchers for asserting on DOM nodes.",
+      "x": -297.9715073225829,
+      "y": -34.827874237569034
+    },
+    {
+      "id": "f8e96e84",
+      "type": "file",
+      "path": "src/reportWebVitals.js",
+      "title": "reportWebVitals.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "const reportWebVitals = onPerfEntry => {",
+      "x": -294.3765931882154,
+      "y": -57.81367816442688
+    },
+    {
+      "id": "abcd7b0d",
+      "type": "file",
+      "path": "src/App.test.js",
+      "title": "App.test.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "import { render, screen } from '@testing-library/react';",
+      "x": -289.01126358476415,
+      "y": -80.45178382819105
+    },
+    {
+      "id": "14b1e33d",
+      "type": "file",
+      "path": "src/App.js",
+      "title": "App.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';",
+      "x": -281.9077862357725,
+      "y": -102.6060429977006
+    },
+    {
+      "id": "1fdf421c",
+      "type": "file",
+      "path": "src/index.js",
+      "title": "index.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "import React from 'react';",
+      "x": -273.1088822898441,
+      "y": -124.14321735154161
+    },
+    {
+      "id": "e2405ae9",
+      "type": "file",
+      "path": "server/init_and_import.js",
+      "title": "init_and_import.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "#!/usr/bin/env node",
+      "x": -262.6674693906273,
+      "y": -144.93377978899153
+    },
+    {
+      "id": "3e24ef88",
+      "type": "file",
+      "path": "server/import-recon-data.js",
+      "title": "import-recon-data.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "",
+      "x": -250.64634342388095,
+      "y": -164.8526934212418
+    },
+    {
+      "id": "09f2dce6",
+      "type": "file",
+      "path": "server/import-viz-data.js",
+      "title": "import-viz-data.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "",
+      "x": -237.1178008556279,
+      "y": -183.78016355796072
+    },
+    {
+      "id": "1e0d36f8",
+      "type": "file",
+      "path": "server/insert-recon-data.js",
+      "title": "insert-recon-data.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "const sqlite3 = require('sqlite3').verbose();",
+      "x": -222.16320393270138,
+      "y": -201.60235816665673
+    },
+    {
+      "id": "5b349a6c",
+      "type": "file",
+      "path": "server/insert-data.js",
+      "title": "insert-data.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "",
+      "x": -205.87249136062007,
+      "y": -218.2120924719146
+    },
+    {
+      "id": "c7fe5e50",
+      "type": "file",
+      "path": "server/validators.js",
+      "title": "validators.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "const net = require('net');",
+      "x": -188.34363740162948,
+      "y": -233.50947357724806
+    },
+    {
+      "id": "33ce47a2",
+      "type": "file",
+      "path": "server/dedupe-nodes.js",
+      "title": "dedupe-nodes.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "#!/usr/bin/env node",
+      "x": -169.6820626459617,
+      "y": -247.40250123273194
+    },
+    {
+      "id": "cb86f2c1",
+      "type": "file",
+      "path": "server/seed-data.js",
+      "title": "seed-data.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "const sqlite3 = require('sqlite3').verbose();",
+      "x": -150.00000000000014,
+      "y": -259.8076211353315
+    },
+    {
+      "id": "0861d6d6",
+      "type": "file",
+      "path": "server/index.js",
+      "title": "index.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "const fs = require('fs');",
+      "x": -129.4158197043759,
+      "y": -270.6502274343114
+    },
+    {
+      "id": "b7fad3a3",
+      "type": "file",
+      "path": "server/import-visualized-data.js",
+      "title": "import-visualized-data.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "#!/usr/bin/env node",
+      "x": -108.05331744141326,
+      "y": -279.8651114196001
+    },
+    {
+      "id": "45c4a8fc",
+      "type": "file",
+      "path": "server/config.js",
+      "title": "config.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "const DEFAULT_CORS_ORIGINS = [",
+      "x": -86.0409698133272,
+      "y": -287.3968536946466
+    },
+    {
+      "id": "8455de69",
+      "type": "file",
+      "path": "server/scanRunner.js",
+      "title": "scanRunner.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "const { spawn, spawnSync } = require('child_process');",
+      "x": -63.51116166882335,
+      "y": -293.2001574751906
+    },
+    {
+      "id": "df948367",
+      "type": "file",
+      "path": "scripts/capture_diagram.js",
+      "title": "capture_diagram.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "",
+      "x": -40.59938992503945,
+      "y": -297.24012100945356
+    },
+    {
+      "id": "ab80d4ae",
+      "type": "file",
+      "path": "server/modules/schema.js",
+      "title": "schema.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "/**",
+      "x": -17.44344867314287,
+      "y": -299.49244748138045
+    },
+    {
+      "id": "653fb434",
+      "type": "file",
+      "path": "server/modules/routeHelpers.js",
+      "title": "routeHelpers.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "/**",
+      "x": 5.81739953154719,
+      "y": -299.94359113455045
+    },
+    {
+      "id": "d6729893",
+      "type": "file",
+      "path": "server/modules/preflight.js",
+      "title": "preflight.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "const fs = require('fs');",
+      "x": 29.04326121095361,
+      "y": -298.59083873794975
+    },
+    {
+      "id": "d2e0c941",
+      "type": "file",
+      "path": "server/modules/directory-scanner.js",
+      "title": "directory-scanner.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "",
+      "x": 52.09445330007925,
+      "y": -295.4423259036624
+    },
+    {
+      "id": "649899cc",
+      "type": "file",
+      "path": "server/modules/database.js",
+      "title": "database.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "const sqlite3 = require('sqlite3').verbose();",
+      "x": 74.83234321739428,
+      "y": -290.5169881583418
+    },
+    {
+      "id": "5b80cd45",
+      "type": "file",
+      "path": "server/modules/validation.js",
+      "title": "validation.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "/**",
+      "x": 97.1201826174962,
+      "y": -283.8444470627252
+    },
+    {
+      "id": "32737b3e",
+      "type": "file",
+      "path": "server/modules/logger.js",
+      "title": "logger.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "/**",
+      "x": 118.82392981174695,
+      "y": -275.46483206408226
+    },
+    {
+      "id": "9cafc3d5",
+      "type": "file",
+      "path": "server/modules/errors.js",
+      "title": "errors.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "/**",
+      "x": 139.81305591076153,
+      "y": -265.42853915299736
+    },
+    {
+      "id": "08d50751",
+      "type": "file",
+      "path": "server/modules/dbIntegrity.js",
+      "title": "dbIntegrity.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "const fs = require('fs');",
+      "x": 159.96132984050752,
+      "y": -253.79592777595224
+    },
+    {
+      "id": "d720e6b0",
+      "type": "file",
+      "path": "server/test/validators.test.js",
+      "title": "validators.test.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "const assert = require('assert');",
+      "x": 179.14757751083576,
+      "y": -240.6369578265132
+    },
+    {
+      "id": "217f2fd8",
+      "type": "file",
+      "path": "server/routes/report.js",
+      "title": "report.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "const fs = require('fs');",
+      "x": 197.25641057071903,
+      "y": -226.03076889829828
+    },
+    {
+      "id": "04a8be6b",
+      "type": "file",
+      "path": "src/types/NodeTypes.js",
+      "title": "NodeTypes.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "",
+      "x": 214.17892036736964,
+      "y": -210.0652043301506
+    },
+    {
+      "id": "edd53c89",
+      "type": "file",
+      "path": "recon/report/renderHtml.js",
+      "title": "renderHtml.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "function escapeHtml(value) {",
+      "x": 229.81333293569332,
+      "y": -192.83628290596187
+    },
+    {
+      "id": "cdcf991e",
+      "type": "file",
+      "path": "recon/report/buildReport.js",
+      "title": "buildReport.js",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "const { URL } = require('url');",
+      "x": 244.06562107889022,
+      "y": -174.4476213864081
+    },
+    {
+      "id": "6d281c55",
+      "type": "file",
+      "path": "src/components/StatsPanel.jsx",
+      "title": "StatsPanel.jsx",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "import React, { useEffect, useMemo, useState } from 'react';",
+      "x": 256.8500698590799,
+      "y": -155.00981134555894
+    },
+    {
+      "id": "b406f660",
+      "type": "file",
+      "path": "src/components/LegendPanel.jsx",
+      "title": "LegendPanel.jsx",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "import React, { useEffect, useMemo, useState } from 'react';",
+      "x": 268.08979209702363,
+      "y": -134.63975406013873
+    },
+    {
+      "id": "d7727bfb",
+      "type": "file",
+      "path": "src/components/DetailsPanel.jsx",
+      "title": "DetailsPanel.jsx",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "import React, { useEffect, useMemo, useState, useRef } from 'react';",
+      "x": 277.7171907806671,
+      "y": -113.45995745149283
+    },
+    {
+      "id": "0e638836",
+      "type": "file",
+      "path": "src/components/ScanStepper.jsx",
+      "title": "ScanStepper.jsx",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "import React, { useMemo, useRef, useState, useEffect } from 'react';",
+      "x": 285.6743656015246,
+      "y": -91.59779930853401
+    },
+    {
+      "id": "5718cc5f",
+      "type": "file",
+      "path": "src/components/TreeExplorer.jsx",
+      "title": "TreeExplorer.jsx",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "import React, { useEffect, useMemo, useRef, useState } from 'react';",
+      "x": 291.91346117394716,
+      "y": -69.18476122273213
+    },
+    {
+      "id": "1840e8f5",
+      "type": "file",
+      "path": "src/components/Graph.jsx",
+      "title": "Graph.jsx",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "import React, { useRef, useEffect, useState } from 'react';",
+      "x": 296.3969548430427,
+      "y": -46.35563784235222
+    },
+    {
+      "id": "35375ce7",
+      "type": "file",
+      "path": "src/components/HierarchicalGraph.jsx",
+      "title": "HierarchicalGraph.jsx",
+      "file_type": "javascript",
+      "tags": [
+        "javascript",
+        "code"
+      ],
+      "first_para": "import React, { useRef, useEffect, useMemo, useState, useCallback } from 'react';",
+      "x": 299.0978823503376,
+      "y": -23.247726201579358
+    }
+  ],
+  "edges": [
+    {
+      "source": "f1a97ccd",
+      "target": "52f9cb9a",
+      "type": "contains"
+    },
+    {
+      "source": "f1a97ccd",
+      "target": "251bb5e0",
+      "type": "contains"
+    },
+    {
+      "source": "f1a97ccd",
+      "target": "dc4f90d3",
+      "type": "contains"
+    },
+    {
+      "source": "f1a97ccd",
+      "target": "fe5382f9",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "53324c3a",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "c2a08dc1",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "a4ce12f5",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "ea76c27d",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "034ad29b",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "b9d31908",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "517bfa03",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "dd2a4070",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "180e3d1c",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "7c042610",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "c5e80327",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "090fb7f9",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "6fa04aed",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "bb62c93b",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "781bd372",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "044b80e3",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "b36cf7bd",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "4175be43",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "8cac3f1c",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "c33bd98e",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "08bf2481",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "9e7fbec4",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "0aa7dd7f",
+      "type": "contains"
+    },
+    {
+      "source": "04c6e90f",
+      "target": "e7890f99",
+      "type": "contains"
+    },
+    {
+      "source": "1e49b5f8",
+      "target": "a0e3597d",
+      "type": "contains"
+    },
+    {
+      "source": "1e49b5f8",
+      "target": "bb1f070f",
+      "type": "contains"
+    },
+    {
+      "source": "1e49b5f8",
+      "target": "c16704a7",
+      "type": "contains"
+    },
+    {
+      "source": "1e49b5f8",
+      "target": "4acf57f6",
+      "type": "contains"
+    },
+    {
+      "source": "1d1a6927",
+      "target": "836b9581",
+      "type": "contains"
+    },
+    {
+      "source": "1d1a6927",
+      "target": "631c93eb",
+      "type": "contains"
+    },
+    {
+      "source": "1d1a6927",
+      "target": "361882b9",
+      "type": "contains"
+    },
+    {
+      "source": "1d1a6927",
+      "target": "d28c6a5e",
+      "type": "contains"
+    },
+    {
+      "source": "1d1a6927",
+      "target": "8be0e521",
+      "type": "contains"
+    },
+    {
+      "source": "1d1a6927",
+      "target": "42f53b7c",
+      "type": "contains"
+    },
+    {
+      "source": "1d1a6927",
+      "target": "f5d784dc",
+      "type": "contains"
+    },
+    {
+      "source": "1d1a6927",
+      "target": "6b523b3e",
+      "type": "contains"
+    },
+    {
+      "source": "1d1a6927",
+      "target": "7e6c2c9c",
+      "type": "contains"
+    },
+    {
+      "source": "f7a0c0cb",
+      "target": "0c57d04d",
+      "type": "contains"
+    },
+    {
+      "source": "f7a0c0cb",
+      "target": "5607208d",
+      "type": "contains"
+    },
+    {
+      "source": "f7a0c0cb",
+      "target": "d370e240",
+      "type": "contains"
+    },
+    {
+      "source": "f7a0c0cb",
+      "target": "f6baec8f",
+      "type": "contains"
+    },
+    {
+      "source": "f7a0c0cb",
+      "target": "ec0c131a",
+      "type": "contains"
+    },
+    {
+      "source": "a9250f40",
+      "target": "143f940c",
+      "type": "contains"
+    },
+    {
+      "source": "a9250f40",
+      "target": "76c3be78",
+      "type": "contains"
+    },
+    {
+      "source": "a9250f40",
+      "target": "372c3a99",
+      "type": "contains"
+    },
+    {
+      "source": "a9250f40",
+      "target": "ffbbc53e",
+      "type": "contains"
+    },
+    {
+      "source": "a9250f40",
+      "target": "e72d1e19",
+      "type": "contains"
+    },
+    {
+      "source": "a9250f40",
+      "target": "198be26d",
+      "type": "contains"
+    },
+    {
+      "source": "50237007",
+      "target": "35e5cc56",
+      "type": "contains"
+    },
+    {
+      "source": "50237007",
+      "target": "8742213d",
+      "type": "contains"
+    },
+    {
+      "source": "50237007",
+      "target": "0d4610d6",
+      "type": "contains"
+    },
+    {
+      "source": "50237007",
+      "target": "4d3324d8",
+      "type": "contains"
+    },
+    {
+      "source": "50237007",
+      "target": "1d0f75c2",
+      "type": "contains"
+    },
+    {
+      "source": "50237007",
+      "target": "fc656687",
+      "type": "contains"
+    },
+    {
+      "source": "50237007",
+      "target": "dcff47a6",
+      "type": "contains"
+    },
+    {
+      "source": "50237007",
+      "target": "a6140378",
+      "type": "contains"
+    },
+    {
+      "source": "50237007",
+      "target": "961451d3",
+      "type": "contains"
+    },
+    {
+      "source": "50237007",
+      "target": "c3096b64",
+      "type": "contains"
+    },
+    {
+      "source": "50237007",
+      "target": "0a61b49e",
+      "type": "contains"
+    },
+    {
+      "source": "50237007",
+      "target": "6683267f",
+      "type": "contains"
+    },
+    {
+      "source": "50237007",
+      "target": "f0e9becf",
+      "type": "contains"
+    },
+    {
+      "source": "50237007",
+      "target": "f78129ad",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "b54257f1",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "c7690ffa",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "dfffbe04",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "e150e4c8",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "e05b9983",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "d93dc0d8",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "120b7918",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "a67debb5",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "fce88a46",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "c05385a6",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "70ddcb8e",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "d2c686e4",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "5a534ce8",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "c03e3848",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "dcfc2001",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "03776c5d",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "b184c16a",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "26e72fba",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "0e3159eb",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "4da6b628",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "8309f6a1",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "148a3393",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "7d5be8ec",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "f12e501a",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "9dde911b",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "8eae13ed",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "7e6b6b81",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "143b36fa",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "4a8692e5",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "fca067b5",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "7544e02a",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "dbed38ac",
+      "type": "contains"
+    },
+    {
+      "source": "de39e9e7",
+      "target": "df445c28",
+      "type": "contains"
+    },
+    {
+      "source": "c0cacee6",
+      "target": "30aba34c",
+      "type": "defines"
+    },
+    {
+      "source": "c0cacee6",
+      "target": "f155eacf",
+      "type": "defines"
+    },
+    {
+      "source": "c0cacee6",
+      "target": "7610ab6d",
+      "type": "defines"
+    },
+    {
+      "source": "c0cacee6",
+      "target": "525d36df",
+      "type": "defines"
+    },
+    {
+      "source": "c0cacee6",
+      "target": "c2494d51",
+      "type": "defines"
+    },
+    {
+      "source": "c0cacee6",
+      "target": "ebe60de8",
+      "type": "defines"
+    },
+    {
+      "source": "c0cacee6",
+      "target": "57d43bf0",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "5847616d",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "1b847e03",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "533fb474",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "7da3b489",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "4c8bb381",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "60bbdcc7",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "f341d310",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "1f4df31e",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "364a8c1f",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "8714e3db",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "3c3fd71d",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "455f8ac0",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "7ac76620",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "830a3d0d",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "6fec7c93",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "8fc1580c",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "6ea598cf",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "ac119670",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "bf8c91b8",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "eeb9843f",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "c4c1c537",
+      "type": "defines"
+    },
+    {
+      "source": "8411f003",
+      "target": "f10095ad",
+      "type": "defines"
+    },
+    {
+      "source": "b69fd6d5",
+      "target": "3295ed31",
+      "type": "defines"
+    },
+    {
+      "source": "b69fd6d5",
+      "target": "17528bff",
+      "type": "defines"
+    },
+    {
+      "source": "b69fd6d5",
+      "target": "ab30c475",
+      "type": "defines"
+    },
+    {
+      "source": "b69fd6d5",
+      "target": "d5b1dc7e",
+      "type": "defines"
+    },
+    {
+      "source": "b69fd6d5",
+      "target": "2935bda4",
+      "type": "defines"
+    },
+    {
+      "source": "20b2a145",
+      "target": "dabd37e7",
+      "type": "defines"
+    },
+    {
+      "source": "20b2a145",
+      "target": "b948f369",
+      "type": "defines"
+    },
+    {
+      "source": "176b8e5f",
+      "target": "888443fc",
+      "type": "defines"
+    },
+    {
+      "source": "176b8e5f",
+      "target": "a53efe9e",
+      "type": "defines"
+    },
+    {
+      "source": "176b8e5f",
+      "target": "28a66c20",
+      "type": "defines"
+    },
+    {
+      "source": "176b8e5f",
+      "target": "f56dbd67",
+      "type": "defines"
+    },
+    {
+      "source": "176b8e5f",
+      "target": "21a1177d",
+      "type": "defines"
+    },
+    {
+      "source": "176b8e5f",
+      "target": "b3d35661",
+      "type": "defines"
+    },
+    {
+      "source": "aac65fcb",
+      "target": "b4db65de",
+      "type": "defines"
+    },
+    {
+      "source": "aac65fcb",
+      "target": "1fd2e4bc",
+      "type": "defines"
+    },
+    {
+      "source": "aac65fcb",
+      "target": "84d29e85",
+      "type": "defines"
+    },
+    {
+      "source": "aac65fcb",
+      "target": "87191ab7",
+      "type": "defines"
+    },
+    {
+      "source": "aac65fcb",
+      "target": "db4c4d95",
+      "type": "defines"
+    },
+    {
+      "source": "aac65fcb",
+      "target": "6afea43c",
+      "type": "defines"
+    },
+    {
+      "source": "9eb0df36",
+      "target": "b98bd58f",
+      "type": "defines"
+    },
+    {
+      "source": "9eb0df36",
+      "target": "728f6506",
+      "type": "defines"
+    },
+    {
+      "source": "1389e6e4",
+      "target": "60fc5f95",
+      "type": "defines"
+    },
+    {
+      "source": "1389e6e4",
+      "target": "acb58bd8",
+      "type": "defines"
+    },
+    {
+      "source": "1389e6e4",
+      "target": "0fc1679b",
+      "type": "defines"
+    },
+    {
+      "source": "1389e6e4",
+      "target": "5f8a124a",
+      "type": "defines"
+    },
+    {
+      "source": "1389e6e4",
+      "target": "702f326b",
+      "type": "defines"
+    },
+    {
+      "source": "1389e6e4",
+      "target": "a334841b",
+      "type": "defines"
+    },
+    {
+      "source": "1389e6e4",
+      "target": "ad11e446",
+      "type": "defines"
+    },
+    {
+      "source": "1389e6e4",
+      "target": "5e9dbd1b",
+      "type": "defines"
+    },
+    {
+      "source": "157bcd3d",
+      "target": "26557482",
+      "type": "defines"
+    },
+    {
+      "source": "157bcd3d",
+      "target": "9436cc8a",
+      "type": "defines"
+    },
+    {
+      "source": "157bcd3d",
+      "target": "2b7457b6",
+      "type": "defines"
+    },
+    {
+      "source": "157bcd3d",
+      "target": "92ec4aa8",
+      "type": "defines"
+    },
+    {
+      "source": "157bcd3d",
+      "target": "f39757f6",
+      "type": "defines"
+    },
+    {
+      "source": "157bcd3d",
+      "target": "b670d443",
+      "type": "defines"
+    },
+    {
+      "source": "157bcd3d",
+      "target": "1bd54599",
+      "type": "defines"
+    },
+    {
+      "source": "fe53cecc",
+      "target": "a06a7f32",
+      "type": "defines"
+    },
+    {
+      "source": "fe53cecc",
+      "target": "f35f802f",
+      "type": "defines"
+    },
+    {
+      "source": "fe53cecc",
+      "target": "ff21d379",
+      "type": "defines"
+    },
+    {
+      "source": "fe53cecc",
+      "target": "97ff0dcf",
+      "type": "defines"
+    },
+    {
+      "source": "fe53cecc",
+      "target": "49c4539f",
+      "type": "defines"
+    },
+    {
+      "source": "fe53cecc",
+      "target": "8a69b66c",
+      "type": "defines"
+    },
+    {
+      "source": "fe53cecc",
+      "target": "25b736b0",
+      "type": "defines"
+    },
+    {
+      "source": "dd1443d3",
+      "target": "717dbcc8",
+      "type": "defines"
+    },
+    {
+      "source": "dd1443d3",
+      "target": "92e11691",
+      "type": "defines"
+    },
+    {
+      "source": "dd1443d3",
+      "target": "dc681811",
+      "type": "defines"
+    },
+    {
+      "source": "dd1443d3",
+      "target": "7f371386",
+      "type": "defines"
+    },
+    {
+      "source": "dd1443d3",
+      "target": "a59eea8c",
+      "type": "defines"
+    },
+    {
+      "source": "dd1443d3",
+      "target": "c27fa4e0",
+      "type": "defines"
+    },
+    {
+      "source": "55a9f151",
+      "target": "0a7d4605",
+      "type": "defines"
+    },
+    {
+      "source": "55a9f151",
+      "target": "8b6348e3",
+      "type": "defines"
+    },
+    {
+      "source": "55a9f151",
+      "target": "400780bb",
+      "type": "defines"
+    },
+    {
+      "source": "55a9f151",
+      "target": "731bbfa0",
+      "type": "defines"
+    },
+    {
+      "source": "55a9f151",
+      "target": "3041982a",
+      "type": "defines"
+    },
+    {
+      "source": "55a9f151",
+      "target": "5ae7e7c3",
+      "type": "defines"
+    },
+    {
+      "source": "55a9f151",
+      "target": "f893bf5a",
+      "type": "defines"
+    },
+    {
+      "source": "55a9f151",
+      "target": "7be6b3b1",
+      "type": "defines"
+    },
+    {
+      "source": "55a9f151",
+      "target": "c4b6c265",
+      "type": "defines"
+    },
+    {
+      "source": "55a9f151",
+      "target": "ae078076",
+      "type": "defines"
+    },
+    {
+      "source": "55a9f151",
+      "target": "c88ecf5f",
+      "type": "defines"
+    },
+    {
+      "source": "55a9f151",
+      "target": "b2a169c1",
+      "type": "defines"
+    },
+    {
+      "source": "55a9f151",
+      "target": "64cd01a5",
+      "type": "defines"
+    },
+    {
+      "source": "55a9f151",
+      "target": "dd640c9d",
+      "type": "defines"
+    },
+    {
+      "source": "55a9f151",
+      "target": "895093ff",
+      "type": "defines"
+    },
+    {
+      "source": "abe8f5c4",
+      "target": "c2fc7e0e",
+      "type": "defines"
+    },
+    {
+      "source": "abe8f5c4",
+      "target": "b0044b44",
+      "type": "defines"
+    },
+    {
+      "source": "abe8f5c4",
+      "target": "ce21c445",
+      "type": "defines"
+    },
+    {
+      "source": "abe8f5c4",
+      "target": "3ef8624d",
+      "type": "defines"
+    },
+    {
+      "source": "abe8f5c4",
+      "target": "a78ac25e",
+      "type": "defines"
+    },
+    {
+      "source": "abe8f5c4",
+      "target": "63f9e228",
+      "type": "defines"
+    },
+    {
+      "source": "abe8f5c4",
+      "target": "3b6abfe9",
+      "type": "defines"
+    },
+    {
+      "source": "abe8f5c4",
+      "target": "2f361ac1",
+      "type": "defines"
+    },
+    {
+      "source": "abe8f5c4",
+      "target": "ee0080e5",
+      "type": "defines"
+    },
+    {
+      "source": "abe8f5c4",
+      "target": "be2e9036",
+      "type": "defines"
+    },
+    {
+      "source": "abe8f5c4",
+      "target": "fdbf267b",
+      "type": "defines"
+    },
+    {
+      "source": "abe8f5c4",
+      "target": "23081acd",
+      "type": "defines"
+    },
+    {
+      "source": "abe8f5c4",
+      "target": "15641d4e",
+      "type": "defines"
+    },
+    {
+      "source": "abe8f5c4",
+      "target": "9483cb2c",
+      "type": "defines"
+    },
+    {
+      "source": "abe8f5c4",
+      "target": "ef4c3b87",
+      "type": "defines"
+    },
+    {
+      "source": "b446e62d",
+      "target": "c46626fe",
+      "type": "defines"
+    },
+    {
+      "source": "683fe2c7",
+      "target": "d0ad7ec1",
+      "type": "defines"
+    },
+    {
+      "source": "683fe2c7",
+      "target": "750f25e8",
+      "type": "defines"
+    },
+    {
+      "source": "683fe2c7",
+      "target": "84b9f2c1",
+      "type": "defines"
+    },
+    {
+      "source": "683fe2c7",
+      "target": "89268f20",
+      "type": "defines"
+    },
+    {
+      "source": "683fe2c7",
+      "target": "5bac1a47",
+      "type": "defines"
+    },
+    {
+      "source": "683fe2c7",
+      "target": "867e72a5",
+      "type": "defines"
+    },
+    {
+      "source": "683fe2c7",
+      "target": "7458d4a5",
+      "type": "defines"
+    },
+    {
+      "source": "683fe2c7",
+      "target": "f79273ce",
+      "type": "defines"
+    },
+    {
+      "source": "683fe2c7",
+      "target": "a61ee1d8",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "3ae974be",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "60369c87",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "3b1c1061",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "1cc01643",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "4b4ee6fb",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "aad7bc7d",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "edaf7072",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "ab40fb8b",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "088999f1",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "a0380f0f",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "4eff0abb",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "dfa4b2de",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "6130b5ef",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "12ae444e",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "756aba45",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "fdd7ad21",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "d6e1ae88",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "d958136d",
+      "type": "defines"
+    },
+    {
+      "source": "7bdac891",
+      "target": "d634d2de",
+      "type": "defines"
+    },
+    {
+      "source": "a8ab3956",
+      "target": "afdf4f46",
+      "type": "defines"
+    },
+    {
+      "source": "a8ab3956",
+      "target": "16790244",
+      "type": "defines"
+    },
+    {
+      "source": "a8ab3956",
+      "target": "1040b102",
+      "type": "defines"
+    },
+    {
+      "source": "a8ab3956",
+      "target": "5d661689",
+      "type": "defines"
+    },
+    {
+      "source": "a5219a38",
+      "target": "d552fafa",
+      "type": "defines"
+    },
+    {
+      "source": "a5219a38",
+      "target": "26228ba7",
+      "type": "defines"
+    },
+    {
+      "source": "a5219a38",
+      "target": "6ef6d3d0",
+      "type": "defines"
+    },
+    {
+      "source": "a5219a38",
+      "target": "e7c838e2",
+      "type": "defines"
+    },
+    {
+      "source": "a5219a38",
+      "target": "e115396c",
+      "type": "defines"
+    },
+    {
+      "source": "a5219a38",
+      "target": "ebd9d6e9",
+      "type": "defines"
+    },
+    {
+      "source": "a5219a38",
+      "target": "6d2c0564",
+      "type": "defines"
+    },
+    {
+      "source": "a5219a38",
+      "target": "96394ab9",
+      "type": "defines"
+    },
+    {
+      "source": "a5219a38",
+      "target": "f7c018f9",
+      "type": "defines"
+    },
+    {
+      "source": "a5219a38",
+      "target": "40a08153",
+      "type": "defines"
+    },
+    {
+      "source": "a5219a38",
+      "target": "a24c295b",
+      "type": "defines"
+    },
+    {
+      "source": "a4570ff3",
+      "target": "d8eb086b",
+      "type": "defines"
+    },
+    {
+      "source": "a4570ff3",
+      "target": "82e91a44",
+      "type": "defines"
+    },
+    {
+      "source": "a4570ff3",
+      "target": "365e080e",
+      "type": "defines"
+    },
+    {
+      "source": "a4570ff3",
+      "target": "ca3b53a6",
+      "type": "defines"
+    },
+    {
+      "source": "a4570ff3",
+      "target": "efcc854e",
+      "type": "defines"
+    },
+    {
+      "source": "a4570ff3",
+      "target": "bf3d1b39",
+      "type": "defines"
+    },
+    {
+      "source": "a4570ff3",
+      "target": "6e8047cf",
+      "type": "defines"
+    },
+    {
+      "source": "a4570ff3",
+      "target": "72dced55",
+      "type": "defines"
+    },
+    {
+      "source": "a4570ff3",
+      "target": "8e6c0fd3",
+      "type": "defines"
+    },
+    {
+      "source": "a4570ff3",
+      "target": "f440a2ad",
+      "type": "defines"
+    },
+    {
+      "source": "a4570ff3",
+      "target": "9de914f2",
+      "type": "defines"
+    },
+    {
+      "source": "a4570ff3",
+      "target": "5a5745d7",
+      "type": "defines"
+    },
+    {
+      "source": "6a832ec0",
+      "target": "18621249",
+      "type": "defines"
+    },
+    {
+      "source": "6a832ec0",
+      "target": "9ed5dbad",
+      "type": "defines"
+    },
+    {
+      "source": "6a832ec0",
+      "target": "76997740",
+      "type": "defines"
+    },
+    {
+      "source": "6a832ec0",
+      "target": "c8a5b7c0",
+      "type": "defines"
+    },
+    {
+      "source": "d11ab4b7",
+      "target": "69e7ea7e",
+      "type": "defines"
+    },
+    {
+      "source": "d11ab4b7",
+      "target": "78ff4acc",
+      "type": "defines"
+    },
+    {
+      "source": "d11ab4b7",
+      "target": "a7f01fe4",
+      "type": "defines"
+    },
+    {
+      "source": "d11ab4b7",
+      "target": "d35dbded",
+      "type": "defines"
+    },
+    {
+      "source": "d11ab4b7",
+      "target": "10b22aa8",
+      "type": "defines"
+    },
+    {
+      "source": "d11ab4b7",
+      "target": "9cc0012f",
+      "type": "defines"
+    },
+    {
+      "source": "d11ab4b7",
+      "target": "0f7baf34",
+      "type": "defines"
+    },
+    {
+      "source": "d11ab4b7",
+      "target": "7712ee2d",
+      "type": "defines"
+    },
+    {
+      "source": "d11ab4b7",
+      "target": "19cfa4be",
+      "type": "defines"
+    },
+    {
+      "source": "d11ab4b7",
+      "target": "6c216cc1",
+      "type": "defines"
+    },
+    {
+      "source": "d11ab4b7",
+      "target": "243a8151",
+      "type": "defines"
+    },
+    {
+      "source": "d11ab4b7",
+      "target": "742c933f",
+      "type": "defines"
+    },
+    {
+      "source": "d11ab4b7",
+      "target": "1c732f3e",
+      "type": "defines"
+    },
+    {
+      "source": "02bb9126",
+      "target": "04948468",
+      "type": "defines"
+    },
+    {
+      "source": "02bb9126",
+      "target": "1bb4b2ea",
+      "type": "defines"
+    },
+    {
+      "source": "02bb9126",
+      "target": "ae8f4e60",
+      "type": "defines"
+    },
+    {
+      "source": "02bb9126",
+      "target": "15081113",
+      "type": "defines"
+    },
+    {
+      "source": "02bb9126",
+      "target": "bd519a61",
+      "type": "defines"
+    },
+    {
+      "source": "d84c0a30",
+      "target": "47938fe8",
+      "type": "defines"
+    },
+    {
+      "source": "d84c0a30",
+      "target": "1951096e",
+      "type": "defines"
+    },
+    {
+      "source": "d84c0a30",
+      "target": "d01bad94",
+      "type": "defines"
+    },
+    {
+      "source": "d84c0a30",
+      "target": "5acaabd0",
+      "type": "defines"
+    },
+    {
+      "source": "9494e504",
+      "target": "7b62b8f3",
+      "type": "defines"
+    },
+    {
+      "source": "af6ad3b8",
+      "target": "a17462e5",
+      "type": "defines"
+    },
+    {
+      "source": "f7178fb0",
+      "target": "80a8618b",
+      "type": "defines"
+    },
+    {
+      "source": "f7178fb0",
+      "target": "19ed5cb6",
+      "type": "defines"
+    },
+    {
+      "source": "f7178fb0",
+      "target": "b4f2d013",
+      "type": "defines"
+    },
+    {
+      "source": "f7178fb0",
+      "target": "5f25bc2b",
+      "type": "defines"
+    },
+    {
+      "source": "f7178fb0",
+      "target": "a776901c",
+      "type": "defines"
+    },
+    {
+      "source": "f7178fb0",
+      "target": "c703a4d1",
+      "type": "defines"
+    },
+    {
+      "source": "f7178fb0",
+      "target": "6543854a",
+      "type": "defines"
+    },
+    {
+      "source": "01240f89",
+      "target": "672fae69",
+      "type": "defines"
+    },
+    {
+      "source": "e007c001",
+      "target": "7c8d86f7",
+      "type": "defines"
+    },
+    {
+      "source": "e007c001",
+      "target": "2dc2b995",
+      "type": "defines"
+    },
+    {
+      "source": "834455c5",
+      "target": "2a86a3e8",
+      "type": "defines"
+    },
+    {
+      "source": "834455c5",
+      "target": "714ca2da",
+      "type": "defines"
+    },
+    {
+      "source": "834455c5",
+      "target": "718d8f63",
+      "type": "defines"
+    },
+    {
+      "source": "834455c5",
+      "target": "23fef0e3",
+      "type": "defines"
+    },
+    {
+      "source": "834455c5",
+      "target": "40b3c277",
+      "type": "defines"
+    },
+    {
+      "source": "834455c5",
+      "target": "3d26dc08",
+      "type": "defines"
+    },
+    {
+      "source": "d131df56",
+      "target": "ef56b35a",
+      "type": "defines"
+    }
+  ],
+  "metadata": {
+    "total_nodes": 389,
+    "total_edges": 308,
+    "node_types": [
+      "class",
+      "file",
+      "heading",
+      "function"
+    ],
+    "file_types": [
+      "markdown",
+      "python",
+      "unknown",
+      "javascript"
+    ]
+  }
+}

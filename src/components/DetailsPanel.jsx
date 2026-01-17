@@ -104,7 +104,7 @@ const iconForType = (type) => {
   }
 };
 
-export const DetailsPanel = ({ node, onClose, scan, relations = [], bookmarked = false, onToggleBookmark }) => {
+export const DetailsPanel = ({ node, onClose, scan, relations = [], bookmarked = false, onToggleBookmark, locked = false, onToggleLock }) => {
   const technologies = useMemo(() => extractTechnologies(node), [node]);
   const vulnerabilities = useMemo(() => extractVulnerabilities(node), [node]);
 
@@ -402,6 +402,17 @@ export const DetailsPanel = ({ node, onClose, scan, relations = [], bookmarked =
                 title={bookmarked ? 'Remove bookmark' : 'Bookmark node'}
               >
                 {bookmarked ? '★' : '☆'}
+              </button>
+            ) : null}
+            {typeof onToggleLock === 'function' ? (
+              <button
+                type="button"
+                className={`dp-lock ${locked ? 'active' : ''}`}
+                onClick={() => onToggleLock(node)}
+                aria-label={locked ? 'Unlock node (enable physics)' : 'Lock node (disable physics)'}
+                title={locked ? 'Unlock node (enable physics)' : 'Lock node (disable physics)'}
+              >
+                {locked ? '🔒' : '🔓'}
               </button>
             ) : null}
             <button type="button" className="dp-close" onClick={onClose} aria-label="Close details panel">×</button>

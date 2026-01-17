@@ -122,29 +122,131 @@ def absolute_url(base: str, href: str) -> str:
         return href
 
 
+_ATTR_RE = re.compile(
+    r"([A-Za-z_:][-A-Za-z0-9_:.]*)\s*=\s*(?:\"([^\"]*)\"|'([^']*)'|([^\s\"'>]+))",
+    re.I,
+)
+
+
+def _parse_rel_tokens(rel_value) -> set:
+    if not rel_value:
+        return set()
+    if isinstance(rel_value, (list, tuple)):
+        return {str(x).strip().lower() for x in rel_value if str(x).strip()}
+    return {t.strip().lower() for t in str(rel_value).split() if t.strip()}
+
+
+def _is_feed_mime(mime_value: str) -> bool:
+    v = (mime_value or "").split(";", 1)[0].strip().lower()
+    if not v:
+        return False
+    return (
+        "application/rss+xml" in v
+        or "application/atom+xml" in v
+        or "application/feed+xml" in v
+        or "application/rdf+xml" in v
+        or v.endswith("/rss+xml")
+        or v.endswith("/atom+xml")
+    )
+
+
+def _extract_base_href_bs4(soup, fallback_base_url: str) -> str:
+    try:
+        base_tag = soup.find("base")
+        if not base_tag:
+            return fallback_base_url
+        href = base_tag.get("href")
+        if not href:
+            return fallback_base_url
+        resolved = absolute_url(fallback_base_url, str(href))
+        return resolved if is_http_url(resolved) else fallback_base_url
+    except Exception:
+        return fallback_base_url
+
+
+def _extract_base_href_regex(html: str, fallback_base_url: str) -> str:
+    try:
+        m = re.search(r"<base\b[^>]*\bhref\s*=\s*(['\"])(.*?)\1", html, re.I | re.S)
+        if not m:
+            return fallback_base_url
+        resolved = absolute_url(fallback_base_url, m.group(2).strip())
+        return resolved if is_http_url(resolved) else fallback_base_url
+    except Exception:
+        return fallback_base_url
+
+
 def extract_links(html: str, base_url: str):
+    """
+    Returns (urls, feed_urls).
+
+    feed_urls captures HTML feed hints such as:
+      <link rel="alternate" type="application/rss+xml" href="...">
+    """
     urls = set()
+    feed_urls = set()
+
+    resolved_base_url = base_url
     if BeautifulSoup is not None:
         try:
-            soup = BeautifulSoup(html, 'html.parser')
+            soup = BeautifulSoup(html, "html.parser")
+            resolved_base_url = _extract_base_href_bs4(soup, base_url)
+
+            # High-confidence feed discovery via <link rel="alternate" type="application/(rss|atom)+xml" ...>
+            for tag in soup.find_all("link"):
+                href = tag.get("href")
+                if not href:
+                    continue
+                rel_tokens = _parse_rel_tokens(tag.get("rel"))
+                mime = str(tag.get("type") or "")
+                if ("alternate" in rel_tokens or "feed" in rel_tokens) and _is_feed_mime(mime):
+                    u = absolute_url(resolved_base_url, str(href))
+                    if is_http_url(u):
+                        feed_urls.add(u)
+                        urls.add(u)
+
             attrs = ("href", "src", "action", "data", "poster")
             for tag in soup.find_all(True):
                 for a in attrs:
                     v = tag.get(a)
                     if not v:
                         continue
-                    u = absolute_url(base_url, str(v))
+                    u = absolute_url(resolved_base_url, str(v))
                     if is_http_url(u):
                         urls.add(u)
         except Exception:
             pass
-    # fallback: basic regex for href/src
+
+    # Fallback: basic regex for href/src
     if not urls:
+        resolved_base_url = _extract_base_href_regex(html, base_url)
         for m in re.finditer(r"(?:href|src)\s*=\s*['\"]([^'\"]+)['\"]", html, re.I):
-            u = absolute_url(base_url, m.group(1))
+            u = absolute_url(resolved_base_url, m.group(1))
             if is_http_url(u):
                 urls.add(u)
-    return urls
+
+    # Fallback feed discovery (attribute order-independent)
+    if not feed_urls:
+        resolved_base_url = _extract_base_href_regex(html, resolved_base_url)
+        for m in re.finditer(r"<link\b[^>]*>", html, re.I):
+            tag = m.group(0)
+            attrs = {}
+            for am in _ATTR_RE.finditer(tag):
+                k = (am.group(1) or "").strip().lower()
+                v = am.group(2) or am.group(3) or am.group(4) or ""
+                if k and v:
+                    attrs[k] = v.strip()
+            href = attrs.get("href") or ""
+            if not href:
+                continue
+            rel_tokens = _parse_rel_tokens(attrs.get("rel"))
+            mime = attrs.get("type") or ""
+            if ("alternate" in rel_tokens or "feed" in rel_tokens) and _is_feed_mime(mime):
+                u = absolute_url(resolved_base_url, href)
+                if is_http_url(u):
+                    feed_urls.add(u)
+                    urls.add(u)
+
+    return urls, feed_urls
 
 
 def extract_search_targets(html: str):
@@ -408,7 +510,7 @@ def crawl(
         # Track this page (canonical)
         pages.add(effective_url or url)
 
-        links = extract_links(html, base_url)
+        links, feed_links = extract_links(html, base_url)
 
         # Seeded query variants are *recorded* but not expanded.
         if seed_queries:
@@ -445,7 +547,9 @@ def crawl(
             h_html, h_requests = headless_discover(base_url)
             if h_html:
                 try:
-                    links.update(extract_links(h_html, base_url))
+                    h_links, h_feed_links = extract_links(h_html, base_url)
+                    links.update(h_links)
+                    feed_links.update(h_feed_links)
                 except Exception:
                     pass
             for req in h_requests or []:
@@ -453,6 +557,15 @@ def crawl(
 
         parent_canonical = canonical_url(base_url, base_url, remove_tracking=remove_tracking) or (effective_url or url)
         parent_depth = int(discovered.get(parent_canonical, discovered.get(url, {})).get("depth", 0))
+
+        feed_canonical = set()
+        for f in feed_links:
+            try:
+                cf = canonical_url(f, base_url, remove_tracking=remove_tracking)
+            except Exception:
+                cf = ""
+            if cf:
+                feed_canonical.add(cf)
 
         for link in links:
             cu = canonical_url(link, base_url, remove_tracking=remove_tracking)
@@ -466,7 +579,10 @@ def crawl(
             if not host or not _host_in_scope(host, apex):
                 continue
 
-            kind = classify_url(cu) if classify_url is not None else "page"
+            if cu in feed_canonical:
+                kind = "feed"
+            else:
+                kind = classify_url(cu) if classify_url is not None else "page"
 
             if kind == "asset":
                 assets.add(cu)
@@ -574,11 +690,24 @@ def main():
     # Build start URLs for http/https if scheme missing
     parsed = urlparse(target)
     if parsed.scheme:
-        start = [target]
         host = parsed.hostname or target
+        start = [target]
     else:
         host = target
         start = [f"https://{host}", f"http://{host}"]
+
+    # Many sites only resolve/serve on www.<domain>. Try it automatically for bare host targets.
+    try:
+        h = (host or "").strip()
+        if h and not h.lower().startswith("www."):
+            if is_ip_hostname is None or not is_ip_hostname(h):
+                start.extend([f"https://www.{h}", f"http://www.{h}"])
+    except Exception:
+        pass
+
+    # De-dupe while keeping order
+    seen = set()
+    start = [u for u in start if u and (u not in seen and not seen.add(u))]
 
     apex = apex_of(host)
 

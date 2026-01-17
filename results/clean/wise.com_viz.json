@@ -1,0 +1,4267 @@
+{
+  "website": {
+    "url": "wise.com",
+    "name": "wise.com"
+  },
+  "nodes": [
+    {
+      "value": "wise.com",
+      "type": "domain",
+      "label": "wise.com",
+      "id": "wise.com",
+      "group": "domain",
+      "status": 200,
+      "size": 0,
+      "meta": {
+        "status": 200,
+        "size": 0,
+        "ip": "104.18.39.116",
+        "response_time_ms": 15886,
+        "headers": {
+          "Date": "Mon, 12 Jan 2026 09:22:28 GMT",
+          "Content-Type": "text/html; charset=utf-8",
+          "Transfer-Encoding": "chunked",
+          "Connection": "keep-alive",
+          "CF-RAY": "9bcb96ed78aa32a8-AMM",
+          "x-xss-protection": "0",
+          "x-download-options": "noopen",
+          "x-content-type-options": "nosniff",
+          "content-security-policy": "report-uri /csp;child-src 'self' 'self' blob:;connect-src *;default-src 'self';img-src 'self' data: blob: *.facebook.com https://wise.com https://gtm.wise.com https://sst.wise.com https://tw-avatar.s3.eu-central-1.amazonaws.com https://tw-test-avatar-storage.s3.eu-west-1.amazonaws.com https://*.doubleclick.net https://www.googleadservices.com https://alb.reddit.com https://*.yahoo.co.jp https://bat.bing.com https://cx.atdmt.com https://daw291njkc3ao.cloudfront.net https://dq8dwmysp7hk1.cloudfront.net https://d2dgj1jjqgsb96.cloudfront.net https://help.wise.com/ https://platform-lookaside.fbsbx.com https://pixel.pointmediatracker.com https://cnv.event.prod.bidr.io https://q.quora.com https://s3-eu-west-1.amazonaws.com https://t.co https://wise.desk.com https://widgets.wise.com https://www.google-analytics.com https://www.gstatic.com https://i.ytimg.com https://px.ads.linkedin.com https://www.linkedin.com https://aax-eu.amazon-adsystem.com https://www.googletagmanager.com https://www.google.com https://www.google.com.au https://www.google.com.br https://www.google.com.sg https://www.google.com.ph https://www.google.com.my https://www.google.com.mx https://www.google.com.ua https://www.google.com.vn https://www.google.com.tr https://www.google.com.ar https://www.google.com.hk https://www.google.com.pk https://www.google.com.pe https://www.google.com.ng https://www.google.com.cy https://www.google.com.mt https://www.google.com.bd https://www.google.com.eg https://www.google.co.uk https://www.google.co.th https://www.google.co.jp https://www.google.co.nz https://www.google.co.id https://www.google.co.kr https://www.google.co.ve https://www.google.co.in https://www.google.co.il https://www.google.co.za https://www.google.de https://www.google.ca https://www.google.es https://www.google.pl https://www.google.ie https://www.google.ch https://www.google.pt https://www.google.nl https://www.google.it https://www.google.hu https://www.google.fr https://www.google.be https://www.google.ro https://www.google.fi https://www.google.cl https://www.google.cz https://www.google.ae https://www.google.lu https://www.google.se https://www.google.ru https://www.google.at https://www.google.bg https://www.google.ee https://www.google.dk https://www.google.no https://www.google.gr https://www.google.sk https://www.google.lt https://www.google.lv https://www.google.ge https://www.google.hr https://www.google.me *.googleusercontent.com *.analytics.google.com http://wi.se https://wi.se https://collector-20079.tvsquared.com https://analytics.twitter.com https://tr.line.me https://c5.adalyser.com https://c0.adalyser.com https://i.sng.link https://pixel.pointmediatracker.com https://cnv.event.prod.bidr.io https://lux.speedcurve.com https://forms-eu1.hsforms.com/ https://analytics.google.com/g/s/collect;font-src 'self' data: https://fonts.gstatic.com https://widgets.wise.com/;object-src 'self';media-src 'self' 'self' data: https://wise.com/;manifest-src 'self' 'self';script-src 'self' 'unsafe-inline' 'unsafe-eval' 'self' https://wise.com https://sst.wise.com https://gtm.wise.com https://*.singular.net https://i.sng.link https://js-agent.newrelic.com https://bam.nr-data.net/ https://ajax.cloudflare.com bat.bing.com https://s.yimg.jp https://*.yahoo.co.jp a.quora.com static.hotjar.com https://script.hotjar.com/ https://collector-20079.tvsquared.com https://d.line-scdn.net www.google.co.uk www.google.com www.googletagmanager.com/ tagmanager.google.com/ https://storage.googleapis.com https://ajax.googleapis.com/ https://microapps.google.com https://microapps-prod-tt.sandbox.google.com googleads.g.doubleclick.net www.google-analytics.com www.googleadservices.com static.ads-twitter.com analytics.twitter.com www.snapengage.com insitez.blob.core.windows.net sjs.bizographics.com *.mxpnl.com https://cdn.pdst.fm https://us-central1-adaptive-growth.cloudfunctions.net https://bidr.io https://d2dgj1jjqgsb96.cloudfront.net https://www.redditstatic.com/ads/pixel.js https://snap.licdn.com https://js.adsrvr.org https://c5.adalyser.com https://c0.adalyser.com https://c.amazon-adsystem.com https://js-eu1.hs-scripts.com https://transferwise.com https://bidr.io https://cdn.speedcurve.com https://lux.speedcurve.com https://js-eu1.hsforms.net https://challenges.cloudflare.com https://www.youtube.com;style-src 'self' 'unsafe-inline' blob: fonts.googleapis.com/css tagmanager.google.com/;frame-ancestors 'self' https://wiseturkiye.com.tr https://microapps.google.com https://microapps-prod-tt.sandbox.google.com;frame-src youtube.com www.youtube.com www.youtube-nocookie.com https://vars.hotjar.com https://bid.g.doubleclick.net https://www.googletagmanager.com https://insight.adsrvr.org https://match.adsrvr.org https://wise.com https://gtm.wise.com https://transferwise.com https://wise.navattic.com https://js-eu1.hsforms.net https://forms-eu1.hsforms.com/ https://challenges.cloudflare.com;worker-src 'self' blob:;form-action 'self' https://forms-eu1.hsforms.com/;base-uri 'self';script-src-attr 'none';upgrade-insecure-requests",
+          "permissions-policy": "ch-ua-model=(\"https://sdk-api-v1.singular.net\"),ch-ua-platform-version=(\"https://sdk-api-v1.singular.net\"),ch-ua-full-version-list=(\"https://sdk-api-v1.singular.net\")",
+          "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+          "x-powered-by": "Next.js",
+          "etag": "\"pcujsrhq55i78v\"",
+          "content-encoding": "gzip",
+          "x-envoy-upstream-service-time": "723",
+          "x-envoy-attempt-count": "1",
+          "vary": "Accept-Encoding",
+          "set-cookie": "appToken=dad99d7d8e52c2c8aaf9fda788d8acdc; Max-Age=86400; Path=/; Expires=Tue, 13 Jan 2026 09:22:28 GMT; HttpOnly; Secure; SameSite=None, gid=0e405ceb-51cf-4700-bc24-180b3cfc5a2a; Max-Age=31536000; Path=/; Expires=Tue, 12 Jan 2027 09:22:28 GMT; Secure; SameSite=None; SameSite=None, __cf_bm=8obO_twv4a_kwiJ_r5OO5tXUm5CKLhvv0Grhnbr2784-1768209748-1.0.1.1-qPytmaapY_zDAVUG6_zYabV3bg4UsdE5f402Zb_U44MvwNi_jZ4KSYt4_RJsVD7JYW85Yrzqqb3v.1QZ2cvLutFmp49.WJbKMRw1.u2plL0u0X5d.j2hxO2qSnMotCz7; path=/; expires=Mon, 12-Jan-26 09:52:28 GMT; domain=.wise.com; HttpOnly; Secure; SameSite=None",
+          "cf-cache-status": "DYNAMIC",
+          "Strict-Transport-Security": "max-age=31536000",
+          "accept-ch": "Sec-CH-UA-Platform-Version, Sec-CH-UA-Arch, Sec-CH-UA-Model, Sec-CH-UA-Bitness",
+          "Server": "cloudflare",
+          "alt-svc": "h3=\":443\"; ma=86400"
+        },
+        "title": null,
+        "technologies": [
+          "cloudflare"
+        ],
+        "wappalyzer": {
+          "error": "wappalyzer not installed"
+        }
+      },
+      "headers": [
+        {
+          "key": "Date",
+          "value": "Mon, 12 Jan 2026 09:22:28 GMT"
+        },
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Transfer-Encoding",
+          "value": "chunked"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "key": "CF-RAY",
+          "value": "9bcb96ed78aa32a8-AMM"
+        },
+        {
+          "key": "x-xss-protection",
+          "value": "0"
+        },
+        {
+          "key": "x-download-options",
+          "value": "noopen"
+        },
+        {
+          "key": "x-content-type-options",
+          "value": "nosniff"
+        },
+        {
+          "key": "content-security-policy",
+          "value": "report-uri /csp;child-src 'self' 'self' blob:;connect-src *;default-src 'self';img-src 'self' data: blob: *.facebook.com https://wise.com https://gtm.wise.com https://sst.wise.com https://tw-avatar.s3.eu-central-1.amazonaws.com https://tw-test-avatar-storage.s3.eu-west-1.amazonaws.com https://*.doubleclick.net https://www.googleadservices.com https://alb.reddit.com https://*.yahoo.co.jp https://bat.bing.com https://cx.atdmt.com https://daw291njkc3ao.cloudfront.net https://dq8dwmysp7hk1.cloudfront.net https://d2dgj1jjqgsb96.cloudfront.net https://help.wise.com/ https://platform-lookaside.fbsbx.com https://pixel.pointmediatracker.com https://cnv.event.prod.bidr.io https://q.quora.com https://s3-eu-west-1.amazonaws.com https://t.co https://wise.desk.com https://widgets.wise.com https://www.google-analytics.com https://www.gstatic.com https://i.ytimg.com https://px.ads.linkedin.com https://www.linkedin.com https://aax-eu.amazon-adsystem.com https://www.googletagmanager.com https://www.google.com https://www.google.com.au https://www.google.com.br https://www.google.com.sg https://www.google.com.ph https://www.google.com.my https://www.google.com.mx https://www.google.com.ua https://www.google.com.vn https://www.google.com.tr https://www.google.com.ar https://www.google.com.hk https://www.google.com.pk https://www.google.com.pe https://www.google.com.ng https://www.google.com.cy https://www.google.com.mt https://www.google.com.bd https://www.google.com.eg https://www.google.co.uk https://www.google.co.th https://www.google.co.jp https://www.google.co.nz https://www.google.co.id https://www.google.co.kr https://www.google.co.ve https://www.google.co.in https://www.google.co.il https://www.google.co.za https://www.google.de https://www.google.ca https://www.google.es https://www.google.pl https://www.google.ie https://www.google.ch https://www.google.pt https://www.google.nl https://www.google.it https://www.google.hu https://www.google.fr https://www.google.be https://www.google.ro https://www.google.fi https://www.google.cl https://www.google.cz https://www.google.ae https://www.google.lu https://www.google.se https://www.google.ru https://www.google.at https://www.google.bg https://www.google.ee https://www.google.dk https://www.google.no https://www.google.gr https://www.google.sk https://www.google.lt https://www.google.lv https://www.google.ge https://www.google.hr https://www.google.me *.googleusercontent.com *.analytics.google.com http://wi.se https://wi.se https://collector-20079.tvsquared.com https://analytics.twitter.com https://tr.line.me https://c5.adalyser.com https://c0.adalyser.com https://i.sng.link https://pixel.pointmediatracker.com https://cnv.event.prod.bidr.io https://lux.speedcurve.com https://forms-eu1.hsforms.com/ https://analytics.google.com/g/s/collect;font-src 'self' data: https://fonts.gstatic.com https://widgets.wise.com/;object-src 'self';media-src 'self' 'self' data: https://wise.com/;manifest-src 'self' 'self';script-src 'self' 'unsafe-inline' 'unsafe-eval' 'self' https://wise.com https://sst.wise.com https://gtm.wise.com https://*.singular.net https://i.sng.link https://js-agent.newrelic.com https://bam.nr-data.net/ https://ajax.cloudflare.com bat.bing.com https://s.yimg.jp https://*.yahoo.co.jp a.quora.com static.hotjar.com https://script.hotjar.com/ https://collector-20079.tvsquared.com https://d.line-scdn.net www.google.co.uk www.google.com www.googletagmanager.com/ tagmanager.google.com/ https://storage.googleapis.com https://ajax.googleapis.com/ https://microapps.google.com https://microapps-prod-tt.sandbox.google.com googleads.g.doubleclick.net www.google-analytics.com www.googleadservices.com static.ads-twitter.com analytics.twitter.com www.snapengage.com insitez.blob.core.windows.net sjs.bizographics.com *.mxpnl.com https://cdn.pdst.fm https://us-central1-adaptive-growth.cloudfunctions.net https://bidr.io https://d2dgj1jjqgsb96.cloudfront.net https://www.redditstatic.com/ads/pixel.js https://snap.licdn.com https://js.adsrvr.org https://c5.adalyser.com https://c0.adalyser.com https://c.amazon-adsystem.com https://js-eu1.hs-scripts.com https://transferwise.com https://bidr.io https://cdn.speedcurve.com https://lux.speedcurve.com https://js-eu1.hsforms.net https://challenges.cloudflare.com https://www.youtube.com;style-src 'self' 'unsafe-inline' blob: fonts.googleapis.com/css tagmanager.google.com/;frame-ancestors 'self' https://wiseturkiye.com.tr https://microapps.google.com https://microapps-prod-tt.sandbox.google.com;frame-src youtube.com www.youtube.com www.youtube-nocookie.com https://vars.hotjar.com https://bid.g.doubleclick.net https://www.googletagmanager.com https://insight.adsrvr.org https://match.adsrvr.org https://wise.com https://gtm.wise.com https://transferwise.com https://wise.navattic.com https://js-eu1.hsforms.net https://forms-eu1.hsforms.com/ https://challenges.cloudflare.com;worker-src 'self' blob:;form-action 'self' https://forms-eu1.hsforms.com/;base-uri 'self';script-src-attr 'none';upgrade-insecure-requests"
+        },
+        {
+          "key": "permissions-policy",
+          "value": "ch-ua-model=(\"https://sdk-api-v1.singular.net\"),ch-ua-platform-version=(\"https://sdk-api-v1.singular.net\"),ch-ua-full-version-list=(\"https://sdk-api-v1.singular.net\")"
+        },
+        {
+          "key": "cache-control",
+          "value": "private, no-cache, no-store, max-age=0, must-revalidate"
+        },
+        {
+          "key": "x-powered-by",
+          "value": "Next.js"
+        },
+        {
+          "key": "etag",
+          "value": "\"pcujsrhq55i78v\""
+        },
+        {
+          "key": "content-encoding",
+          "value": "gzip"
+        },
+        {
+          "key": "x-envoy-upstream-service-time",
+          "value": "723"
+        },
+        {
+          "key": "x-envoy-attempt-count",
+          "value": "1"
+        },
+        {
+          "key": "vary",
+          "value": "Accept-Encoding"
+        },
+        {
+          "key": "set-cookie",
+          "value": "appToken=dad99d7d8e52c2c8aaf9fda788d8acdc; Max-Age=86400; Path=/; Expires=Tue, 13 Jan 2026 09:22:28 GMT; HttpOnly; Secure; SameSite=None, gid=0e405ceb-51cf-4700-bc24-180b3cfc5a2a; Max-Age=31536000; Path=/; Expires=Tue, 12 Jan 2027 09:22:28 GMT; Secure; SameSite=None; SameSite=None, __cf_bm=8obO_twv4a_kwiJ_r5OO5tXUm5CKLhvv0Grhnbr2784-1768209748-1.0.1.1-qPytmaapY_zDAVUG6_zYabV3bg4UsdE5f402Zb_U44MvwNi_jZ4KSYt4_RJsVD7JYW85Yrzqqb3v.1QZ2cvLutFmp49.WJbKMRw1.u2plL0u0X5d.j2hxO2qSnMotCz7; path=/; expires=Mon, 12-Jan-26 09:52:28 GMT; domain=.wise.com; HttpOnly; Secure; SameSite=None"
+        },
+        {
+          "key": "cf-cache-status",
+          "value": "DYNAMIC"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000"
+        },
+        {
+          "key": "accept-ch",
+          "value": "Sec-CH-UA-Platform-Version, Sec-CH-UA-Arch, Sec-CH-UA-Model, Sec-CH-UA-Bitness"
+        },
+        {
+          "key": "Server",
+          "value": "cloudflare"
+        },
+        {
+          "key": "alt-svc",
+          "value": "h3=\":443\"; ma=86400"
+        }
+      ]
+    },
+    {
+      "id": "wise.com/ae",
+      "group": "endpoint",
+      "value": "wise.com/ae",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "ae"
+    },
+    {
+      "id": "wise.com/at",
+      "group": "endpoint",
+      "value": "wise.com/at",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "at"
+    },
+    {
+      "id": "wise.com/au",
+      "group": "endpoint",
+      "value": "wise.com/au",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "au"
+    },
+    {
+      "id": "wise.com/be",
+      "group": "endpoint",
+      "value": "wise.com/be",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "be"
+    },
+    {
+      "id": "wise.com/bg",
+      "group": "endpoint",
+      "value": "wise.com/bg",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "bg"
+    },
+    {
+      "id": "wise.com/br",
+      "group": "endpoint",
+      "value": "wise.com/br",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "br"
+    },
+    {
+      "id": "wise.com/ca",
+      "group": "endpoint",
+      "value": "wise.com/ca",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "ca"
+    },
+    {
+      "id": "wise.com/ch",
+      "group": "endpoint",
+      "value": "wise.com/ch",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "ch"
+    },
+    {
+      "id": "wise.com/cookie-policy",
+      "group": "endpoint",
+      "value": "wise.com/cookie-policy",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "cookie-policy"
+    },
+    {
+      "id": "wise.com/de",
+      "group": "endpoint",
+      "value": "wise.com/de",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "de"
+    },
+    {
+      "id": "wise.com/dk",
+      "group": "endpoint",
+      "value": "wise.com/dk",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "dk"
+    },
+    {
+      "id": "wise.com/ee",
+      "group": "endpoint",
+      "value": "wise.com/ee",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "ee"
+    },
+    {
+      "id": "wise.com/es",
+      "group": "endpoint",
+      "value": "wise.com/es",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "es"
+    },
+    {
+      "id": "wise.com/fi",
+      "group": "endpoint",
+      "value": "wise.com/fi",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "fi"
+    },
+    {
+      "id": "wise.com/fr",
+      "group": "endpoint",
+      "value": "wise.com/fr",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "fr"
+    },
+    {
+      "id": "wise.com/gb",
+      "group": "directory",
+      "value": "wise.com/gb",
+      "type": "directory",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "gb"
+    },
+    {
+      "id": "wise.com/gr",
+      "group": "endpoint",
+      "value": "wise.com/gr",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "gr"
+    },
+    {
+      "id": "wise.com/help",
+      "group": "endpoint",
+      "value": "wise.com/help",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "help"
+    },
+    {
+      "id": "wise.com/hk",
+      "group": "endpoint",
+      "value": "wise.com/hk",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "hk"
+    },
+    {
+      "id": "wise.com/hr",
+      "group": "endpoint",
+      "value": "wise.com/hr",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "hr"
+    },
+    {
+      "id": "wise.com/hu",
+      "group": "endpoint",
+      "value": "wise.com/hu",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "hu"
+    },
+    {
+      "id": "wise.com/id",
+      "group": "endpoint",
+      "value": "wise.com/id",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "id"
+    },
+    {
+      "id": "wise.com/ie",
+      "group": "endpoint",
+      "value": "wise.com/ie",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "ie"
+    },
+    {
+      "id": "wise.com/in",
+      "group": "endpoint",
+      "value": "wise.com/in",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "in"
+    },
+    {
+      "id": "wise.com/it",
+      "group": "endpoint",
+      "value": "wise.com/it",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "it"
+    },
+    {
+      "id": "wise.com/jp",
+      "group": "endpoint",
+      "value": "wise.com/jp",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "jp"
+    },
+    {
+      "id": "wise.com/kr",
+      "group": "endpoint",
+      "value": "wise.com/kr",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "kr"
+    },
+    {
+      "id": "wise.com/large-amounts",
+      "group": "endpoint",
+      "value": "wise.com/large-amounts",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "large-amounts"
+    },
+    {
+      "id": "wise.com/local-sites",
+      "group": "endpoint",
+      "value": "wise.com/local-sites",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "local-sites"
+    },
+    {
+      "id": "wise.com/login",
+      "group": "endpoint",
+      "value": "wise.com/login",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "login"
+    },
+    {
+      "id": "wise.com/lu",
+      "group": "endpoint",
+      "value": "wise.com/lu",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "lu"
+    },
+    {
+      "id": "wise.com/mx",
+      "group": "endpoint",
+      "value": "wise.com/mx",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "mx"
+    },
+    {
+      "id": "wise.com/my",
+      "group": "endpoint",
+      "value": "wise.com/my",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "my"
+    },
+    {
+      "id": "wise.com/nl",
+      "group": "endpoint",
+      "value": "wise.com/nl",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "nl"
+    },
+    {
+      "id": "wise.com/no",
+      "group": "endpoint",
+      "value": "wise.com/no",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "no"
+    },
+    {
+      "id": "wise.com/nz",
+      "group": "endpoint",
+      "value": "wise.com/nz",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "nz"
+    },
+    {
+      "id": "wise.com/owners",
+      "group": "endpoint",
+      "value": "wise.com/owners",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "owners"
+    },
+    {
+      "id": "wise.com/p",
+      "group": "directory",
+      "value": "wise.com/p",
+      "type": "directory",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "p"
+    },
+    {
+      "id": "wise.com/ph",
+      "group": "endpoint",
+      "value": "wise.com/ph",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "ph"
+    },
+    {
+      "id": "wise.com/pl",
+      "group": "endpoint",
+      "value": "wise.com/pl",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "pl"
+    },
+    {
+      "id": "wise.com/platform",
+      "group": "endpoint",
+      "value": "wise.com/platform",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "platform"
+    },
+    {
+      "id": "wise.com/pricing",
+      "group": "endpoint",
+      "value": "wise.com/pricing",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "pricing"
+    },
+    {
+      "id": "wise.com/pt",
+      "group": "endpoint",
+      "value": "wise.com/pt",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "pt"
+    },
+    {
+      "id": "wise.com/register",
+      "group": "endpoint",
+      "value": "wise.com/register",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "register"
+    },
+    {
+      "id": "wise.com/ro",
+      "group": "endpoint",
+      "value": "wise.com/ro",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "ro"
+    },
+    {
+      "id": "wise.com/ru",
+      "group": "endpoint",
+      "value": "wise.com/ru",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "ru"
+    },
+    {
+      "id": "wise.com/se",
+      "group": "endpoint",
+      "value": "wise.com/se",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "se"
+    },
+    {
+      "id": "wise.com/send-money",
+      "group": "endpoint",
+      "value": "wise.com/send-money",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money"
+    },
+    {
+      "id": "wise.com/sg",
+      "group": "endpoint",
+      "value": "wise.com/sg",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "sg"
+    },
+    {
+      "id": "wise.com/terms-and-conditions",
+      "group": "endpoint",
+      "value": "wise.com/terms-and-conditions",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "terms-and-conditions"
+    },
+    {
+      "id": "wise.com/th",
+      "group": "endpoint",
+      "value": "wise.com/th",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "th"
+    },
+    {
+      "id": "wise.com/us",
+      "group": "endpoint",
+      "value": "wise.com/us",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "us"
+    },
+    {
+      "id": "wise.com/za",
+      "group": "endpoint",
+      "value": "wise.com/za",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "za"
+    },
+    {
+      "value": "api.wise.com",
+      "type": "subdomain",
+      "label": "api.wise.com",
+      "id": "api.wise.com",
+      "group": "subdomain",
+      "status": 200,
+      "size": 0,
+      "meta": {
+        "status": 200,
+        "size": 0,
+        "ip": "104.18.39.116",
+        "response_time_ms": 407,
+        "headers": {
+          "Date": "Mon, 12 Jan 2026 09:21:22 GMT",
+          "Content-Type": "text/html; charset=utf-8",
+          "Transfer-Encoding": "chunked",
+          "Connection": "keep-alive",
+          "CF-RAY": "9bcb9554091f32ab-AMM",
+          "x-xss-protection": "0",
+          "x-download-options": "noopen",
+          "x-content-type-options": "nosniff",
+          "content-security-policy": "report-uri /csp;child-src 'self' 'self' blob:;connect-src *;default-src 'self';img-src 'self' data: blob: *.facebook.com https://wise.com https://gtm.wise.com https://sst.wise.com https://tw-avatar.s3.eu-central-1.amazonaws.com https://tw-test-avatar-storage.s3.eu-west-1.amazonaws.com https://*.doubleclick.net https://www.googleadservices.com https://alb.reddit.com https://*.yahoo.co.jp https://bat.bing.com https://cx.atdmt.com https://daw291njkc3ao.cloudfront.net https://dq8dwmysp7hk1.cloudfront.net https://d2dgj1jjqgsb96.cloudfront.net https://help.wise.com/ https://platform-lookaside.fbsbx.com https://pixel.pointmediatracker.com https://cnv.event.prod.bidr.io https://q.quora.com https://s3-eu-west-1.amazonaws.com https://t.co https://wise.desk.com https://widgets.wise.com https://www.google-analytics.com https://www.gstatic.com https://i.ytimg.com https://px.ads.linkedin.com https://www.linkedin.com https://aax-eu.amazon-adsystem.com https://www.googletagmanager.com https://www.google.com https://www.google.com.au https://www.google.com.br https://www.google.com.sg https://www.google.com.ph https://www.google.com.my https://www.google.com.mx https://www.google.com.ua https://www.google.com.vn https://www.google.com.tr https://www.google.com.ar https://www.google.com.hk https://www.google.com.pk https://www.google.com.pe https://www.google.com.ng https://www.google.com.cy https://www.google.com.mt https://www.google.com.bd https://www.google.com.eg https://www.google.co.uk https://www.google.co.th https://www.google.co.jp https://www.google.co.nz https://www.google.co.id https://www.google.co.kr https://www.google.co.ve https://www.google.co.in https://www.google.co.il https://www.google.co.za https://www.google.de https://www.google.ca https://www.google.es https://www.google.pl https://www.google.ie https://www.google.ch https://www.google.pt https://www.google.nl https://www.google.it https://www.google.hu https://www.google.fr https://www.google.be https://www.google.ro https://www.google.fi https://www.google.cl https://www.google.cz https://www.google.ae https://www.google.lu https://www.google.se https://www.google.ru https://www.google.at https://www.google.bg https://www.google.ee https://www.google.dk https://www.google.no https://www.google.gr https://www.google.sk https://www.google.lt https://www.google.lv https://www.google.ge https://www.google.hr https://www.google.me *.googleusercontent.com *.analytics.google.com http://wi.se https://wi.se https://collector-20079.tvsquared.com https://analytics.twitter.com https://tr.line.me https://c5.adalyser.com https://c0.adalyser.com https://i.sng.link https://pixel.pointmediatracker.com https://cnv.event.prod.bidr.io https://lux.speedcurve.com https://forms-eu1.hsforms.com/ https://analytics.google.com/g/s/collect;font-src 'self' data: https://fonts.gstatic.com https://widgets.wise.com/;object-src 'self';media-src 'self' 'self' data: https://wise.com/;manifest-src 'self' 'self';script-src 'self' 'unsafe-inline' 'unsafe-eval' 'self' https://wise.com https://sst.wise.com https://gtm.wise.com https://*.singular.net https://i.sng.link https://js-agent.newrelic.com https://bam.nr-data.net/ https://ajax.cloudflare.com bat.bing.com https://s.yimg.jp https://*.yahoo.co.jp a.quora.com static.hotjar.com https://script.hotjar.com/ https://collector-20079.tvsquared.com https://d.line-scdn.net www.google.co.uk www.google.com www.googletagmanager.com/ tagmanager.google.com/ https://storage.googleapis.com https://ajax.googleapis.com/ https://microapps.google.com https://microapps-prod-tt.sandbox.google.com googleads.g.doubleclick.net www.google-analytics.com www.googleadservices.com static.ads-twitter.com analytics.twitter.com www.snapengage.com insitez.blob.core.windows.net sjs.bizographics.com *.mxpnl.com https://cdn.pdst.fm https://us-central1-adaptive-growth.cloudfunctions.net https://bidr.io https://d2dgj1jjqgsb96.cloudfront.net https://www.redditstatic.com/ads/pixel.js https://snap.licdn.com https://js.adsrvr.org https://c5.adalyser.com https://c0.adalyser.com https://c.amazon-adsystem.com https://js-eu1.hs-scripts.com https://transferwise.com https://bidr.io https://cdn.speedcurve.com https://lux.speedcurve.com https://js-eu1.hsforms.net https://challenges.cloudflare.com https://www.youtube.com;style-src 'self' 'unsafe-inline' blob: fonts.googleapis.com/css tagmanager.google.com/;frame-ancestors 'self' https://wiseturkiye.com.tr https://microapps.google.com https://microapps-prod-tt.sandbox.google.com;frame-src youtube.com www.youtube.com www.youtube-nocookie.com https://vars.hotjar.com https://bid.g.doubleclick.net https://www.googletagmanager.com https://insight.adsrvr.org https://match.adsrvr.org https://wise.com https://gtm.wise.com https://transferwise.com https://wise.navattic.com https://js-eu1.hsforms.net https://forms-eu1.hsforms.com/ https://challenges.cloudflare.com;worker-src 'self' blob:;form-action 'self' https://forms-eu1.hsforms.com/;base-uri 'self';script-src-attr 'none';upgrade-insecure-requests",
+          "permissions-policy": "ch-ua-model=(\"https://sdk-api-v1.singular.net\"),ch-ua-platform-version=(\"https://sdk-api-v1.singular.net\"),ch-ua-full-version-list=(\"https://sdk-api-v1.singular.net\")",
+          "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+          "x-powered-by": "Next.js",
+          "etag": "\"3xubol6i3pjlyc\"",
+          "content-encoding": "gzip",
+          "x-envoy-upstream-service-time": "243",
+          "x-envoy-attempt-count": "1",
+          "vary": "Accept-Encoding",
+          "set-cookie": "appToken=dad99d7d8e52c2c8aaf9fda788d8acdc; Max-Age=86400; Path=/; Expires=Tue, 13 Jan 2026 09:21:22 GMT; HttpOnly; Secure; SameSite=None, gid=ac7ae204-de89-4e41-85d5-9c32b74aef7b; Max-Age=31536000; Path=/; Expires=Tue, 12 Jan 2027 09:21:22 GMT; Secure; SameSite=None; SameSite=None",
+          "cf-cache-status": "DYNAMIC",
+          "Strict-Transport-Security": "max-age=31536000",
+          "accept-ch": "Sec-CH-UA-Platform-Version, Sec-CH-UA-Arch, Sec-CH-UA-Model, Sec-CH-UA-Bitness",
+          "Server": "cloudflare",
+          "alt-svc": "h3=\":443\"; ma=86400"
+        },
+        "title": null,
+        "technologies": [
+          "cloudflare"
+        ],
+        "wappalyzer": {
+          "error": "wappalyzer not installed"
+        },
+        "dirsearch_count": 0
+      },
+      "headers": [
+        {
+          "key": "Date",
+          "value": "Mon, 12 Jan 2026 09:21:22 GMT"
+        },
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Transfer-Encoding",
+          "value": "chunked"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "key": "CF-RAY",
+          "value": "9bcb9554091f32ab-AMM"
+        },
+        {
+          "key": "x-xss-protection",
+          "value": "0"
+        },
+        {
+          "key": "x-download-options",
+          "value": "noopen"
+        },
+        {
+          "key": "x-content-type-options",
+          "value": "nosniff"
+        },
+        {
+          "key": "content-security-policy",
+          "value": "report-uri /csp;child-src 'self' 'self' blob:;connect-src *;default-src 'self';img-src 'self' data: blob: *.facebook.com https://wise.com https://gtm.wise.com https://sst.wise.com https://tw-avatar.s3.eu-central-1.amazonaws.com https://tw-test-avatar-storage.s3.eu-west-1.amazonaws.com https://*.doubleclick.net https://www.googleadservices.com https://alb.reddit.com https://*.yahoo.co.jp https://bat.bing.com https://cx.atdmt.com https://daw291njkc3ao.cloudfront.net https://dq8dwmysp7hk1.cloudfront.net https://d2dgj1jjqgsb96.cloudfront.net https://help.wise.com/ https://platform-lookaside.fbsbx.com https://pixel.pointmediatracker.com https://cnv.event.prod.bidr.io https://q.quora.com https://s3-eu-west-1.amazonaws.com https://t.co https://wise.desk.com https://widgets.wise.com https://www.google-analytics.com https://www.gstatic.com https://i.ytimg.com https://px.ads.linkedin.com https://www.linkedin.com https://aax-eu.amazon-adsystem.com https://www.googletagmanager.com https://www.google.com https://www.google.com.au https://www.google.com.br https://www.google.com.sg https://www.google.com.ph https://www.google.com.my https://www.google.com.mx https://www.google.com.ua https://www.google.com.vn https://www.google.com.tr https://www.google.com.ar https://www.google.com.hk https://www.google.com.pk https://www.google.com.pe https://www.google.com.ng https://www.google.com.cy https://www.google.com.mt https://www.google.com.bd https://www.google.com.eg https://www.google.co.uk https://www.google.co.th https://www.google.co.jp https://www.google.co.nz https://www.google.co.id https://www.google.co.kr https://www.google.co.ve https://www.google.co.in https://www.google.co.il https://www.google.co.za https://www.google.de https://www.google.ca https://www.google.es https://www.google.pl https://www.google.ie https://www.google.ch https://www.google.pt https://www.google.nl https://www.google.it https://www.google.hu https://www.google.fr https://www.google.be https://www.google.ro https://www.google.fi https://www.google.cl https://www.google.cz https://www.google.ae https://www.google.lu https://www.google.se https://www.google.ru https://www.google.at https://www.google.bg https://www.google.ee https://www.google.dk https://www.google.no https://www.google.gr https://www.google.sk https://www.google.lt https://www.google.lv https://www.google.ge https://www.google.hr https://www.google.me *.googleusercontent.com *.analytics.google.com http://wi.se https://wi.se https://collector-20079.tvsquared.com https://analytics.twitter.com https://tr.line.me https://c5.adalyser.com https://c0.adalyser.com https://i.sng.link https://pixel.pointmediatracker.com https://cnv.event.prod.bidr.io https://lux.speedcurve.com https://forms-eu1.hsforms.com/ https://analytics.google.com/g/s/collect;font-src 'self' data: https://fonts.gstatic.com https://widgets.wise.com/;object-src 'self';media-src 'self' 'self' data: https://wise.com/;manifest-src 'self' 'self';script-src 'self' 'unsafe-inline' 'unsafe-eval' 'self' https://wise.com https://sst.wise.com https://gtm.wise.com https://*.singular.net https://i.sng.link https://js-agent.newrelic.com https://bam.nr-data.net/ https://ajax.cloudflare.com bat.bing.com https://s.yimg.jp https://*.yahoo.co.jp a.quora.com static.hotjar.com https://script.hotjar.com/ https://collector-20079.tvsquared.com https://d.line-scdn.net www.google.co.uk www.google.com www.googletagmanager.com/ tagmanager.google.com/ https://storage.googleapis.com https://ajax.googleapis.com/ https://microapps.google.com https://microapps-prod-tt.sandbox.google.com googleads.g.doubleclick.net www.google-analytics.com www.googleadservices.com static.ads-twitter.com analytics.twitter.com www.snapengage.com insitez.blob.core.windows.net sjs.bizographics.com *.mxpnl.com https://cdn.pdst.fm https://us-central1-adaptive-growth.cloudfunctions.net https://bidr.io https://d2dgj1jjqgsb96.cloudfront.net https://www.redditstatic.com/ads/pixel.js https://snap.licdn.com https://js.adsrvr.org https://c5.adalyser.com https://c0.adalyser.com https://c.amazon-adsystem.com https://js-eu1.hs-scripts.com https://transferwise.com https://bidr.io https://cdn.speedcurve.com https://lux.speedcurve.com https://js-eu1.hsforms.net https://challenges.cloudflare.com https://www.youtube.com;style-src 'self' 'unsafe-inline' blob: fonts.googleapis.com/css tagmanager.google.com/;frame-ancestors 'self' https://wiseturkiye.com.tr https://microapps.google.com https://microapps-prod-tt.sandbox.google.com;frame-src youtube.com www.youtube.com www.youtube-nocookie.com https://vars.hotjar.com https://bid.g.doubleclick.net https://www.googletagmanager.com https://insight.adsrvr.org https://match.adsrvr.org https://wise.com https://gtm.wise.com https://transferwise.com https://wise.navattic.com https://js-eu1.hsforms.net https://forms-eu1.hsforms.com/ https://challenges.cloudflare.com;worker-src 'self' blob:;form-action 'self' https://forms-eu1.hsforms.com/;base-uri 'self';script-src-attr 'none';upgrade-insecure-requests"
+        },
+        {
+          "key": "permissions-policy",
+          "value": "ch-ua-model=(\"https://sdk-api-v1.singular.net\"),ch-ua-platform-version=(\"https://sdk-api-v1.singular.net\"),ch-ua-full-version-list=(\"https://sdk-api-v1.singular.net\")"
+        },
+        {
+          "key": "cache-control",
+          "value": "private, no-cache, no-store, max-age=0, must-revalidate"
+        },
+        {
+          "key": "x-powered-by",
+          "value": "Next.js"
+        },
+        {
+          "key": "etag",
+          "value": "\"3xubol6i3pjlyc\""
+        },
+        {
+          "key": "content-encoding",
+          "value": "gzip"
+        },
+        {
+          "key": "x-envoy-upstream-service-time",
+          "value": "243"
+        },
+        {
+          "key": "x-envoy-attempt-count",
+          "value": "1"
+        },
+        {
+          "key": "vary",
+          "value": "Accept-Encoding"
+        },
+        {
+          "key": "set-cookie",
+          "value": "appToken=dad99d7d8e52c2c8aaf9fda788d8acdc; Max-Age=86400; Path=/; Expires=Tue, 13 Jan 2026 09:21:22 GMT; HttpOnly; Secure; SameSite=None, gid=ac7ae204-de89-4e41-85d5-9c32b74aef7b; Max-Age=31536000; Path=/; Expires=Tue, 12 Jan 2027 09:21:22 GMT; Secure; SameSite=None; SameSite=None"
+        },
+        {
+          "key": "cf-cache-status",
+          "value": "DYNAMIC"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000"
+        },
+        {
+          "key": "accept-ch",
+          "value": "Sec-CH-UA-Platform-Version, Sec-CH-UA-Arch, Sec-CH-UA-Model, Sec-CH-UA-Bitness"
+        },
+        {
+          "key": "Server",
+          "value": "cloudflare"
+        },
+        {
+          "key": "alt-svc",
+          "value": "h3=\":443\"; ma=86400"
+        }
+      ]
+    },
+    {
+      "value": "docs.wise.com",
+      "type": "subdomain",
+      "label": "docs.wise.com",
+      "id": "docs.wise.com",
+      "group": "subdomain",
+      "status": 0,
+      "size": 0,
+      "meta": {
+        "status": 0,
+        "size": 0,
+        "ip": null,
+        "response_time_ms": null,
+        "headers": {},
+        "title": null,
+        "technologies": [],
+        "wappalyzer": null,
+        "dirsearch_count": 0
+      },
+      "headers": []
+    },
+    {
+      "id": "docs.wise.com/api-docs",
+      "group": "endpoint",
+      "value": "docs.wise.com/api-docs",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "api-docs"
+    },
+    {
+      "value": "files.wise.com",
+      "type": "subdomain",
+      "label": "files.wise.com",
+      "id": "files.wise.com",
+      "group": "subdomain",
+      "status": 200,
+      "size": 0,
+      "meta": {
+        "status": 200,
+        "size": 0,
+        "ip": null,
+        "response_time_ms": 257,
+        "headers": {
+          "Date": "Mon, 12 Jan 2026 09:21:23 GMT",
+          "Content-Type": "text/html;charset=UTF-8",
+          "Transfer-Encoding": "chunked",
+          "Connection": "keep-alive",
+          "CF-RAY": "9bcb95567ed832a8-AMM",
+          "access-control-allow-origin": "https://ffol.filecloud.com",
+          "vary": "Accept-Encoding",
+          "Content-Encoding": "gzip",
+          "access-control-allow-credentials": "true",
+          "x-frame-options": "SAMEORIGIN",
+          "x-content-type-options": "nosniff",
+          "strict-transport-security": "max-age=31536000",
+          "x-xss-protection": "1; mode=block",
+          "content-security-policy": "default-src 'self' blob: *.live.com *.amazonaws.com *.core.windows.net www.google.com http://127.0.0.1:34320/v1/fileassociations *.autodesk.com;     connect-src 'self' *.amazonaws.com *.core.windows.net blob: data: http://127.0.0.1:34320/v1/fileassociations *.autodesk.com;     style-src 'unsafe-inline' 'self' *.autodesk.com;     script-src 'unsafe-inline' 'unsafe-eval' 'self' www.google.com www.gstatic.com  teams.microsoft.com *.teams.microsoft.com *.skype.com *.autodesk.com;     frame-src 'self' blob: www.google.com *.live.com docs.google.com accounts.google.com;     font-src 'self' data: *.autodesk.com;     img-src www.gstatic.com 'self' data: blob: *.duosecurity.com *.live.com *.amazonaws.com *.core.windows.net *.office.net *.autodesk.com;     frame-ancestors 'self' teams.microsoft.com *.teams.microsoft.com *.skype.com *.my.salesforce.com;     worker-src 'self' blob: *.autodesk.com",
+          "Cache-Control": "no-cache=\"Set-Cookie\"",
+          "cf-cache-status": "DYNAMIC",
+          "accept-ch": "Sec-CH-UA-Platform-Version, Sec-CH-UA-Arch, Sec-CH-UA-Model, Sec-CH-UA-Bitness",
+          "Server": "cloudflare",
+          "alt-svc": "h3=\":443\"; ma=86400"
+        },
+        "title": "Wise - Files",
+        "technologies": [
+          "cloudflare"
+        ],
+        "wappalyzer": {
+          "error": "wappalyzer not installed"
+        },
+        "dirsearch_count": 0
+      },
+      "headers": [
+        {
+          "key": "Date",
+          "value": "Mon, 12 Jan 2026 09:21:23 GMT"
+        },
+        {
+          "key": "Content-Type",
+          "value": "text/html;charset=UTF-8"
+        },
+        {
+          "key": "Transfer-Encoding",
+          "value": "chunked"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "key": "CF-RAY",
+          "value": "9bcb95567ed832a8-AMM"
+        },
+        {
+          "key": "access-control-allow-origin",
+          "value": "https://ffol.filecloud.com"
+        },
+        {
+          "key": "vary",
+          "value": "Accept-Encoding"
+        },
+        {
+          "key": "Content-Encoding",
+          "value": "gzip"
+        },
+        {
+          "key": "access-control-allow-credentials",
+          "value": "true"
+        },
+        {
+          "key": "x-frame-options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "x-content-type-options",
+          "value": "nosniff"
+        },
+        {
+          "key": "strict-transport-security",
+          "value": "max-age=31536000"
+        },
+        {
+          "key": "x-xss-protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "content-security-policy",
+          "value": "default-src 'self' blob: *.live.com *.amazonaws.com *.core.windows.net www.google.com http://127.0.0.1:34320/v1/fileassociations *.autodesk.com;     connect-src 'self' *.amazonaws.com *.core.windows.net blob: data: http://127.0.0.1:34320/v1/fileassociations *.autodesk.com;     style-src 'unsafe-inline' 'self' *.autodesk.com;     script-src 'unsafe-inline' 'unsafe-eval' 'self' www.google.com www.gstatic.com  teams.microsoft.com *.teams.microsoft.com *.skype.com *.autodesk.com;     frame-src 'self' blob: www.google.com *.live.com docs.google.com accounts.google.com;     font-src 'self' data: *.autodesk.com;     img-src www.gstatic.com 'self' data: blob: *.duosecurity.com *.live.com *.amazonaws.com *.core.windows.net *.office.net *.autodesk.com;     frame-ancestors 'self' teams.microsoft.com *.teams.microsoft.com *.skype.com *.my.salesforce.com;     worker-src 'self' blob: *.autodesk.com"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache=\"Set-Cookie\""
+        },
+        {
+          "key": "cf-cache-status",
+          "value": "DYNAMIC"
+        },
+        {
+          "key": "accept-ch",
+          "value": "Sec-CH-UA-Platform-Version, Sec-CH-UA-Arch, Sec-CH-UA-Model, Sec-CH-UA-Bitness"
+        },
+        {
+          "key": "Server",
+          "value": "cloudflare"
+        },
+        {
+          "key": "alt-svc",
+          "value": "h3=\":443\"; ma=86400"
+        }
+      ]
+    },
+    {
+      "value": "help.wise.com",
+      "type": "subdomain",
+      "label": "help.wise.com",
+      "id": "help.wise.com",
+      "group": "subdomain",
+      "status": 200,
+      "size": 0,
+      "meta": {
+        "status": 200,
+        "size": 0,
+        "ip": null,
+        "response_time_ms": 213,
+        "headers": {
+          "Date": "Mon, 12 Jan 2026 09:21:32 GMT",
+          "Content-Type": "text/html; charset=utf-8",
+          "Transfer-Encoding": "chunked",
+          "Connection": "keep-alive",
+          "CF-RAY": "9bcb95932fba32ae-AMM",
+          "x-xss-protection": "0",
+          "x-download-options": "noopen",
+          "x-content-type-options": "nosniff",
+          "content-security-policy": "report-uri /csp;child-src 'self' 'self' blob:;connect-src *;default-src 'self';img-src 'self' data: blob: *.facebook.com https://wise.com https://gtm.wise.com https://sst.wise.com https://tw-avatar.s3.eu-central-1.amazonaws.com https://tw-test-avatar-storage.s3.eu-west-1.amazonaws.com https://*.doubleclick.net https://www.googleadservices.com https://alb.reddit.com https://*.yahoo.co.jp https://bat.bing.com https://cx.atdmt.com https://daw291njkc3ao.cloudfront.net https://dq8dwmysp7hk1.cloudfront.net https://d2dgj1jjqgsb96.cloudfront.net https://help.wise.com/ https://platform-lookaside.fbsbx.com https://pixel.pointmediatracker.com https://cnv.event.prod.bidr.io https://q.quora.com https://s3-eu-west-1.amazonaws.com https://t.co https://wise.desk.com https://widgets.wise.com https://www.google-analytics.com https://www.gstatic.com https://i.ytimg.com https://px.ads.linkedin.com https://www.linkedin.com https://aax-eu.amazon-adsystem.com https://www.googletagmanager.com https://www.google.com https://www.google.com.au https://www.google.com.br https://www.google.com.sg https://www.google.com.ph https://www.google.com.my https://www.google.com.mx https://www.google.com.ua https://www.google.com.vn https://www.google.com.tr https://www.google.com.ar https://www.google.com.hk https://www.google.com.pk https://www.google.com.pe https://www.google.com.ng https://www.google.com.cy https://www.google.com.mt https://www.google.com.bd https://www.google.com.eg https://www.google.co.uk https://www.google.co.th https://www.google.co.jp https://www.google.co.nz https://www.google.co.id https://www.google.co.kr https://www.google.co.ve https://www.google.co.in https://www.google.co.il https://www.google.co.za https://www.google.de https://www.google.ca https://www.google.es https://www.google.pl https://www.google.ie https://www.google.ch https://www.google.pt https://www.google.nl https://www.google.it https://www.google.hu https://www.google.fr https://www.google.be https://www.google.ro https://www.google.fi https://www.google.cl https://www.google.cz https://www.google.ae https://www.google.lu https://www.google.se https://www.google.ru https://www.google.at https://www.google.bg https://www.google.ee https://www.google.dk https://www.google.no https://www.google.gr https://www.google.sk https://www.google.lt https://www.google.lv https://www.google.ge https://www.google.hr https://www.google.me *.googleusercontent.com *.analytics.google.com http://wi.se https://wi.se https://collector-20079.tvsquared.com https://analytics.twitter.com https://tr.line.me https://c5.adalyser.com https://c0.adalyser.com https://images.ctfassets.net/ https://gtm.wise.com;font-src 'self' data: https://fonts.gstatic.com https://widgets.wise.com/;object-src 'self';media-src 'self' 'self' data:;manifest-src 'self' 'self';script-src 'self' 'unsafe-inline' 'unsafe-eval' 'self' https://wise.com https://sst.wise.com https://gtm.wise.com https://js-agent.newrelic.com https://bam.nr-data.net/ https://ajax.cloudflare.com bat.bing.com https://s.yimg.jp https://*.yahoo.co.jp a.quora.com static.hotjar.com https://script.hotjar.com/ https://collector-20079.tvsquared.com https://d.line-scdn.net www.google.co.uk www.google.com www.googletagmanager.com/ tagmanager.google.com/ https://storage.googleapis.com https://ajax.googleapis.com/ https://microapps.google.com https://microapps-prod-tt.sandbox.google.com googleads.g.doubleclick.net www.google-analytics.com www.googleadservices.com static.ads-twitter.com analytics.twitter.com www.snapengage.com insitez.blob.core.windows.net sjs.bizographics.com *.mxpnl.com https://cdn.pdst.fm https://us-central1-adaptive-growth.cloudfunctions.net https://bidr.io https://d2dgj1jjqgsb96.cloudfront.net https://www.redditstatic.com/ads/pixel.js https://snap.licdn.com https://js.adsrvr.org https://c5.adalyser.com https://c0.adalyser.com https://c.amazon-adsystem.com https://js-eu1.hs-scripts.com https://wise.com/ https://transferwise.com/ https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://gtm.wise.com;style-src 'self' 'unsafe-inline' blob: fonts.googleapis.com/css tagmanager.google.com/;frame-ancestors 'self' https://wiseturkiye.com.tr https://microapps.google.com https://microapps-prod-tt.sandbox.google.com https://app.contentful.com;frame-src youtube.com www.youtube.com www.youtube-nocookie.com https://vars.hotjar.com https://bid.g.doubleclick.net https://www.googletagmanager.com https://insight.adsrvr.org https://match.adsrvr.org https://wise.com https://www.google.com/recaptcha/;worker-src 'self' blob:;form-action 'self';base-uri 'self';script-src-attr 'none';upgrade-insecure-requests",
+          "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+          "etag": "\"rlip94hvkt1gna\"",
+          "content-encoding": "gzip",
+          "x-envoy-upstream-service-time": "81",
+          "x-envoy-attempt-count": "1",
+          "vary": "Accept-Encoding",
+          "set-cookie": "appToken=dad99d7d8e52c2c8aaf9fda788d8acdc; Max-Age=86400; Path=/; Expires=Tue, 13 Jan 2026 09:21:32 GMT; HttpOnly; Secure; SameSite=None, gid=8cd2ca43-08e4-4efa-812e-9cc49cc2d467; Max-Age=31536000; Path=/; Expires=Tue, 12 Jan 2027 09:21:32 GMT; Secure; SameSite=None; SameSite=None",
+          "cf-cache-status": "DYNAMIC",
+          "Strict-Transport-Security": "max-age=31536000",
+          "accept-ch": "Sec-CH-UA-Platform-Version, Sec-CH-UA-Arch, Sec-CH-UA-Model, Sec-CH-UA-Bitness",
+          "Server": "cloudflare",
+          "alt-svc": "h3=\":443\"; ma=86400"
+        },
+        "title": "Hi, how can we help? | Wise Help Centre",
+        "technologies": [
+          "cloudflare"
+        ],
+        "wappalyzer": {
+          "error": "wappalyzer not installed"
+        },
+        "dirsearch_count": 0
+      },
+      "headers": [
+        {
+          "key": "Date",
+          "value": "Mon, 12 Jan 2026 09:21:32 GMT"
+        },
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Transfer-Encoding",
+          "value": "chunked"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "key": "CF-RAY",
+          "value": "9bcb95932fba32ae-AMM"
+        },
+        {
+          "key": "x-xss-protection",
+          "value": "0"
+        },
+        {
+          "key": "x-download-options",
+          "value": "noopen"
+        },
+        {
+          "key": "x-content-type-options",
+          "value": "nosniff"
+        },
+        {
+          "key": "content-security-policy",
+          "value": "report-uri /csp;child-src 'self' 'self' blob:;connect-src *;default-src 'self';img-src 'self' data: blob: *.facebook.com https://wise.com https://gtm.wise.com https://sst.wise.com https://tw-avatar.s3.eu-central-1.amazonaws.com https://tw-test-avatar-storage.s3.eu-west-1.amazonaws.com https://*.doubleclick.net https://www.googleadservices.com https://alb.reddit.com https://*.yahoo.co.jp https://bat.bing.com https://cx.atdmt.com https://daw291njkc3ao.cloudfront.net https://dq8dwmysp7hk1.cloudfront.net https://d2dgj1jjqgsb96.cloudfront.net https://help.wise.com/ https://platform-lookaside.fbsbx.com https://pixel.pointmediatracker.com https://cnv.event.prod.bidr.io https://q.quora.com https://s3-eu-west-1.amazonaws.com https://t.co https://wise.desk.com https://widgets.wise.com https://www.google-analytics.com https://www.gstatic.com https://i.ytimg.com https://px.ads.linkedin.com https://www.linkedin.com https://aax-eu.amazon-adsystem.com https://www.googletagmanager.com https://www.google.com https://www.google.com.au https://www.google.com.br https://www.google.com.sg https://www.google.com.ph https://www.google.com.my https://www.google.com.mx https://www.google.com.ua https://www.google.com.vn https://www.google.com.tr https://www.google.com.ar https://www.google.com.hk https://www.google.com.pk https://www.google.com.pe https://www.google.com.ng https://www.google.com.cy https://www.google.com.mt https://www.google.com.bd https://www.google.com.eg https://www.google.co.uk https://www.google.co.th https://www.google.co.jp https://www.google.co.nz https://www.google.co.id https://www.google.co.kr https://www.google.co.ve https://www.google.co.in https://www.google.co.il https://www.google.co.za https://www.google.de https://www.google.ca https://www.google.es https://www.google.pl https://www.google.ie https://www.google.ch https://www.google.pt https://www.google.nl https://www.google.it https://www.google.hu https://www.google.fr https://www.google.be https://www.google.ro https://www.google.fi https://www.google.cl https://www.google.cz https://www.google.ae https://www.google.lu https://www.google.se https://www.google.ru https://www.google.at https://www.google.bg https://www.google.ee https://www.google.dk https://www.google.no https://www.google.gr https://www.google.sk https://www.google.lt https://www.google.lv https://www.google.ge https://www.google.hr https://www.google.me *.googleusercontent.com *.analytics.google.com http://wi.se https://wi.se https://collector-20079.tvsquared.com https://analytics.twitter.com https://tr.line.me https://c5.adalyser.com https://c0.adalyser.com https://images.ctfassets.net/ https://gtm.wise.com;font-src 'self' data: https://fonts.gstatic.com https://widgets.wise.com/;object-src 'self';media-src 'self' 'self' data:;manifest-src 'self' 'self';script-src 'self' 'unsafe-inline' 'unsafe-eval' 'self' https://wise.com https://sst.wise.com https://gtm.wise.com https://js-agent.newrelic.com https://bam.nr-data.net/ https://ajax.cloudflare.com bat.bing.com https://s.yimg.jp https://*.yahoo.co.jp a.quora.com static.hotjar.com https://script.hotjar.com/ https://collector-20079.tvsquared.com https://d.line-scdn.net www.google.co.uk www.google.com www.googletagmanager.com/ tagmanager.google.com/ https://storage.googleapis.com https://ajax.googleapis.com/ https://microapps.google.com https://microapps-prod-tt.sandbox.google.com googleads.g.doubleclick.net www.google-analytics.com www.googleadservices.com static.ads-twitter.com analytics.twitter.com www.snapengage.com insitez.blob.core.windows.net sjs.bizographics.com *.mxpnl.com https://cdn.pdst.fm https://us-central1-adaptive-growth.cloudfunctions.net https://bidr.io https://d2dgj1jjqgsb96.cloudfront.net https://www.redditstatic.com/ads/pixel.js https://snap.licdn.com https://js.adsrvr.org https://c5.adalyser.com https://c0.adalyser.com https://c.amazon-adsystem.com https://js-eu1.hs-scripts.com https://wise.com/ https://transferwise.com/ https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://gtm.wise.com;style-src 'self' 'unsafe-inline' blob: fonts.googleapis.com/css tagmanager.google.com/;frame-ancestors 'self' https://wiseturkiye.com.tr https://microapps.google.com https://microapps-prod-tt.sandbox.google.com https://app.contentful.com;frame-src youtube.com www.youtube.com www.youtube-nocookie.com https://vars.hotjar.com https://bid.g.doubleclick.net https://www.googletagmanager.com https://insight.adsrvr.org https://match.adsrvr.org https://wise.com https://www.google.com/recaptcha/;worker-src 'self' blob:;form-action 'self';base-uri 'self';script-src-attr 'none';upgrade-insecure-requests"
+        },
+        {
+          "key": "cache-control",
+          "value": "private, no-cache, no-store, max-age=0, must-revalidate"
+        },
+        {
+          "key": "etag",
+          "value": "\"rlip94hvkt1gna\""
+        },
+        {
+          "key": "content-encoding",
+          "value": "gzip"
+        },
+        {
+          "key": "x-envoy-upstream-service-time",
+          "value": "81"
+        },
+        {
+          "key": "x-envoy-attempt-count",
+          "value": "1"
+        },
+        {
+          "key": "vary",
+          "value": "Accept-Encoding"
+        },
+        {
+          "key": "set-cookie",
+          "value": "appToken=dad99d7d8e52c2c8aaf9fda788d8acdc; Max-Age=86400; Path=/; Expires=Tue, 13 Jan 2026 09:21:32 GMT; HttpOnly; Secure; SameSite=None, gid=8cd2ca43-08e4-4efa-812e-9cc49cc2d467; Max-Age=31536000; Path=/; Expires=Tue, 12 Jan 2027 09:21:32 GMT; Secure; SameSite=None; SameSite=None"
+        },
+        {
+          "key": "cf-cache-status",
+          "value": "DYNAMIC"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000"
+        },
+        {
+          "key": "accept-ch",
+          "value": "Sec-CH-UA-Platform-Version, Sec-CH-UA-Arch, Sec-CH-UA-Model, Sec-CH-UA-Bitness"
+        },
+        {
+          "key": "Server",
+          "value": "cloudflare"
+        },
+        {
+          "key": "alt-svc",
+          "value": "h3=\":443\"; ma=86400"
+        }
+      ]
+    },
+    {
+      "value": "www.wise.com",
+      "type": "subdomain",
+      "label": "www.wise.com",
+      "id": "www.wise.com",
+      "group": "subdomain",
+      "status": 200,
+      "size": 0,
+      "meta": {
+        "status": 200,
+        "size": 0,
+        "ip": "172.64.148.140",
+        "response_time_ms": 1019,
+        "headers": {
+          "Date": "Mon, 12 Jan 2026 09:21:54 GMT",
+          "Content-Type": "text/html; charset=utf-8",
+          "Transfer-Encoding": "chunked",
+          "Connection": "keep-alive",
+          "CF-RAY": "9bcb96161c1132ab-AMM",
+          "x-xss-protection": "0",
+          "x-download-options": "noopen",
+          "x-content-type-options": "nosniff",
+          "content-security-policy": "report-uri /csp;child-src 'self' 'self' blob:;connect-src *;default-src 'self';img-src 'self' data: blob: *.facebook.com https://wise.com https://gtm.wise.com https://sst.wise.com https://tw-avatar.s3.eu-central-1.amazonaws.com https://tw-test-avatar-storage.s3.eu-west-1.amazonaws.com https://*.doubleclick.net https://www.googleadservices.com https://alb.reddit.com https://*.yahoo.co.jp https://bat.bing.com https://cx.atdmt.com https://daw291njkc3ao.cloudfront.net https://dq8dwmysp7hk1.cloudfront.net https://d2dgj1jjqgsb96.cloudfront.net https://help.wise.com/ https://platform-lookaside.fbsbx.com https://pixel.pointmediatracker.com https://cnv.event.prod.bidr.io https://q.quora.com https://s3-eu-west-1.amazonaws.com https://t.co https://wise.desk.com https://widgets.wise.com https://www.google-analytics.com https://www.gstatic.com https://i.ytimg.com https://px.ads.linkedin.com https://www.linkedin.com https://aax-eu.amazon-adsystem.com https://www.googletagmanager.com https://www.google.com https://www.google.com.au https://www.google.com.br https://www.google.com.sg https://www.google.com.ph https://www.google.com.my https://www.google.com.mx https://www.google.com.ua https://www.google.com.vn https://www.google.com.tr https://www.google.com.ar https://www.google.com.hk https://www.google.com.pk https://www.google.com.pe https://www.google.com.ng https://www.google.com.cy https://www.google.com.mt https://www.google.com.bd https://www.google.com.eg https://www.google.co.uk https://www.google.co.th https://www.google.co.jp https://www.google.co.nz https://www.google.co.id https://www.google.co.kr https://www.google.co.ve https://www.google.co.in https://www.google.co.il https://www.google.co.za https://www.google.de https://www.google.ca https://www.google.es https://www.google.pl https://www.google.ie https://www.google.ch https://www.google.pt https://www.google.nl https://www.google.it https://www.google.hu https://www.google.fr https://www.google.be https://www.google.ro https://www.google.fi https://www.google.cl https://www.google.cz https://www.google.ae https://www.google.lu https://www.google.se https://www.google.ru https://www.google.at https://www.google.bg https://www.google.ee https://www.google.dk https://www.google.no https://www.google.gr https://www.google.sk https://www.google.lt https://www.google.lv https://www.google.ge https://www.google.hr https://www.google.me *.googleusercontent.com *.analytics.google.com http://wi.se https://wi.se https://collector-20079.tvsquared.com https://analytics.twitter.com https://tr.line.me https://c5.adalyser.com https://c0.adalyser.com https://i.sng.link https://pixel.pointmediatracker.com https://cnv.event.prod.bidr.io https://lux.speedcurve.com https://forms-eu1.hsforms.com/ https://analytics.google.com/g/s/collect;font-src 'self' data: https://fonts.gstatic.com https://widgets.wise.com/;object-src 'self';media-src 'self' 'self' data: https://wise.com/;manifest-src 'self' 'self';script-src 'self' 'unsafe-inline' 'unsafe-eval' 'self' https://wise.com https://sst.wise.com https://gtm.wise.com https://*.singular.net https://i.sng.link https://js-agent.newrelic.com https://bam.nr-data.net/ https://ajax.cloudflare.com bat.bing.com https://s.yimg.jp https://*.yahoo.co.jp a.quora.com static.hotjar.com https://script.hotjar.com/ https://collector-20079.tvsquared.com https://d.line-scdn.net www.google.co.uk www.google.com www.googletagmanager.com/ tagmanager.google.com/ https://storage.googleapis.com https://ajax.googleapis.com/ https://microapps.google.com https://microapps-prod-tt.sandbox.google.com googleads.g.doubleclick.net www.google-analytics.com www.googleadservices.com static.ads-twitter.com analytics.twitter.com www.snapengage.com insitez.blob.core.windows.net sjs.bizographics.com *.mxpnl.com https://cdn.pdst.fm https://us-central1-adaptive-growth.cloudfunctions.net https://bidr.io https://d2dgj1jjqgsb96.cloudfront.net https://www.redditstatic.com/ads/pixel.js https://snap.licdn.com https://js.adsrvr.org https://c5.adalyser.com https://c0.adalyser.com https://c.amazon-adsystem.com https://js-eu1.hs-scripts.com https://transferwise.com https://bidr.io https://cdn.speedcurve.com https://lux.speedcurve.com https://js-eu1.hsforms.net https://challenges.cloudflare.com https://www.youtube.com;style-src 'self' 'unsafe-inline' blob: fonts.googleapis.com/css tagmanager.google.com/;frame-ancestors 'self' https://wiseturkiye.com.tr https://microapps.google.com https://microapps-prod-tt.sandbox.google.com;frame-src youtube.com www.youtube.com www.youtube-nocookie.com https://vars.hotjar.com https://bid.g.doubleclick.net https://www.googletagmanager.com https://insight.adsrvr.org https://match.adsrvr.org https://wise.com https://gtm.wise.com https://transferwise.com https://wise.navattic.com https://js-eu1.hsforms.net https://forms-eu1.hsforms.com/ https://challenges.cloudflare.com;worker-src 'self' blob:;form-action 'self' https://forms-eu1.hsforms.com/;base-uri 'self';script-src-attr 'none';upgrade-insecure-requests",
+          "permissions-policy": "ch-ua-model=(\"https://sdk-api-v1.singular.net\"),ch-ua-platform-version=(\"https://sdk-api-v1.singular.net\"),ch-ua-full-version-list=(\"https://sdk-api-v1.singular.net\")",
+          "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+          "x-powered-by": "Next.js",
+          "etag": "\"14uuhmniot5i78u\"",
+          "content-encoding": "gzip",
+          "x-envoy-upstream-service-time": "652",
+          "x-envoy-attempt-count": "1",
+          "vary": "Accept-Encoding",
+          "set-cookie": "appToken=dad99d7d8e52c2c8aaf9fda788d8acdc; Max-Age=86400; Path=/; Expires=Tue, 13 Jan 2026 09:21:53 GMT; HttpOnly; Secure; SameSite=None, gid=dd740bed-e6c7-4dde-bd7d-c2341caef910; Max-Age=31536000; Path=/; Expires=Tue, 12 Jan 2027 09:21:53 GMT; Secure; SameSite=None; SameSite=None",
+          "cf-cache-status": "DYNAMIC",
+          "Strict-Transport-Security": "max-age=31536000",
+          "accept-ch": "Sec-CH-UA-Platform-Version, Sec-CH-UA-Arch, Sec-CH-UA-Model, Sec-CH-UA-Bitness",
+          "Server": "cloudflare",
+          "alt-svc": "h3=\":443\"; ma=86400"
+        },
+        "title": null,
+        "technologies": [
+          "cloudflare"
+        ],
+        "wappalyzer": {
+          "error": "wappalyzer not installed"
+        },
+        "dirsearch_count": 0
+      },
+      "headers": [
+        {
+          "key": "Date",
+          "value": "Mon, 12 Jan 2026 09:21:54 GMT"
+        },
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Transfer-Encoding",
+          "value": "chunked"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "key": "CF-RAY",
+          "value": "9bcb96161c1132ab-AMM"
+        },
+        {
+          "key": "x-xss-protection",
+          "value": "0"
+        },
+        {
+          "key": "x-download-options",
+          "value": "noopen"
+        },
+        {
+          "key": "x-content-type-options",
+          "value": "nosniff"
+        },
+        {
+          "key": "content-security-policy",
+          "value": "report-uri /csp;child-src 'self' 'self' blob:;connect-src *;default-src 'self';img-src 'self' data: blob: *.facebook.com https://wise.com https://gtm.wise.com https://sst.wise.com https://tw-avatar.s3.eu-central-1.amazonaws.com https://tw-test-avatar-storage.s3.eu-west-1.amazonaws.com https://*.doubleclick.net https://www.googleadservices.com https://alb.reddit.com https://*.yahoo.co.jp https://bat.bing.com https://cx.atdmt.com https://daw291njkc3ao.cloudfront.net https://dq8dwmysp7hk1.cloudfront.net https://d2dgj1jjqgsb96.cloudfront.net https://help.wise.com/ https://platform-lookaside.fbsbx.com https://pixel.pointmediatracker.com https://cnv.event.prod.bidr.io https://q.quora.com https://s3-eu-west-1.amazonaws.com https://t.co https://wise.desk.com https://widgets.wise.com https://www.google-analytics.com https://www.gstatic.com https://i.ytimg.com https://px.ads.linkedin.com https://www.linkedin.com https://aax-eu.amazon-adsystem.com https://www.googletagmanager.com https://www.google.com https://www.google.com.au https://www.google.com.br https://www.google.com.sg https://www.google.com.ph https://www.google.com.my https://www.google.com.mx https://www.google.com.ua https://www.google.com.vn https://www.google.com.tr https://www.google.com.ar https://www.google.com.hk https://www.google.com.pk https://www.google.com.pe https://www.google.com.ng https://www.google.com.cy https://www.google.com.mt https://www.google.com.bd https://www.google.com.eg https://www.google.co.uk https://www.google.co.th https://www.google.co.jp https://www.google.co.nz https://www.google.co.id https://www.google.co.kr https://www.google.co.ve https://www.google.co.in https://www.google.co.il https://www.google.co.za https://www.google.de https://www.google.ca https://www.google.es https://www.google.pl https://www.google.ie https://www.google.ch https://www.google.pt https://www.google.nl https://www.google.it https://www.google.hu https://www.google.fr https://www.google.be https://www.google.ro https://www.google.fi https://www.google.cl https://www.google.cz https://www.google.ae https://www.google.lu https://www.google.se https://www.google.ru https://www.google.at https://www.google.bg https://www.google.ee https://www.google.dk https://www.google.no https://www.google.gr https://www.google.sk https://www.google.lt https://www.google.lv https://www.google.ge https://www.google.hr https://www.google.me *.googleusercontent.com *.analytics.google.com http://wi.se https://wi.se https://collector-20079.tvsquared.com https://analytics.twitter.com https://tr.line.me https://c5.adalyser.com https://c0.adalyser.com https://i.sng.link https://pixel.pointmediatracker.com https://cnv.event.prod.bidr.io https://lux.speedcurve.com https://forms-eu1.hsforms.com/ https://analytics.google.com/g/s/collect;font-src 'self' data: https://fonts.gstatic.com https://widgets.wise.com/;object-src 'self';media-src 'self' 'self' data: https://wise.com/;manifest-src 'self' 'self';script-src 'self' 'unsafe-inline' 'unsafe-eval' 'self' https://wise.com https://sst.wise.com https://gtm.wise.com https://*.singular.net https://i.sng.link https://js-agent.newrelic.com https://bam.nr-data.net/ https://ajax.cloudflare.com bat.bing.com https://s.yimg.jp https://*.yahoo.co.jp a.quora.com static.hotjar.com https://script.hotjar.com/ https://collector-20079.tvsquared.com https://d.line-scdn.net www.google.co.uk www.google.com www.googletagmanager.com/ tagmanager.google.com/ https://storage.googleapis.com https://ajax.googleapis.com/ https://microapps.google.com https://microapps-prod-tt.sandbox.google.com googleads.g.doubleclick.net www.google-analytics.com www.googleadservices.com static.ads-twitter.com analytics.twitter.com www.snapengage.com insitez.blob.core.windows.net sjs.bizographics.com *.mxpnl.com https://cdn.pdst.fm https://us-central1-adaptive-growth.cloudfunctions.net https://bidr.io https://d2dgj1jjqgsb96.cloudfront.net https://www.redditstatic.com/ads/pixel.js https://snap.licdn.com https://js.adsrvr.org https://c5.adalyser.com https://c0.adalyser.com https://c.amazon-adsystem.com https://js-eu1.hs-scripts.com https://transferwise.com https://bidr.io https://cdn.speedcurve.com https://lux.speedcurve.com https://js-eu1.hsforms.net https://challenges.cloudflare.com https://www.youtube.com;style-src 'self' 'unsafe-inline' blob: fonts.googleapis.com/css tagmanager.google.com/;frame-ancestors 'self' https://wiseturkiye.com.tr https://microapps.google.com https://microapps-prod-tt.sandbox.google.com;frame-src youtube.com www.youtube.com www.youtube-nocookie.com https://vars.hotjar.com https://bid.g.doubleclick.net https://www.googletagmanager.com https://insight.adsrvr.org https://match.adsrvr.org https://wise.com https://gtm.wise.com https://transferwise.com https://wise.navattic.com https://js-eu1.hsforms.net https://forms-eu1.hsforms.com/ https://challenges.cloudflare.com;worker-src 'self' blob:;form-action 'self' https://forms-eu1.hsforms.com/;base-uri 'self';script-src-attr 'none';upgrade-insecure-requests"
+        },
+        {
+          "key": "permissions-policy",
+          "value": "ch-ua-model=(\"https://sdk-api-v1.singular.net\"),ch-ua-platform-version=(\"https://sdk-api-v1.singular.net\"),ch-ua-full-version-list=(\"https://sdk-api-v1.singular.net\")"
+        },
+        {
+          "key": "cache-control",
+          "value": "private, no-cache, no-store, max-age=0, must-revalidate"
+        },
+        {
+          "key": "x-powered-by",
+          "value": "Next.js"
+        },
+        {
+          "key": "etag",
+          "value": "\"14uuhmniot5i78u\""
+        },
+        {
+          "key": "content-encoding",
+          "value": "gzip"
+        },
+        {
+          "key": "x-envoy-upstream-service-time",
+          "value": "652"
+        },
+        {
+          "key": "x-envoy-attempt-count",
+          "value": "1"
+        },
+        {
+          "key": "vary",
+          "value": "Accept-Encoding"
+        },
+        {
+          "key": "set-cookie",
+          "value": "appToken=dad99d7d8e52c2c8aaf9fda788d8acdc; Max-Age=86400; Path=/; Expires=Tue, 13 Jan 2026 09:21:53 GMT; HttpOnly; Secure; SameSite=None, gid=dd740bed-e6c7-4dde-bd7d-c2341caef910; Max-Age=31536000; Path=/; Expires=Tue, 12 Jan 2027 09:21:53 GMT; Secure; SameSite=None; SameSite=None"
+        },
+        {
+          "key": "cf-cache-status",
+          "value": "DYNAMIC"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000"
+        },
+        {
+          "key": "accept-ch",
+          "value": "Sec-CH-UA-Platform-Version, Sec-CH-UA-Arch, Sec-CH-UA-Model, Sec-CH-UA-Bitness"
+        },
+        {
+          "key": "Server",
+          "value": "cloudflare"
+        },
+        {
+          "key": "alt-svc",
+          "value": "h3=\":443\"; ma=86400"
+        }
+      ]
+    },
+    {
+      "value": "gtm.wise.com",
+      "type": "subdomain",
+      "label": "gtm.wise.com",
+      "id": "gtm.wise.com",
+      "group": "subdomain",
+      "status": 200,
+      "size": 0,
+      "meta": {
+        "status": 200,
+        "size": 0,
+        "ip": "216.239.32.21",
+        "response_time_ms": 504,
+        "headers": {
+          "Date": "Mon, 12 Jan 2026 09:21:12 GMT",
+          "Content-Length": "0",
+          "Via": "1.1 google"
+        },
+        "title": null,
+        "technologies": [],
+        "wappalyzer": {
+          "error": "wappalyzer not installed"
+        },
+        "tls_cert": {
+          "common_name": null,
+          "valid_from": null,
+          "valid_to": null
+        },
+        "dirsearch_count": 0
+      },
+      "headers": [
+        {
+          "key": "Date",
+          "value": "Mon, 12 Jan 2026 09:21:12 GMT"
+        },
+        {
+          "key": "Content-Length",
+          "value": "0"
+        },
+        {
+          "key": "Via",
+          "value": "1.1 google"
+        }
+      ]
+    },
+    {
+      "value": "newsroom.wise.com",
+      "type": "subdomain",
+      "label": "newsroom.wise.com",
+      "id": "newsroom.wise.com",
+      "group": "subdomain",
+      "status": 0,
+      "size": 0,
+      "meta": {
+        "status": 0,
+        "size": 0,
+        "ip": null,
+        "response_time_ms": null,
+        "headers": {},
+        "title": null,
+        "technologies": [],
+        "wappalyzer": null,
+        "dirsearch_count": 0
+      },
+      "headers": []
+    },
+    {
+      "id": "newsroom.wise.com/en-UKI",
+      "group": "endpoint",
+      "value": "newsroom.wise.com/en-UKI",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "en-UKI"
+    },
+    {
+      "value": "sst.wise.com",
+      "type": "subdomain",
+      "label": "sst.wise.com",
+      "id": "sst.wise.com",
+      "group": "subdomain",
+      "status": 200,
+      "size": 0,
+      "meta": {
+        "status": 200,
+        "size": 0,
+        "ip": "34.95.85.136",
+        "response_time_ms": 230,
+        "headers": {
+          "x-cloud-trace-context": "e566e6846a5d3a8b632cbbcf66ab7432",
+          "date": "Mon, 12 Jan 2026 09:21:28 GMT",
+          "content-type": "text/html",
+          "server": "Google Frontend",
+          "Content-Length": "0",
+          "Via": "1.1 google",
+          "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+        },
+        "title": null,
+        "technologies": [],
+        "wappalyzer": {
+          "error": "wappalyzer not installed"
+        },
+        "tls_cert": {
+          "common_name": null,
+          "valid_from": null,
+          "valid_to": null
+        },
+        "dirsearch_count": 0
+      },
+      "headers": [
+        {
+          "key": "x-cloud-trace-context",
+          "value": "e566e6846a5d3a8b632cbbcf66ab7432"
+        },
+        {
+          "key": "date",
+          "value": "Mon, 12 Jan 2026 09:21:28 GMT"
+        },
+        {
+          "key": "content-type",
+          "value": "text/html"
+        },
+        {
+          "key": "server",
+          "value": "Google Frontend"
+        },
+        {
+          "key": "Content-Length",
+          "value": "0"
+        },
+        {
+          "key": "Via",
+          "value": "1.1 google"
+        },
+        {
+          "key": "Alt-Svc",
+          "value": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+        }
+      ]
+    },
+    {
+      "id": "sst.wise.com/ns.html",
+      "group": "endpoint",
+      "value": "sst.wise.com/ns.html",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "ns.html"
+    },
+    {
+      "id": "sst.wise.com/wisetag",
+      "group": "endpoint",
+      "value": "sst.wise.com/wisetag",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "wisetag"
+    },
+    {
+      "value": "status.wise.com",
+      "type": "subdomain",
+      "label": "status.wise.com",
+      "id": "status.wise.com",
+      "group": "subdomain",
+      "status": 0,
+      "size": 0,
+      "meta": {
+        "status": 0,
+        "size": 0,
+        "ip": null,
+        "response_time_ms": null,
+        "headers": {},
+        "title": null,
+        "technologies": [],
+        "wappalyzer": null,
+        "dirsearch_count": 0
+      },
+      "headers": []
+    },
+    {
+      "id": "wise.com/gb/about",
+      "group": "directory",
+      "value": "wise.com/gb/about",
+      "type": "directory",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "about"
+    },
+    {
+      "id": "wise.com/gb/about/our-story",
+      "group": "endpoint",
+      "value": "wise.com/gb/about/our-story",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "our-story"
+    },
+    {
+      "id": "wise.com/gb/about/wise-reviews",
+      "group": "endpoint",
+      "value": "wise.com/gb/about/wise-reviews",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "wise-reviews"
+    },
+    {
+      "id": "wise.com/gb/account",
+      "group": "endpoint",
+      "value": "wise.com/gb/account",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "account"
+    },
+    {
+      "id": "wise.com/gb/assets",
+      "group": "endpoint",
+      "value": "wise.com/gb/assets",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "assets"
+    },
+    {
+      "id": "wise.com/gb/availability",
+      "group": "endpoint",
+      "value": "wise.com/gb/availability",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "availability"
+    },
+    {
+      "id": "wise.com/gb/blog",
+      "group": "endpoint",
+      "value": "wise.com/gb/blog",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "blog"
+    },
+    {
+      "id": "wise.com/gb/business",
+      "group": "endpoint",
+      "value": "wise.com/gb/business",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "business"
+    },
+    {
+      "id": "wise.com/gb/business-tools",
+      "group": "endpoint",
+      "value": "wise.com/gb/business-tools",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "business-tools"
+    },
+    {
+      "id": "wise.com/gb/business/accept-card-payments",
+      "group": "endpoint",
+      "value": "wise.com/gb/business/accept-card-payments",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "accept-card-payments"
+    },
+    {
+      "id": "wise.com/gb/business/card",
+      "group": "endpoint",
+      "value": "wise.com/gb/business/card",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "card"
+    },
+    {
+      "id": "wise.com/gb/business/payouts",
+      "group": "endpoint",
+      "value": "wise.com/gb/business/payouts",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "payouts"
+    },
+    {
+      "id": "wise.com/gb/card",
+      "group": "endpoint",
+      "value": "wise.com/gb/card",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "card"
+    },
+    {
+      "id": "wise.com/gb/company-formation",
+      "group": "endpoint",
+      "value": "wise.com/gb/company-formation",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "company-formation"
+    },
+    {
+      "id": "wise.com/gb/compare",
+      "group": "endpoint",
+      "value": "wise.com/gb/compare",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "compare"
+    },
+    {
+      "id": "wise.com/gb/compare/disclaimer",
+      "group": "endpoint",
+      "value": "wise.com/gb/compare/disclaimer",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "disclaimer"
+    },
+    {
+      "id": "wise.com/gb/currency-converter",
+      "group": "endpoint",
+      "value": "wise.com/gb/currency-converter",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "currency-converter"
+    },
+    {
+      "id": "wise.com/gb/iban",
+      "group": "endpoint",
+      "value": "wise.com/gb/iban",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "iban"
+    },
+    {
+      "id": "wise.com/gb/large-amounts",
+      "group": "endpoint",
+      "value": "wise.com/gb/large-amounts",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "large-amounts"
+    },
+    {
+      "id": "wise.com/gb/legal",
+      "group": "directory",
+      "value": "wise.com/gb/legal",
+      "type": "directory",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "legal"
+    },
+    {
+      "id": "wise.com/gb/legal/global-privacy-policy-en",
+      "group": "endpoint",
+      "value": "wise.com/gb/legal/global-privacy-policy-en",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "global-privacy-policy-en"
+    },
+    {
+      "id": "wise.com/gb/partnerwise",
+      "group": "endpoint",
+      "value": "wise.com/gb/partnerwise",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "partnerwise"
+    },
+    {
+      "id": "wise.com/gb/receive-money",
+      "group": "endpoint",
+      "value": "wise.com/gb/receive-money",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "receive-money"
+    },
+    {
+      "id": "wise.com/gb/safety-and-security",
+      "group": "endpoint",
+      "value": "wise.com/gb/safety-and-security",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "safety-and-security"
+    },
+    {
+      "id": "wise.com/gb/send-money",
+      "group": "endpoint",
+      "value": "wise.com/gb/send-money",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money"
+    },
+    {
+      "id": "wise.com/gb/stock",
+      "group": "endpoint",
+      "value": "wise.com/gb/stock",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "stock"
+    },
+    {
+      "id": "wise.com/gb/swift-codes",
+      "group": "endpoint",
+      "value": "wise.com/gb/swift-codes",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "swift-codes"
+    },
+    {
+      "id": "wise.com/gb/tools",
+      "group": "directory",
+      "value": "wise.com/gb/tools",
+      "type": "directory",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "tools"
+    },
+    {
+      "id": "wise.com/gb/tools/exchange-rate-alerts",
+      "group": "endpoint",
+      "value": "wise.com/gb/tools/exchange-rate-alerts",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "exchange-rate-alerts"
+    },
+    {
+      "id": "wise.com/help/articles",
+      "group": "directory",
+      "value": "wise.com/help/articles",
+      "type": "directory",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "articles"
+    },
+    {
+      "id": "wise.com/help/articles/2235393",
+      "group": "directory",
+      "value": "wise.com/help/articles/2235393",
+      "type": "directory",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "2235393"
+    },
+    {
+      "id": "wise.com/help/articles/2235393/how-do-i-make-a-complaint",
+      "group": "endpoint",
+      "value": "wise.com/help/articles/2235393/how-do-i-make-a-complaint",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "how-do-i-make-a-complaint"
+    },
+    {
+      "id": "wise.com/help/articles/473W1lKUiKkVFMNeBQgrAG",
+      "group": "directory",
+      "value": "wise.com/help/articles/473W1lKUiKkVFMNeBQgrAG",
+      "type": "directory",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "473W1lKUiKkVFMNeBQgrAG"
+    },
+    {
+      "id": "wise.com/help/articles/473W1lKUiKkVFMNeBQgrAG/accessibility-at-wise",
+      "group": "endpoint",
+      "value": "wise.com/help/articles/473W1lKUiKkVFMNeBQgrAG/accessibility-at-wise",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "accessibility-at-wise"
+    },
+    {
+      "id": "wise.com/help/articles/4Mo9V7MyXos6scM7xvhg15",
+      "group": "directory",
+      "value": "wise.com/help/articles/4Mo9V7MyXos6scM7xvhg15",
+      "type": "directory",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "4Mo9V7MyXos6scM7xvhg15"
+    },
+    {
+      "id": "wise.com/help/articles/4Mo9V7MyXos6scM7xvhg15/licences-and-regulators-when-holding-money-as-different-assets",
+      "group": "endpoint",
+      "value": "wise.com/help/articles/4Mo9V7MyXos6scM7xvhg15/licences-and-regulators-when-holding-money-as-different-assets",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "licences-and-regulators-when-holding-money-as-different-assets"
+    },
+    {
+      "id": "wise.com/help/articles/79CxCv9Qj1r7mDPJuIwUA3",
+      "group": "directory",
+      "value": "wise.com/help/articles/79CxCv9Qj1r7mDPJuIwUA3",
+      "type": "directory",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "79CxCv9Qj1r7mDPJuIwUA3"
+    },
+    {
+      "id": "wise.com/help/articles/79CxCv9Qj1r7mDPJuIwUA3/wise-intellectual-property",
+      "group": "endpoint",
+      "value": "wise.com/help/articles/79CxCv9Qj1r7mDPJuIwUA3/wise-intellectual-property",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "wise-intellectual-property"
+    },
+    {
+      "id": "wise.com/p/our-mission",
+      "group": "endpoint",
+      "value": "wise.com/p/our-mission",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "our-mission"
+    },
+    {
+      "id": "wise.com/p/research-privacy-policy",
+      "group": "endpoint",
+      "value": "wise.com/p/research-privacy-policy",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "research-privacy-policy"
+    },
+    {
+      "id": "wise.com/platform/cards",
+      "group": "endpoint",
+      "value": "wise.com/platform/cards",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "cards"
+    },
+    {
+      "id": "wise.com/platform/education",
+      "group": "endpoint",
+      "value": "wise.com/platform/education",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "education"
+    },
+    {
+      "id": "wise.com/platform/financial-institutions",
+      "group": "endpoint",
+      "value": "wise.com/platform/financial-institutions",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "financial-institutions"
+    },
+    {
+      "id": "wise.com/platform/marketplaces",
+      "group": "endpoint",
+      "value": "wise.com/platform/marketplaces",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "marketplaces"
+    },
+    {
+      "id": "wise.com/platform/multi-currency-accounts",
+      "group": "endpoint",
+      "value": "wise.com/platform/multi-currency-accounts",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "multi-currency-accounts"
+    },
+    {
+      "id": "wise.com/platform/receive",
+      "group": "endpoint",
+      "value": "wise.com/platform/receive",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "receive"
+    },
+    {
+      "id": "wise.com/platform/send",
+      "group": "endpoint",
+      "value": "wise.com/platform/send",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send"
+    },
+    {
+      "id": "wise.com/platform/spend-management",
+      "group": "endpoint",
+      "value": "wise.com/platform/spend-management",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "spend-management"
+    },
+    {
+      "id": "wise.com/platform/travel",
+      "group": "endpoint",
+      "value": "wise.com/platform/travel",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "travel"
+    },
+    {
+      "id": "wise.com/platform/workforce-platforms",
+      "group": "endpoint",
+      "value": "wise.com/platform/workforce-platforms",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "workforce-platforms"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-andorra",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-andorra",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-andorra"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-argentina",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-argentina",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-argentina"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-australia",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-australia",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-australia"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-austria",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-austria",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-austria"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-bangladesh",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-bangladesh",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-bangladesh"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-belgium",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-belgium",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-belgium"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-botswana",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-botswana",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-botswana"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-brazil",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-brazil",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-brazil"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-british-virgin-islands",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-british-virgin-islands",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-british-virgin-islands"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-bulgaria",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-bulgaria",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-bulgaria"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-canada",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-canada",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-canada"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-chile",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-chile",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-chile"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-china",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-china",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-china"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-colombia",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-colombia",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-colombia"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-costa-rica",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-costa-rica",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-costa-rica"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-croatia",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-croatia",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-croatia"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-cyprus",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-cyprus",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-cyprus"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-czech-republic",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-czech-republic",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-czech-republic"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-denmark",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-denmark",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-denmark"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-dubai",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-dubai",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-dubai"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-east-timor",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-east-timor",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-east-timor"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-ecuador",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-ecuador",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-ecuador"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-egypt",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-egypt",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-egypt"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-el-salvador",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-el-salvador",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-el-salvador"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-estonia",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-estonia",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-estonia"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-europe",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-europe",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-europe"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-fiji",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-fiji",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-fiji"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-finland",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-finland",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-finland"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-france",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-france",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-france"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-georgia",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-georgia",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-georgia"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-germany",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-germany",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-germany"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-ghana",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-ghana",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-ghana"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-gibraltar",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-gibraltar",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-gibraltar"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-greece",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-greece",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-greece"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-guadeloupe",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-guadeloupe",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-guadeloupe"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-guernsey",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-guernsey",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-guernsey"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-hong-kong",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-hong-kong",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-hong-kong"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-hungary",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-hungary",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-hungary"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-india",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-india",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-india"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-indonesia",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-indonesia",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-indonesia"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-ireland",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-ireland",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-ireland"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-isle-of-man",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-isle-of-man",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-isle-of-man"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-israel",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-israel",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-israel"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-italy",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-italy",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-italy"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-japan",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-japan",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-japan"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-jersey",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-jersey",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-jersey"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-kenya",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-kenya",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-kenya"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-latvia",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-latvia",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-latvia"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-liechtenstein",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-liechtenstein",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-liechtenstein"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-lithuania",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-lithuania",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-lithuania"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-luxembourg",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-luxembourg",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-luxembourg"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-malaysia",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-malaysia",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-malaysia"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-malta",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-malta",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-malta"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-marshall-islands",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-marshall-islands",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-marshall-islands"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-martinique",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-martinique",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-martinique"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-mayotte",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-mayotte",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-mayotte"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-mexico",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-mexico",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-mexico"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-micronesia",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-micronesia",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-micronesia"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-monaco",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-monaco",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-monaco"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-montenegro",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-montenegro",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-montenegro"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-morocco",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-morocco",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-morocco"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-nauru",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-nauru",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-nauru"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-nepal",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-nepal",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-nepal"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-new-zealand",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-new-zealand",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-new-zealand"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-nigeria",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-nigeria",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-nigeria"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-norway",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-norway",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-norway"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-pakistan",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-pakistan",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-pakistan"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-palau",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-palau",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-palau"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-panama",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-panama",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-panama"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-peru",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-peru",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-peru"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-philippines",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-philippines",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-philippines"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-poland",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-poland",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-poland"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-portugal",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-portugal",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-portugal"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-reunion",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-reunion",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-reunion"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-romania",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-romania",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-romania"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-saint-barthelemy",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-saint-barthelemy",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-saint-barthelemy"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-saint-martin-french-part",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-saint-martin-french-part",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-saint-martin-french-part"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-saint-pierre-and-miquelon",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-saint-pierre-and-miquelon",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-saint-pierre-and-miquelon"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-san-marino",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-san-marino",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-san-marino"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-singapore",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-singapore",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-singapore"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-slovakia",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-slovakia",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-slovakia"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-slovenia",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-slovenia",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-slovenia"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-south-africa",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-south-africa",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-south-africa"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-south-korea",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-south-korea",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-south-korea"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-spain",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-spain",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-spain"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-sri-lanka",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-sri-lanka",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-sri-lanka"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-sweden",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-sweden",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-sweden"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-switzerland",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-switzerland",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-switzerland"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-taiwan",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-taiwan",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-taiwan"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-tanzania",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-tanzania",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-tanzania"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-thailand",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-thailand",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-thailand"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-the-netherlands",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-the-netherlands",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-the-netherlands"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-the-uk",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-the-uk",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-the-uk"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-the-usa",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-the-usa",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-the-usa"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-turkey",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-turkey",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-turkey"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-uganda",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-uganda",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-uganda"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-ukraine",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-ukraine",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-ukraine"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-united-arab-emirates",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-united-arab-emirates",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-united-arab-emirates"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-uruguay",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-uruguay",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-uruguay"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-vatican",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-vatican",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-vatican"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-vietnam",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-vietnam",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-vietnam"
+    },
+    {
+      "id": "wise.com/send-money/send-money-to-zambia",
+      "group": "endpoint",
+      "value": "wise.com/send-money/send-money-to-zambia",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "send-money-to-zambia"
+    },
+    {
+      "id": "wise.com/us/invoice-generator",
+      "group": "endpoint",
+      "value": "wise.com/us/invoice-generator",
+      "type": "endpoint",
+      "status": 0,
+      "size": 0,
+      "meta": {},
+      "headers": [],
+      "label": "invoice-generator"
+    }
+  ],
+  "relationships": [
+    {
+      "source": "wise.com",
+      "target": "wise.com/ae",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/at",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/au",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/be",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/bg",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/br",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/ca",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/ch",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/cookie-policy",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/de",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/dk",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/ee",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/es",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/fi",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/fr",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/gb",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/gr",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/help",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/hk",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/hr",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/hu",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/id",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/ie",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/in",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/it",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/jp",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/kr",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/large-amounts",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/local-sites",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/login",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/lu",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/mx",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/my",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/nl",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/no",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/nz",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/owners",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/p",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/ph",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/pl",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/platform",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/pricing",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/pt",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/register",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/ro",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/ru",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/se",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/send-money",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/sg",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/terms-and-conditions",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/th",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/us",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "wise.com/za",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "api.wise.com",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "docs.wise.com",
+      "type": "contains"
+    },
+    {
+      "source": "docs.wise.com",
+      "target": "docs.wise.com/api-docs",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "files.wise.com",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "help.wise.com",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "www.wise.com",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "gtm.wise.com",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "newsroom.wise.com",
+      "type": "contains"
+    },
+    {
+      "source": "newsroom.wise.com",
+      "target": "newsroom.wise.com/en-UKI",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "sst.wise.com",
+      "type": "contains"
+    },
+    {
+      "source": "sst.wise.com",
+      "target": "sst.wise.com/ns.html",
+      "type": "contains"
+    },
+    {
+      "source": "sst.wise.com",
+      "target": "sst.wise.com/wisetag",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com",
+      "target": "status.wise.com",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/about",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb/about",
+      "target": "wise.com/gb/about/our-story",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb/about",
+      "target": "wise.com/gb/about/wise-reviews",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/account",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/assets",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/availability",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/blog",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/business",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/business-tools",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb/business",
+      "target": "wise.com/gb/business/accept-card-payments",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb/business",
+      "target": "wise.com/gb/business/card",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb/business",
+      "target": "wise.com/gb/business/payouts",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/card",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/company-formation",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/compare",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb/compare",
+      "target": "wise.com/gb/compare/disclaimer",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/currency-converter",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/iban",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/large-amounts",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/legal",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb/legal",
+      "target": "wise.com/gb/legal/global-privacy-policy-en",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/partnerwise",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/receive-money",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/safety-and-security",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/send-money",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/stock",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/swift-codes",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb",
+      "target": "wise.com/gb/tools",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/gb/tools",
+      "target": "wise.com/gb/tools/exchange-rate-alerts",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/help",
+      "target": "wise.com/help/articles",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/help/articles",
+      "target": "wise.com/help/articles/2235393",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/help/articles/2235393",
+      "target": "wise.com/help/articles/2235393/how-do-i-make-a-complaint",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/help/articles",
+      "target": "wise.com/help/articles/473W1lKUiKkVFMNeBQgrAG",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/help/articles/473W1lKUiKkVFMNeBQgrAG",
+      "target": "wise.com/help/articles/473W1lKUiKkVFMNeBQgrAG/accessibility-at-wise",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/help/articles",
+      "target": "wise.com/help/articles/4Mo9V7MyXos6scM7xvhg15",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/help/articles/4Mo9V7MyXos6scM7xvhg15",
+      "target": "wise.com/help/articles/4Mo9V7MyXos6scM7xvhg15/licences-and-regulators-when-holding-money-as-different-assets",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/help/articles",
+      "target": "wise.com/help/articles/79CxCv9Qj1r7mDPJuIwUA3",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/help/articles/79CxCv9Qj1r7mDPJuIwUA3",
+      "target": "wise.com/help/articles/79CxCv9Qj1r7mDPJuIwUA3/wise-intellectual-property",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/p",
+      "target": "wise.com/p/our-mission",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/p",
+      "target": "wise.com/p/research-privacy-policy",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/platform",
+      "target": "wise.com/platform/cards",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/platform",
+      "target": "wise.com/platform/education",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/platform",
+      "target": "wise.com/platform/financial-institutions",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/platform",
+      "target": "wise.com/platform/marketplaces",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/platform",
+      "target": "wise.com/platform/multi-currency-accounts",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/platform",
+      "target": "wise.com/platform/receive",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/platform",
+      "target": "wise.com/platform/send",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/platform",
+      "target": "wise.com/platform/spend-management",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/platform",
+      "target": "wise.com/platform/travel",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/platform",
+      "target": "wise.com/platform/workforce-platforms",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-andorra",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-argentina",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-australia",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-austria",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-bangladesh",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-belgium",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-botswana",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-brazil",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-british-virgin-islands",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-bulgaria",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-canada",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-chile",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-china",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-colombia",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-costa-rica",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-croatia",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-cyprus",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-czech-republic",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-denmark",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-dubai",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-east-timor",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-ecuador",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-egypt",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-el-salvador",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-estonia",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-europe",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-fiji",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-finland",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-france",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-georgia",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-germany",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-ghana",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-gibraltar",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-greece",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-guadeloupe",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-guernsey",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-hong-kong",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-hungary",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-india",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-indonesia",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-ireland",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-isle-of-man",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-israel",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-italy",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-japan",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-jersey",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-kenya",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-latvia",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-liechtenstein",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-lithuania",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-luxembourg",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-malaysia",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-malta",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-marshall-islands",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-martinique",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-mayotte",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-mexico",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-micronesia",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-monaco",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-montenegro",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-morocco",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-nauru",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-nepal",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-new-zealand",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-nigeria",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-norway",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-pakistan",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-palau",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-panama",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-peru",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-philippines",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-poland",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-portugal",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-reunion",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-romania",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-saint-barthelemy",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-saint-martin-french-part",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-saint-pierre-and-miquelon",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-san-marino",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-singapore",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-slovakia",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-slovenia",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-south-africa",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-south-korea",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-spain",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-sri-lanka",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-sweden",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-switzerland",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-taiwan",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-tanzania",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-thailand",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-the-netherlands",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-the-uk",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-the-usa",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-turkey",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-uganda",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-ukraine",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-united-arab-emirates",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-uruguay",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-vatican",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-vietnam",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/send-money",
+      "target": "wise.com/send-money/send-money-to-zambia",
+      "type": "contains"
+    },
+    {
+      "source": "wise.com/us",
+      "target": "wise.com/us/invoice-generator",
+      "type": "contains"
+    }
+  ]
+}

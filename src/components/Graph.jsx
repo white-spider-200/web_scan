@@ -7,6 +7,7 @@ export const Graph = ({ data, onNodeClick, highlightedNodes = [], similarNodes =
   const containerRef = useRef(null);
   const fgRef = useRef(null);
   const [size, setSize] = useState({ width: 800, height: 520 });
+  const [isPhysicsLocked, setIsPhysicsLocked] = useState(false);
   const didAutoFitRef = useRef(false);
   const nodesAddedAt = useRef(new Map());
 
@@ -40,6 +41,40 @@ export const Graph = ({ data, onNodeClick, highlightedNodes = [], similarNodes =
     const rootNode = data.nodes.find(n => n.type === 'host' && n.role === 'root') || data.nodes.find(n => n.type === 'host');
     if (!rootNode) return;
 
+    // If physics is locked, disable all forces and stop simulation
+    if (isPhysicsLocked) {
+      // Remove all forces
+      fg.d3Force('center', null);
+      fg.d3Force('charge', null);
+      fg.d3Force('link', null);
+      fg.d3Force('radial', null);
+      fg.d3Force('collision', null);
+      
+      // Access and stop the simulation
+      try {
+        const sim = fg.d3Simulation();
+        if (sim) {
+          sim.stop();
+          sim.alpha(0);
+        }
+      } catch (e) {
+        // Simulation might not be ready yet
+      }
+      
+      return;
+    }
+
+    // When unlocked, restart simulation with forces
+    try {
+      const sim = fg.d3Simulation();
+      if (sim) {
+        sim.restart();
+        sim.alpha(0.3);
+      }
+    } catch (e) {
+      // Simulation might not be ready yet
+    }
+
     // Center force
     fg.d3Force('center', forceCenter(size.width / 2, size.height / 2).strength(0.05));
 
@@ -67,7 +102,7 @@ export const Graph = ({ data, onNodeClick, highlightedNodes = [], similarNodes =
     // Collision force
     fg.d3Force('collision', forceCollide(20));
 
-    // Pin root node
+    // Pin root node only if physics is on
     rootNode.fx = size.width / 2;
     rootNode.fy = size.height / 2;
 
@@ -80,7 +115,7 @@ export const Graph = ({ data, onNodeClick, highlightedNodes = [], similarNodes =
       }, 300);
       return () => clearTimeout(timeout);
     }
-  }, [data, size.width, size.height]);
+  }, [data, size.width, size.height, isPhysicsLocked]);
 
   // Zoom controls
   const handleZoom = (type) => {
@@ -112,6 +147,33 @@ export const Graph = ({ data, onNodeClick, highlightedNodes = [], similarNodes =
     onNodeClick?.(node, [node.id]);
   };
 
+  // Handle node drag - only allow dragging on click, not on hover
+  const handleNodeDrag = (node, translate) => {
+    if (!node) return;
+    // This is called during drag - update node position
+    node.fx = translate.x;
+    node.fy = translate.y;
+  };
+
+  const handleNodeDragEnd = (node) => {
+    if (!node) return;
+    // If physics is locked, keep node fixed. Otherwise release it.
+    if (isPhysicsLocked) {
+      // Keep the node pinned at its current position
+      node.fx = node.x;
+      node.fy = node.y;
+    } else {
+      // Release the node so physics can take over
+      node.fx = undefined;
+      node.fy = undefined;
+    }
+  };
+
+  // Toggle physics lock
+  const togglePhysicsLock = () => {
+    setIsPhysicsLocked(!isPhysicsLocked);
+  };
+
   // Get node color based on type
   const getNodeColor = (node) => {
     if (!node?.type) return '#bbb';
@@ -130,6 +192,13 @@ export const Graph = ({ data, onNodeClick, highlightedNodes = [], similarNodes =
         <button onClick={() => handleZoom('in')} title="Zoom In">+</button>
         <button onClick={() => handleZoom('out')} title="Zoom Out">−</button>
         <button onClick={() => handleZoom('home')} title="Reset View" className="home-button">⌂</button>
+        <button 
+          onClick={togglePhysicsLock} 
+          title={isPhysicsLocked ? "Unlock Physics" : "Lock Physics"}
+          className={`lock-button ${isPhysicsLocked ? 'locked' : 'unlocked'}`}
+        >
+          {isPhysicsLocked ? '🔒' : '🔓'}
+        </button>
       </div>
       <ForceGraph2D
         ref={fgRef}
@@ -157,6 +226,11 @@ export const Graph = ({ data, onNodeClick, highlightedNodes = [], similarNodes =
           return isHighlighted || isSimilar ? 2 : 1;
         }}
         onNodeClick={handleNodeClick}
+        onNodeDrag={handleNodeDrag}
+        onNodeDragEnd={handleNodeDragEnd}
+        enableNodeDrag={true}
+        enableZoomInteraction={true}
+        enablePanInteraction={true}
         width={size.width}
         height={size.height}
         nodeCanvasObject={(node, ctx, globalScale) => {

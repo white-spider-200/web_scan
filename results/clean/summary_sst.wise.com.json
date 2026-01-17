@@ -1,0 +1,26 @@
+{
+  "target": "sst.wise.com",
+  "status": 200,
+  "content_length": 0,
+  "ip": "34.95.85.136",
+  "response_time_ms": 230,
+  "title": null,
+  "headers": {
+    "x-cloud-trace-context": "e566e6846a5d3a8b632cbbcf66ab7432",
+    "date": "Mon, 12 Jan 2026 09:21:28 GMT",
+    "content-type": "text/html",
+    "server": "Google Frontend",
+    "Content-Length": "0",
+    "Via": "1.1 google",
+    "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+  },
+  "technologies": [],
+  "wappalyzer": {
+    "error": "wappalyzer not installed"
+  },
+  "tls_cert": {
+    "common_name": null,
+    "valid_from": null,
+    "valid_to": null
+  }
+}

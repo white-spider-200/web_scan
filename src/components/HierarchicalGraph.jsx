@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useMemo, useState, useCallback } from 'react'
 import './Graph.css';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceManyBody, forceCollide, forceLink, forceCenter, forceRadial, forceX, forceY } from 'd3-force';
+import { useGraphSettings } from '../context/GraphSettingsContext';
 
 export const HierarchicalGraph = ({
   data,
@@ -11,6 +12,7 @@ export const HierarchicalGraph = ({
   disableLevelSystem = false,
   selectedNodeId = null,
   bookmarkedNodeIds = null,
+  lockedNodeIds = null,
   lockLayout = false,
   onToggleLock,
   layoutPreset = 'radial',
@@ -18,6 +20,7 @@ export const HierarchicalGraph = ({
 }) => {
   const containerRef = useRef(null);
   const fgRef = useRef(null);
+  const { layout: settingsLayout, display: settingsDisplay, groups: settingsGroups } = useGraphSettings();
   const suppressAutoFit = useRef(false);
   const tooltipCacheRef = useRef(new Map());
   const labelLayoutRef = useRef({ boxes: [] });
@@ -150,12 +153,12 @@ export const HierarchicalGraph = ({
     const inst = fgRef.current;
     if (!inst || typeof inst.pauseAnimation !== 'function') return;
     try {
-      if (lockLayout) inst.pauseAnimation();
+      if (lockLayout || settingsLayout.isFrozen) inst.pauseAnimation();
       else inst.resumeAnimation();
     } catch (e) {
       // ignore
     }
-  }, [lockLayout]);
+  }, [lockLayout, settingsLayout.isFrozen]);
 
   // centralized setter that persists and emits event
   const setExpanded = useCallback((updater) => {
@@ -573,6 +576,33 @@ export const HierarchicalGraph = ({
   const getNodeColor = useCallback((node) => {
     if (!node || !node.type) return '#9CA3AF';
 
+    // Apply Custom Groups First
+    if (settingsGroups && settingsGroups.length) {
+      for (const group of settingsGroups) {
+        if (!group.active) continue;
+        const q = (group.query || '').trim().toLowerCase();
+        
+        // Status Check (e.g., status:403)
+        if (q.startsWith('status:')) {
+          const code = q.split(':')[1];
+          if (String(node.status || '').includes(code)) return group.color;
+        }
+        
+        // Risk Check (e.g., risk:high)
+        if (q.startsWith('risk:')) {
+          const level = q.split(':')[1];
+          const score = Number(node.attackScore || node.riskScore || 0);
+          if (level === 'critical' && score >= 9) return group.color;
+          if (level === 'high' && score >= 7) return group.color;
+          if (level === 'medium' && score >= 4) return group.color;
+          if (level === 'low' && score > 0) return group.color;
+        }
+
+        // Tag/Label Check (fallback)
+        if (String(node.label || '').toLowerCase().includes(q)) return group.color;
+      }
+    }
+
     if (node.type === 'cluster') {
       const ct = String(node.clusterType || '').toLowerCase();
       if (ct.startsWith('attack_')) {
@@ -604,10 +634,17 @@ export const HierarchicalGraph = ({
     };
 
     return colors[node.type] || '#94A3B8';
-  }, []);
+  }, [settingsGroups]);
   
   // Get node size based on type and expansion state
   const getNodeSize = useCallback((node) => {
+    // Basic fixed sizing if requested
+    if (settingsDisplay.nodeSize === 'fixed') {
+      const isRoot = node.role === 'root';
+      const base = isRoot ? 12 : 6;
+      return base * (expandedNodes.has(node.id) ? 1.2 : 1) * (highlightedNodes.includes(String(node.id)) ? 1.3 : 1);
+    }
+
     const baseSizes = {
       host: node.role === 'root' ? 25 : 18,
       dir: 14,
@@ -622,9 +659,16 @@ export const HierarchicalGraph = ({
     const baseSize = baseSizes[node.type] || 10;
     const countBoost = node?.count ? Math.min(18, Math.log2(node.count + 1) * 4) : 0;
     const attackScore = Number(node?.attackScore);
-    const attackBoost = node?.attackView && Number.isFinite(attackScore) && attackScore > 0
+    let attackBoost = node?.attackView && Number.isFinite(attackScore) && attackScore > 0
       ? Math.min(18, Math.log2(attackScore + 1) * 4)
       : 0;
+    
+    if (settingsDisplay.nodeSize === 'risk') {
+       attackBoost *= 2.5; // Emphasize risk
+    } else if (settingsDisplay.nodeSize === 'degree') {
+       // De-emphasize risk, rely on base size (type/count)
+       attackBoost *= 0.5; 
+    }
     
     // Make expanded nodes slightly larger
     const expandedMultiplier = expandedNodes.has(node.id) ? 1.2 : 1;
@@ -633,7 +677,7 @@ export const HierarchicalGraph = ({
     const highlightMultiplier = highlightedNodes.includes(String(node.id)) ? 1.3 : 1;
     
     return (baseSize + countBoost + attackBoost) * expandedMultiplier * highlightMultiplier;
-  }, [expandedNodes, highlightedNodes]);
+  }, [expandedNodes, highlightedNodes, settingsDisplay.nodeSize]);
 
   const isExpandableNode = useCallback((node) => {
     if (!node) return false;
@@ -647,6 +691,22 @@ export const HierarchicalGraph = ({
     exportFnsRef.current.getNodeSize = getNodeSize;
   }, [getNodeColor, getNodeSize]);
   
+  const handleNodeHover = useCallback((node) => {
+    setHoverNodeId(node?.id || null);
+    const inst = fgRef.current;
+    if (!inst) return;
+
+    if (node) {
+      // Pause simulation when hovering a node to stop it from moving away (Bloodhound-like behavior)
+      try { inst.pauseAnimation(); } catch (e) {}
+    } else {
+      // Resume if not locked
+      if (!lockLayout) {
+        try { inst.resumeAnimation(); } catch (e) {}
+      }
+    }
+  }, [lockLayout]);
+
   // Handle node click:
   // - Click expandable nodes => expand/collapse (no auto-zoom, no details fetch)
   // - Shift+click (or leaf nodes) => focus + show details
@@ -752,68 +812,6 @@ export const HierarchicalGraph = ({
       depth: parts.length
     };
   }, []);
-
-  const selectedNeighbors = useMemo(() => {
-    if (!selectedNodeId || !data?.links?.length) return new Set();
-    const neighbors = new Set([String(selectedNodeId)]);
-    data.links.forEach(l => {
-      const src = String(typeof l.source === 'object' ? l.source.id : l.source);
-      const tgt = String(typeof l.target === 'object' ? l.target.id : l.target);
-      if (src === String(selectedNodeId)) neighbors.add(tgt);
-      if (tgt === String(selectedNodeId)) neighbors.add(src);
-    });
-    return neighbors;
-  }, [data, selectedNodeId]);
-
-  const shouldShowLabel = useCallback((node) => {
-    if (!node) return false;
-    if (node.attackView) return true;
-    if (node.type === 'cluster') return true;
-    if (hoverNodeId && node.id === hoverNodeId) return true;
-    if (highlightedNodes.includes(String(node.id))) return true;
-    if (highlightPath.includes(String(node.id))) return true;
-    if (selectedNodeId && String(node.id) === String(selectedNodeId)) return true;
-    if (selectedNodeId && selectedNeighbors.has(node.id)) return true;
-    if (node.type === 'host' && node.role === 'root') return true;
-    return false;
-  }, [hoverNodeId, selectedNodeId, selectedNeighbors, highlightedNodes, highlightPath]);
-
-  const getLabelIntent = useCallback((node, globalScale) => {
-    if (!node) return false;
-    if (labelMode === 'off') return false;
-    if (labelMode === 'all') return true;
-    const zoomReveal = !!selectedNodeId && (globalScale || 1) >= 2.2;
-    return shouldShowLabel(node) || zoomReveal;
-  }, [labelMode, selectedNodeId, shouldShowLabel]);
-
-  const labelAlphaForZoom = useCallback((node, globalScale) => {
-    const scale = Number(globalScale) || 1;
-    const important = shouldShowLabel(node);
-    const start = labelMode === 'all'
-      ? 1.85
-      : (node?.attackView ? 0.72 : (important ? 1.05 : 1.35));
-    const end = start + (labelMode === 'all' ? 0.95 : 0.75);
-    const t = (scale - start) / Math.max(0.001, (end - start));
-    const a = Math.max(0, Math.min(1, t));
-    if (labelMode === 'smart' && node?.attackView && scale >= 0.72 && a < 0.28) return 0.28;
-    if (labelMode === 'smart' && important && scale >= 0.9 && a < 0.18) return 0.18;
-    return a;
-  }, [labelMode, shouldShowLabel]);
-
-  const rectsOverlap = useCallback((a, b, pad = 0) => {
-    if (!a || !b) return false;
-    return !(a.x2 + pad < b.x1 || a.x1 - pad > b.x2 || a.y2 + pad < b.y1 || a.y1 - pad > b.y2);
-  }, []);
-
-  const reserveLabelRect = useCallback((rect, pad = 0) => {
-    const boxes = labelLayoutRef.current.boxes || [];
-    for (let i = 0; i < boxes.length; i++) {
-      if (rectsOverlap(rect, boxes[i], pad)) return false;
-    }
-    boxes.push(rect);
-    labelLayoutRef.current.boxes = boxes;
-    return true;
-  }, [rectsOverlap]);
 
   const escapeHtml = useCallback((value) => {
     return String(value ?? '')
@@ -1043,7 +1041,7 @@ export const HierarchicalGraph = ({
       
       simulation('charge', forceManyBody()
         .strength((node) => {
-          const baseStrength = -300;
+          const baseStrength = -(settingsLayout.forces.repulsion || 300);
           const levelMultiplier = Math.max(0.3, 1 - (node.level || 0) * 0.2);
           return baseStrength * levelMultiplier;
         })
@@ -1068,20 +1066,50 @@ export const HierarchicalGraph = ({
       simulation('link', forceLink(normalizedLinks)
         .id(d => d.id)
         .distance((link) => {
+          const baseDist = settingsLayout.forces.linkDistance || 100;
           const sourceNode = link.source;
           const targetNode = link.target;
           const levelDiff = Math.abs((sourceNode?.level || 1) - (targetNode?.level || 1));
-          return 100 + levelDiff * 60; // Longer links between different levels
+          return baseDist + levelDiff * 60; // Longer links between different levels
         })
         .strength(0.6)
       );
       
-      simulation('center', forceCenter(size.width / 2, size.height / 2).strength(0.1));
+      simulation('center', forceCenter(size.width / 2, size.height / 2).strength(settingsLayout.forces.center || 0.05));
     }
     } catch (err) {
       console.error('[graph] layout error', err);
     }
-  }, [visibleNodes, visibleLinks, size, getNodeSize, layout]);
+  }, [visibleNodes, visibleLinks, size, getNodeSize, layout, settingsLayout.forces.linkDistance, settingsLayout.forces.repulsion, settingsLayout.forces.center]);
+
+  // Apply lock freezing to locked nodes
+  useEffect(() => {
+    if (!fgRef.current || !orderedNodes.length) return;
+    if (!lockedNodeIds || lockedNodeIds.size === 0) {
+      // Unfreeze all nodes if no locks
+      orderedNodes.forEach(node => {
+        node.fx = undefined;
+        node.fy = undefined;
+      });
+      return;
+    }
+
+    // Freeze positions for locked nodes
+    orderedNodes.forEach(node => {
+      const nodeId = String(node.id || '').trim();
+      if (lockedNodeIds.has(nodeId)) {
+        // Lock this node at its current position
+        if (isFinite(node.x) && isFinite(node.y)) {
+          node.fx = node.x;
+          node.fy = node.y;
+        }
+      } else {
+        // Unlock this node
+        node.fx = undefined;
+        node.fy = undefined;
+      }
+    });
+  }, [lockedNodeIds, orderedNodes]);
 
   // Toolbar actions: zoom in/out, reset home (fit)
   const zoomIn = () => {
@@ -1241,7 +1269,7 @@ export const HierarchicalGraph = ({
         
         // Node interactions
         onNodeClick={handleNodeClick}
-        onNodeHover={(node) => setHoverNodeId(node?.id || null)}
+        onNodeHover={handleNodeHover}
         onNodeDragEnd={(node) => {
           if (!node) return;
           node.fx = node.x;
@@ -1255,7 +1283,7 @@ export const HierarchicalGraph = ({
           const tgt = String(typeof link.target === 'object' ? link.target.id : link.target);
           const isHighlighted = highlightPath.includes(src) && highlightPath.includes(tgt);
           const baseWidth = (function() {
-            if (isHighlighted) return 4;
+            if (isHighlighted) return 3;
             if (selectedNodeId) {
               const relevant = src === String(selectedNodeId) || tgt === String(selectedNodeId);
               return relevant ? 2 : 1;
@@ -1282,7 +1310,7 @@ export const HierarchicalGraph = ({
           let a = link.type === 'contains' ? 0.22 : 0.16;
 
           if (isHighlighted) {
-            r = 245; g = 158; b = 11; a = 0.85;
+            r = 45; g = 226; b = 230; a = 1.0;
           } else if (selectedNodeId) {
             const relevant = src === String(selectedNodeId) || tgt === String(selectedNodeId);
             r = 45; g = 226; b = 230; a = relevant ? 0.62 : 0.10;
@@ -1290,7 +1318,7 @@ export const HierarchicalGraph = ({
             r = 45; g = 226; b = 230; a = 0.32;
           }
 
-          if (selectedNodeId) {
+          if (selectedNodeId && !isHighlighted) {
             const depthA = depthByNodeId.get(src);
             const depthB = depthByNodeId.get(tgt);
             const bucket = Math.min(3, Math.max(depthA ?? 3, depthB ?? 3));
@@ -1307,27 +1335,48 @@ export const HierarchicalGraph = ({
           const src = String(typeof link.source === 'object' ? link.source.id : link.source);
           const tgt = String(typeof link.target === 'object' ? link.target.id : link.target);
           const isHighlighted = highlightPath.includes(src) && highlightPath.includes(tgt);
-          return isHighlighted ? '#F59E0B' : 'rgba(96,165,250,0.9)';
+          return isHighlighted ? '#2DE2E6' : 'rgba(96,165,250,0.9)';
         }}
-        // Animate particles for highlighted links to show 'diff' or active paths
-        linkDirectionalParticles={1}
+        
+        linkDirectionalParticles={2}
         linkDirectionalParticleWidth={(link) => {
           const src = String(typeof link.source === 'object' ? link.source.id : link.source);
           const tgt = String(typeof link.target === 'object' ? link.target.id : link.target);
           const isHighlighted = highlightPath.includes(src) && highlightPath.includes(tgt);
-          return isHighlighted ? 3 : 0;
+          return isHighlighted ? 4 : 0;
         }}
         linkDirectionalParticleColor={(link) => {
           const src = String(typeof link.source === 'object' ? link.source.id : link.source);
           const tgt = String(typeof link.target === 'object' ? link.target.id : link.target);
           const isHighlighted = highlightPath.includes(src) && highlightPath.includes(tgt);
-          return isHighlighted ? '#F59E0B' : 'rgba(0,0,0,0)';
+          return isHighlighted ? '#FFFFFF' : 'rgba(0,0,0,0)';
         }}
         linkDirectionalParticleSpeed={(link) => {
           const src = String(typeof link.source === 'object' ? link.source.id : link.source);
           const tgt = String(typeof link.target === 'object' ? link.target.id : link.target);
           const isHighlighted = highlightPath.includes(src) && highlightPath.includes(tgt);
-          return isHighlighted ? 0.8 : 0;
+          return isHighlighted ? 0.012 : 0;
+        }}
+
+        linkCanvasObjectMode={() => 'after'}
+        linkCanvasObject={(link, ctx) => {
+          const src = String(typeof link.source === 'object' ? link.source.id : link.source);
+          const tgt = String(typeof link.target === 'object' ? link.target.id : link.target);
+          const isHighlighted = highlightPath.includes(src) && highlightPath.includes(tgt);
+          
+          if (isHighlighted && link.source.x != null && link.target.x != null) {
+            // Draw a subtle glow behind the link
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(link.source.x, link.source.y);
+            ctx.lineTo(link.target.x, link.target.y);
+            ctx.shadowColor = 'rgba(45, 226, 230, 0.8)';
+            ctx.shadowBlur = 15;
+            ctx.lineWidth = 6;
+            ctx.strokeStyle = 'rgba(45, 226, 230, 0.2)';
+            ctx.stroke();
+            ctx.restore();
+          }
         }}
         
   // Performance optimizations
@@ -1442,6 +1491,28 @@ export const HierarchicalGraph = ({
               } catch (e) {}
             }
 
+            // Draw lock indicator for locked nodes
+            const isLocked =
+              lockedNodeIds instanceof Set
+                ? lockedNodeIds.has(id)
+                : Array.isArray(lockedNodeIds)
+                  ? lockedNodeIds.includes(id)
+                  : false;
+            if (isLocked) {
+              try {
+                ctx.save();
+                const fs = Math.max(10, 12 / Math.max(0.7, globalScale));
+                ctx.font = `${fs}px Inter, Arial`;
+                ctx.fillStyle = 'rgba(251, 146, 60, 0.92)'; // orange color
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                const ox = node.x + nodeRadius + (10 / Math.max(0.7, globalScale));
+                const oy = node.y + nodeRadius + (10 / Math.max(0.7, globalScale));
+                ctx.fillText('🔒', ox, oy);
+                ctx.restore();
+              } catch (e) {}
+            }
+
 	            // Hover action cue
 	            const isHovered = hoverNodeId && id === String(hoverNodeId);
 	            if (isHovered && !isSelected && canExpand) {
@@ -1477,86 +1548,6 @@ export const HierarchicalGraph = ({
                 ctx.textBaseline = 'middle';
                 ctx.fillText(label, node.x, y + h / 2 + (0.5 / Math.max(1, globalScale)));
                 ctx.restore();
-              } catch (e) {}
-	            }
-
-	            const zoomReveal = !!selectedNodeId && depthBucket === 2 && globalScale >= 2.2;
-	            const intentLabel = getLabelIntent(node, globalScale) || zoomReveal;
-
-            // draw name label below the node
-            if (intentLabel) {
-              try {
-                const alpha = labelAlphaForZoom(node, globalScale);
-                if (alpha <= 0.01) {
-                  // keep the graph uncluttered when zoomed out
-                } else {
-
-                const raw = String(node.label || node.value || node.id || '').trim();
-                const label = raw.length > 36 ? `${raw.slice(0, 34)}…` : raw;
-                if (!label) {
-                  // nothing to render
-                } else {
-
-                ctx.save();
-                const fontSize = Math.max(10, 12 / Math.max(0.6, globalScale));
-                ctx.font = `${fontSize}px Inter, Arial`;
-
-                const textWidth = ctx.measureText(label).width;
-                const padX = 10 / Math.max(0.8, globalScale);
-                const padY = 6 / Math.max(0.8, globalScale);
-                const boxW = textWidth + padX * 2;
-                const boxH = fontSize + padY * 2;
-                const margin = 10 / Math.max(0.8, globalScale);
-
-                const candidates = [
-                  { cx: node.x, cy: node.y + nodeRadius + boxH / 2 + margin },
-                  { cx: node.x, cy: node.y - nodeRadius - boxH / 2 - margin },
-                  { cx: node.x + nodeRadius + boxW / 2 + margin, cy: node.y },
-                  { cx: node.x - nodeRadius - boxW / 2 - margin, cy: node.y },
-                  { cx: node.x + nodeRadius + boxW / 2 + margin * 0.75, cy: node.y + nodeRadius + boxH / 2 + margin * 0.75 },
-                  { cx: node.x - nodeRadius - boxW / 2 - margin * 0.75, cy: node.y + nodeRadius + boxH / 2 + margin * 0.75 },
-                  { cx: node.x + nodeRadius + boxW / 2 + margin * 0.75, cy: node.y - nodeRadius - boxH / 2 - margin * 0.75 },
-                  { cx: node.x - nodeRadius - boxW / 2 - margin * 0.75, cy: node.y - nodeRadius - boxH / 2 - margin * 0.75 }
-                ];
-
-                const paddingForCollision = 3 / Math.max(0.8, globalScale);
-                let placed = null;
-                for (const c of candidates) {
-                  const rect = {
-                    x1: c.cx - boxW / 2,
-                    y1: c.cy - boxH / 2,
-                    x2: c.cx + boxW / 2,
-                    y2: c.cy + boxH / 2
-                  };
-                  if (reserveLabelRect(rect, paddingForCollision)) {
-                    placed = { ...c, rect };
-                    break;
-                  }
-                }
-                if (!placed) {
-                  ctx.restore();
-                } else {
-                  ctx.globalAlpha = Math.min(0.98, alpha);
-                  ctx.fillStyle = 'rgba(2, 6, 12, 0.72)';
-                  ctx.strokeStyle = isSelected ? 'rgba(45,226,230,0.35)' : 'rgba(45,226,230,0.18)';
-                  ctx.lineWidth = Math.max(1, 1 / Math.max(1, globalScale));
-                  if (typeof ctx.roundRect === 'function') {
-                    ctx.beginPath();
-                    ctx.roundRect(placed.rect.x1, placed.rect.y1, boxW, boxH, 8 / Math.max(0.8, globalScale));
-                    ctx.fill();
-                    ctx.stroke();
-                  } else {
-                    ctx.fillRect(placed.rect.x1, placed.rect.y1, boxW, boxH);
-                  }
-
-                  ctx.textAlign = 'center';
-                  ctx.textBaseline = 'middle';
-                  ctx.fillStyle = 'rgba(226, 239, 243, 0.96)';
-                  ctx.fillText(label, placed.cx, placed.cy + 0.5 / Math.max(1, globalScale));
-                }
-                ctx.restore();
-                }
-                }
               } catch (e) {}
 	            }
 

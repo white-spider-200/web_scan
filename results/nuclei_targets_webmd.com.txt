@@ -1,2 +1,0 @@
-http://webmd.com:80
-https://webmd.com:443

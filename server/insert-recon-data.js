@@ -1,4 +1,9 @@
-const db = new sqlite3.Database('./data.db');
+const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
+const config = require('./config');
+
+const dbPath = path.resolve(__dirname, config.database.path);
+const db = new sqlite3.Database(dbPath);
 
 // Enable foreign keys
 db.run('PRAGMA foreign_keys = ON');
@@ -105,7 +110,7 @@ async function insertReconData() {
         clearTables();
 
         // Insert a target website
-        const websiteId = await insertWebsite('https://example-corp.com', 'Example Corporation');
+        const websiteId = await insertWebsite('example-corp.com', 'Example Corporation');
         console.log('Website inserted with ID:', websiteId);
 
         // Sample reconnaissance data

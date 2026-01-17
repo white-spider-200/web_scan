@@ -1,7 +1,0 @@
-{
-  "original_filename": "js_route_discovery_webmd.com.json",
-  "raw_lines_count": 1,
-  "raw_lines": [
-    "{\"tool\": \"js_route_discovery\", \"target\": \"webmd.com\", \"output\": \"\\nSTDERR:\\nTraceback (most recent call last):\\n  File \\\"/home/mohammed/Desktop/test/web_recon/recon/js_route_discovery.py\\\", line 8, in <module>\\n    from recon.url_classify import classify_url, normalize_url\\nModuleNotFoundError: No module named 'recon'\\n\"}"
-  ]
-}

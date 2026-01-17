@@ -1,8 +1,0 @@
-{
-  "original_filename": "nuclei_targets_webmd.com.txt",
-  "raw_lines_count": 2,
-  "raw_lines": [
-    "http://webmd.com:80",
-    "https://webmd.com:443"
-  ]
-}
