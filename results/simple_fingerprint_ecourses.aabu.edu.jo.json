@@ -1,0 +1,33 @@
+{
+  "target": "ecourses.aabu.edu.jo",
+  "probes": [
+    {
+      "url": "https://ecourses.aabu.edu.jo",
+      "ok": false,
+      "error": "HTTPSConnectionPool(host='ecourses.aabu.edu.jo', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='ecourses.aabu.edu.jo', port=443): Failed to resolve 'ecourses.aabu.edu.jo' ([Errno -3] Temporary failure in name resolution)\"))",
+      "status_code": null,
+      "headers": null,
+      "title": null,
+      "redirects": null,
+      "body_snippet": null,
+      "resolved_ip": null,
+      "response_time_ms": null,
+      "content_length": null,
+      "tls_cert": null
+    },
+    {
+      "url": "http://ecourses.aabu.edu.jo",
+      "ok": false,
+      "error": "HTTPConnectionPool(host='ecourses.aabu.edu.jo', port=80): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPConnection(host='ecourses.aabu.edu.jo', port=80): Failed to resolve 'ecourses.aabu.edu.jo' ([Errno -3] Temporary failure in name resolution)\"))",
+      "status_code": null,
+      "headers": null,
+      "title": null,
+      "redirects": null,
+      "body_snippet": null,
+      "resolved_ip": null,
+      "response_time_ms": null,
+      "content_length": null,
+      "tls_cert": null
+    }
+  ]
+}

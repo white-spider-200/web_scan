@@ -1,0 +1,41 @@
+{
+  "target": "aabu.edu.jo",
+  "status": 200,
+  "content_length": 44293,
+  "ip": "87.236.233.35",
+  "response_time_ms": 844,
+  "title": "\u062c\u0627\u0645\u0639\u0629 \u0622\u0644 \u0627\u0644\u0628\u064a\u062a",
+  "headers": {
+    "Cache-Control": "private, max-age=0",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Encoding": "gzip",
+    "Expires": "Sun, 04 Jan 2026 20:03:55 GMT",
+    "Last-Modified": "Mon, 19 Jan 2026 20:03:55 GMT",
+    "Vary": "Accept-Encoding",
+    "X-SharePointHealthScore": "0",
+    "X-XSS-Protection": "0",
+    "SPRequestGuid": "83a0eea1-581c-5028-adca-8409f20e99ef",
+    "request-id": "83a0eea1-581c-5028-adca-8409f20e99ef",
+    "X-FRAME-OPTIONS": "SAMEORIGIN",
+    "Content-Security-Policy": "frame-ancestors 'self' teams.microsoft.com *.teams.microsoft.com *.skype.com *.teams.microsoft.us local.teams.office.com *.powerapps.com *.yammer.com *.officeapps.live.com *.office.com *.stream.azure-test.net *.microsoftstream.com *.dynamics.com *.microsoft.com onedrive.live.com *.onedrive.live.com;",
+    "SPRequestDuration": "728",
+    "SPIisLatency": "0",
+    "MicrosoftSharePointTeamServices": "16.0.0.10417",
+    "X-Content-Type-Options": "nosniff",
+    "X-MS-InvokeApp": "1; RequireReadOnly",
+    "Date": "Mon, 19 Jan 2026 20:03:55 GMT",
+    "Content-Length": "44293",
+    "Set-Cookie": "TS015c224e=016ff18f9b54b1778086e7e768d723ecbb3d0b7afed273c4da2d2d1005239eaa60510a8e2b012be94043271595e6c692b86a41c089; Path=/; Domain=.aabu.edu.jo"
+  },
+  "technologies": [
+    "cloudflare"
+  ],
+  "wappalyzer": {
+    "error": "wappalyzer not installed"
+  },
+  "tls_cert": {
+    "common_name": null,
+    "valid_from": null,
+    "valid_to": null
+  }
+}

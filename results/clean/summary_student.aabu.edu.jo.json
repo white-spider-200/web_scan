@@ -1,0 +1,22 @@
+{
+  "target": "student.aabu.edu.jo",
+  "status": 404,
+  "content_length": 0,
+  "ip": "87.236.233.44",
+  "response_time_ms": 296,
+  "title": null,
+  "headers": {
+    "Content-Length": "0",
+    "Date": "Mon, 19 Jan 2026 21:53:13 GMT",
+    "Set-Cookie": "protection_cookie=1090591404.47873.0000; path=/; Httponly; Secure, TS0110c4fa=016ff18f9b0c092ef20924ca210ab199ac6d19cb6310f1245c1eb0395db363c9599c82742596b9fbb9abb47fa2f654f6b5fad873ed; Path=/; Domain=.student.aabu.edu.jo"
+  },
+  "technologies": [],
+  "wappalyzer": {
+    "error": "wappalyzer not installed"
+  },
+  "tls_cert": {
+    "common_name": null,
+    "valid_from": null,
+    "valid_to": null
+  }
+}

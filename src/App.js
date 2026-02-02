@@ -2115,6 +2115,43 @@ export default function App() {
     };
   };
 
+const getFullExportData = () => {
+  // Always use the RAW graph data, never the clustered version
+  const nodes = Array.isArray(graphData?.nodes) ? graphData.nodes : [];
+  const links = Array.isArray(graphData?.links) ? graphData.links : [];
+  
+  return {
+    meta: { 
+      layout: graphLayout, 
+      viewMode, 
+      exportedAt: new Date().toISOString(),
+      clustering: 'disabled',  // Mark that clustering is disabled
+      totalNodes: nodes.length,
+      totalLinks: links.length
+    },
+    nodes: nodes.map((n) => ({ 
+      id: String(n.id), 
+      type: n.type, 
+      role: n.role, 
+      label: n.label, 
+      fullLabel: n.fullLabel, 
+      hostname: n.hostname, 
+      path: n.path, 
+      level: n.level, 
+      status: n.status,
+      apiId: n.apiId,
+      technologies: n.technologies,
+      headers: n.headers,
+      size: n.size
+    })),
+    links: links.map((l) => ({
+      source: String(typeof l.source === 'object' ? l.source.id : l.source),
+      target: String(typeof l.target === 'object' ? l.target.id : l.target),
+      type: l.type || 'contains'
+    }))
+  };
+};
+
   const exportPdf = () => {
     const rawTarget = String(target || '').trim().replace(/^https?:\/\//i, '').replace(/\/+$/, '');
     const exportId = String(scanId || rawTarget || '').trim();
@@ -2123,17 +2160,36 @@ export default function App() {
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
-  const exportJson = () => {
-    const snapshot = getVisibleExportData();
-    const payload = {
-      exportedAt: new Date().toISOString(),
-      target: String(target || '').trim(),
-      scanId: String(scanId || '').trim() || null,
-      viewMode,
-      graph: snapshot
-    };
-    downloadText(`${JSON.stringify(payload, null, 2)}\n`, `${exportBaseName}.json`, 'application/json;charset=utf-8');
+
+
+const exportJson = () => {
+  const snapshot = getFullExportData();
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    target: String(target || '').trim(),
+    scanId: String(scanId || '').trim() || null,
+    viewMode,
+    graph: snapshot
+  }; 
+  downloadText(`${JSON.stringify(payload, null, 2)}\n`, `${exportBaseName}.json`, 'application/json;charset=utf-8');
+};
+
+const generateReportData = () => {
+  const snapshot = getFullExportData();
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    target: String(target || '').trim(),
+    scanId: String(scanId || '').trim() || null,
+    viewMode,
+    graph: snapshot
   };
+  
+  // Use localStorage instead of sessionStorage (shared across tabs)
+  localStorage.setItem('reportData', JSON.stringify(payload));
+  
+  // Open the Full Report page in a new tab
+  window.open('/Full Report.html', '_blank', 'noopener,noreferrer');
+};
 
   const toCsvCell = (value) => {
     const s = String(value ?? '');
@@ -2141,45 +2197,43 @@ export default function App() {
     return s;
   };
 
-  const exportCsv = () => {
-    const snapshot = getVisibleExportData();
-    const nodes = Array.isArray(snapshot?.nodes) ? snapshot.nodes : [];
-    const header = [
-      'id',
-      'type',
-      'role',
-      'label',
-      'fullLabel',
-      'hostname',
-      'path',
-      'level',
-      'status',
-      'ip',
-      'technologies',
-      'count',
-      'parentId'
-    ];
-    const lines = [header.join(',')];
-    nodes.forEach((n) => {
-      const techs = Array.isArray(n.technologies) ? n.technologies.join(';') : '';
-      lines.push([
-        toCsvCell(n.id),
-        toCsvCell(n.type),
-        toCsvCell(n.role),
-        toCsvCell(n.label),
-        toCsvCell(n.fullLabel),
-        toCsvCell(n.hostname),
-        toCsvCell(n.path),
-        toCsvCell(n.level),
-        toCsvCell(n.status),
-        toCsvCell(n.ip),
-        toCsvCell(techs),
-        toCsvCell(n.count),
-        toCsvCell(n.parentId)
-      ].join(','));
-    });
-    downloadText(`${lines.join('\n')}\n`, `${exportBaseName}.csv`, 'text/csv;charset=utf-8');
-  };
+  
+const exportCsv = () => {
+  const snapshot = getFullExportData();
+  const nodes = Array.isArray(snapshot?.nodes) ? snapshot.nodes : [];
+  
+  const header = [
+    'id',
+    'type',
+    'role',
+    'label',
+    'fullLabel',
+    'hostname',
+    'path',
+    'level',
+    'status',
+    'technologies'
+  ];
+  const lines = [header.join(',')];
+  
+  nodes.forEach((n) => {
+    const techs = Array.isArray(n.technologies) ? n.technologies.join(';') : '';
+    lines.push([
+      toCsvCell(n.id),
+      toCsvCell(n.type),
+      toCsvCell(n.role),
+      toCsvCell(n.label),
+      toCsvCell(n.fullLabel),
+      toCsvCell(n.hostname),
+      toCsvCell(n.path),
+      toCsvCell(n.level),
+      toCsvCell(n.status),
+      toCsvCell(techs)
+    ].join(','));
+  });
+  
+  downloadText(`${lines.join('\n')}\n`, `${exportBaseName}.csv`, 'text/csv;charset=utf-8');
+};
 
   const exportPng = () => {
     try {
@@ -2766,6 +2820,14 @@ export default function App() {
             </button>
             {exportOpen ? (
               <div className="export-popover" role="menu" aria-label="Export options">
+                <button
+                  type="button"
+                  className="export-item"
+                  role="menuitem"
+                  onClick={() => { setExportOpen(false); generateReportData(); }}
+                >
+                  Full Report (HTML)
+                </button>
                 <button type="button" className="export-item" role="menuitem" onClick={() => { setExportOpen(false); exportPdf(); }}>
                   PDF report
                 </button>

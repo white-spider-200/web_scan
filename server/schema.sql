@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS http_services (
     FOREIGN KEY (scan_id) REFERENCES scans(scan_id)
 );
 
--- Stores interesting/sensitive files
+ Stores interesting/sensitive files
 CREATE TABLE IF NOT EXISTS interesting_files (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     scan_id TEXT,
@@ -91,5 +91,4 @@ CREATE INDEX IF NOT EXISTS idx_subdomains_scan_id ON subdomains(scan_id);
 CREATE INDEX IF NOT EXISTS idx_directories_scan_id ON directories(scan_id);
 CREATE INDEX IF NOT EXISTS idx_vulnerabilities_scan_id ON vulnerabilities(scan_id);
 CREATE INDEX IF NOT EXISTS idx_technologies_scan_id ON technologies(scan_id);
-CREATE INDEX IF NOT EXISTS idx_http_services_scan_id ON http_services(scan_id);
-CREATE INDEX IF NOT EXISTS idx_interesting_files_scan_id ON interesting_files(scan_id);
+CREATE INDEX IF NOT EXISTS idx_http_services_scan_id ON http_services(scan_id);CREATE INDEX IF NOT EXISTS idx_interesting_files_scan_id ON interesting_files(scan_id);
