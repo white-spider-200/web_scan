@@ -59,6 +59,8 @@ function buildReport(graph, meta = {}) {
   const byHost = {};
   const byStatus = {};
   const byExt = {};
+  const byTech = {};
+  const byVulnSeverity = {};
   let minFirstSeen = null;
   let maxLastSeen = null;
 
@@ -77,6 +79,27 @@ function buildReport(graph, meta = {}) {
     if (status != null) byStatus[String(status)] = (byStatus[String(status)] || 0) + 1;
     if (ext) byExt[ext] = (byExt[ext] || 0) + 1;
 
+    // Technologies
+    const techs = node.technologies || node.meta?.technologies || [];
+    if (Array.isArray(techs)) {
+      techs.forEach(t => {
+        if (!t) return;
+        byTech[t] = (byTech[t] || 0) + 1;
+      });
+    }
+
+    // Vulns
+    const vulns = node.vulns || node.meta?.vulns || {};
+    // Normalize vulns to a flat list for counting severity
+    const flatVulns = [];
+    if (vulns.nmap && Array.isArray(vulns.nmap)) flatVulns.push(...vulns.nmap);
+    if (vulns.nuclei && Array.isArray(vulns.nuclei)) flatVulns.push(...vulns.nuclei);
+    
+    flatVulns.forEach(v => {
+      const severity = (v.severity || 'info').toLowerCase();
+      byVulnSeverity[severity] = (byVulnSeverity[severity] || 0) + 1;
+    });
+
     return {
       id: node.id || node.value || '',
       label: node.label || node.value || node.id || '',
@@ -85,7 +108,9 @@ function buildReport(graph, meta = {}) {
       status,
       firstSeen,
       lastSeen,
-      seenCount: node.seenCount || node.meta?.seenCount || null
+      seenCount: node.seenCount || node.meta?.seenCount || null,
+      technologies: techs,
+      vulns: flatVulns
     };
   });
 
@@ -113,6 +138,8 @@ function buildReport(graph, meta = {}) {
       byHost,
       byStatus,
       byExt,
+      byTech,
+      byVulnSeverity,
       topHubs,
       interestingEndpoints
     },
