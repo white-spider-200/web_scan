@@ -1,0 +1,35 @@
+{
+  "target": "sis.htu.edu.jo",
+  "probes": [
+    {
+      "url": "https://sis.htu.edu.jo",
+      "ok": true,
+      "error": null,
+      "status_code": 200,
+      "headers": {
+        "Cache-Control": "private",
+        "Content-Type": "text/html; charset=windows-1256",
+        "Content-Encoding": "gzip",
+        "Vary": "Accept-Encoding",
+        "Server": "Microsoft-IIS/10.0",
+        "X-AspNet-Version": "4.0.30319",
+        "X-Powered-By": "ASP.NET",
+        "Date": "Wed, 04 Feb 2026 00:19:50 GMT",
+        "Content-Length": "4329"
+      },
+      "title": "Student Portal",
+      "redirects": [],
+      "body_snippet": "\r\n\r\n\r\n\r\n    <meta charset=\"utf-8\">\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n    <!-- Tell the browser to be responsive to screen width -->\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\r\n    <meta name=\"description\" content=\"\">\r\n    <meta name=\"author\" content=\"\">\r\n    <!-- Favicon icon -->\r\n    <link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"images/favicon.ico\">\r\n    <title>Student Portal</title>\r\n    <!-- Custom CSS -->\r\n    <link href=\"LoginDesign/dist/css/style.min.css\" rel=\"stylesheet\" />\r\n\r\n    <script type=\"text/javascript\">\r\n        function checkLogin() {\r\n            if (document.getElementById(\"t_user\").value == \"\" || document.getElementById(\"t_pass\").value == \"\") {\r\n                return false;\r\n\r\n            }\r\n            e",
+      "resolved_ip": "176.29.255.85",
+      "response_time_ms": 86,
+      "content_length": 4329,
+      "tls_cert": null,
+      "tech": [],
+      "wappalyzer": {
+        "error": "wappalyzer not installed"
+      },
+      "server_banner": "Microsoft-IIS/10.0",
+      "banner_probe": []
+    }
+  ]
+}

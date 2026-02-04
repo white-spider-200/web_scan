@@ -1,0 +1,2 @@
+ERROR: tool dirsearch not found in recon/
+Searched: [PosixPath('/home/whitespider/Desktop/web_recon/recon/dirsearch.py'), PosixPath('/home/whitespider/Desktop/web_recon/recon/dirsearch/dirsearch.py')]

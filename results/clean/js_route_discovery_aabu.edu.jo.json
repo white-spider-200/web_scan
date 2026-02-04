@@ -1,7 +1,0 @@
-{
-  "original_filename": "js_route_discovery_aabu.edu.jo.json",
-  "raw_lines_count": 1,
-  "raw_lines": [
-    "{\"tool\": \"js_route_discovery\", \"target\": \"aabu.edu.jo\", \"output\": \"\\nSTDERR:\\nTraceback (most recent call last):\\n  File \\\"/home/whitespider/Desktop/web_recon/recon/js_route_discovery.py\\\", line 18, in <module>\\n    FETCH_REGEX = re.compile(r\\\"(?:fetch|axios\\\\\\\\.(?:get|post|put|delete)|open)\\\\\\\\s*\\\\\\\\(\\\\\\\\s*['\\\\\\\"]([^'\\\\\\\"]+)['\\\\\\\"]\\\", re.I)\\n  File \\\"/usr/lib/python3.14/re/__init__.py\\\", line 289, in compile\\n    return _compile(pattern, flags)\\n  File \\\"/usr/lib/python3.14/re/__init__.py\\\", line 350, in _compile\\n    p = _compiler.compile(pattern, flags)\\n  File \\\"/usr/lib/python3.14/re/_compiler.py\\\", line 762, in compile\\n    p = _parser.parse(p, flags)\\n  File \\\"/usr/lib/python3.14/re/_parser.py\\\", line 973, in parse\\n    p = _parse_sub(source, state, flags & SRE_FLAG_VERBOSE, 0)\\n  File \\\"/usr/lib/python3.14/re/_parser.py\\\", line 460, in _parse_sub\\n    itemsappend(_parse(source, state, verbose, nested + 1,\\n                ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n                       not nested and not items))\\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/usr/lib/python3.14/re/_parser.py\\\", line 858, in _parse\\n    raise source.error(\\\"missing ), unterminated subpattern\\\",\\n                       source.tell() - start)\\nre.PatternError: missing ), unterminated subpattern at position 52\\n\"}"
-  ]
-}

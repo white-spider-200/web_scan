@@ -1,0 +1,39 @@
+{
+  "target": "htu.edu.jo",
+  "probes": [
+    {
+      "url": "https://htu.edu.jo",
+      "ok": true,
+      "error": null,
+      "status_code": 200,
+      "headers": {
+        "Cache-Control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "Keep-Alive": "timeout=5",
+        "Transfer-Encoding": "chunked",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Encoding": "gzip",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "Server": "Microsoft-IIS/10.0",
+        "set-cookie": "lang=en; Path=/; Expires=Thu, 04 Feb 2027 00:24:20 GMT; Max-Age=31536000",
+        "x-middleware-rewrite": "/en/",
+        "X-Powered-By": "Next.js, ASP.NET",
+        "Date": "Wed, 04 Feb 2026 00:24:20 GMT"
+      },
+      "title": "HTU - Al Hussein Technical University",
+      "redirects": [],
+      "body_snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><style data-precedence=\"next\" data-href=\"/_next/static/css/be6bd4b3c7ba881e.css /_next/static/css/1457f2f079dca614.css /_next/static/css/54f61c0d90c14c26.css\">/*!\n * Bootstrap  v5.3.6 (https://getbootstrap.com/)\n * Copyright 2011-2025 The Bootstrap Authors\n * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)\n */:root{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107",
+      "resolved_ip": "176.29.255.87",
+      "response_time_ms": 189,
+      "content_length": null,
+      "tls_cert": null,
+      "tech": [
+        "react"
+      ],
+      "wappalyzer": {
+        "error": "wappalyzer not installed"
+      },
+      "server_banner": "Microsoft-IIS/10.0",
+      "banner_probe": []
+    }
+  ]
+}

@@ -1,0 +1,488 @@
+{
+  "target": "omnixplatform.com",
+  "scanId": "sample-scan-001",
+  "timestamp": 1770151042062,
+  "graph": {
+    "nodes": [
+      {
+        "id": "omnixplatform.com",
+        "label": "omnixplatform.com",
+        "type": "host",
+        "status": 200,
+        "technologies": [
+          "Nginx",
+          "PHP",
+          "HTML5"
+        ],
+        "headers": [
+          {
+            "key": "Server",
+            "value": "nginx/1.18.0"
+          },
+          {
+            "key": "Content-Type",
+            "value": "text/html"
+          },
+          {
+            "key": "X-Powered-By",
+            "value": "PHP/8.1"
+          }
+        ],
+        "fullLabel": "omnixplatform.com",
+        "hostname": "omnixplatform.com",
+        "role": "domain"
+      },
+      {
+        "id": "www.omnixplatform.com",
+        "label": "www.omnixplatform.com",
+        "type": "host",
+        "status": 200,
+        "technologies": [
+          "Nginx",
+          "WordPress"
+        ],
+        "headers": [
+          {
+            "key": "Server",
+            "value": "nginx/1.18.0"
+          }
+        ],
+        "fullLabel": "www.omnixplatform.com",
+        "hostname": "www.omnixplatform.com",
+        "role": "subdomain"
+      },
+      {
+        "id": "app.omnixplatform.com",
+        "label": "app.omnixplatform.com",
+        "type": "host",
+        "status": 200,
+        "technologies": [
+          "React",
+          "REST API"
+        ],
+        "headers": [
+          {
+            "key": "Server",
+            "value": "nginx/1.18.0"
+          }
+        ],
+        "fullLabel": "app.omnixplatform.com",
+        "hostname": "app.omnixplatform.com",
+        "role": "subdomain"
+      },
+      {
+        "id": "shop.omnixplatform.com",
+        "label": "shop.omnixplatform.com",
+        "type": "host",
+        "status": 200,
+        "technologies": [
+          "Magento",
+          "PHP"
+        ],
+        "headers": [
+          {
+            "key": "Server",
+            "value": "nginx/1.18.0"
+          }
+        ],
+        "fullLabel": "shop.omnixplatform.com",
+        "hostname": "shop.omnixplatform.com",
+        "role": "subdomain"
+      },
+      {
+        "id": "bank.omnixplatform.com",
+        "label": "bank.omnixplatform.com",
+        "type": "host",
+        "status": 200,
+        "technologies": [
+          "Java",
+          "Spring Boot"
+        ],
+        "headers": [
+          {
+            "key": "Server",
+            "value": "nginx/1.18.0"
+          }
+        ],
+        "fullLabel": "bank.omnixplatform.com",
+        "hostname": "bank.omnixplatform.com",
+        "role": "subdomain"
+      },
+      {
+        "id": "admin.omnixplatform.com",
+        "label": "admin.omnixplatform.com",
+        "type": "host",
+        "status": 403,
+        "technologies": [],
+        "headers": [
+          {
+            "key": "Server",
+            "value": "nginx/1.18.0"
+          }
+        ],
+        "fullLabel": "admin.omnixplatform.com",
+        "hostname": "admin.omnixplatform.com",
+        "role": "subdomain"
+      },
+      {
+        "id": "cdn.omnixplatform.com",
+        "label": "cdn.omnixplatform.com",
+        "type": "host",
+        "status": 200,
+        "technologies": [
+          "CDN"
+        ],
+        "headers": [
+          {
+            "key": "Server",
+            "value": "cloudflare"
+          }
+        ],
+        "fullLabel": "cdn.omnixplatform.com",
+        "hostname": "cdn.omnixplatform.com",
+        "role": "subdomain"
+      },
+      {
+        "id": "dev.omnixplatform.com",
+        "label": "dev.omnixplatform.com",
+        "type": "host",
+        "status": 200,
+        "technologies": [
+          "Staging Environment"
+        ],
+        "headers": [],
+        "fullLabel": "dev.omnixplatform.com",
+        "hostname": "dev.omnixplatform.com",
+        "role": "subdomain"
+      },
+      {
+        "id": "status.omnixplatform.com",
+        "label": "status.omnixplatform.com",
+        "type": "host",
+        "status": 200,
+        "technologies": [
+          "Status Page"
+        ],
+        "headers": [],
+        "fullLabel": "status.omnixplatform.com",
+        "hostname": "status.omnixplatform.com",
+        "role": "subdomain"
+      },
+      {
+        "id": "support.omnixplatform.com",
+        "label": "support.omnixplatform.com",
+        "type": "host",
+        "status": 200,
+        "technologies": [
+          "Zendesk"
+        ],
+        "headers": [],
+        "fullLabel": "support.omnixplatform.com",
+        "hostname": "support.omnixplatform.com",
+        "role": "subdomain"
+      },
+      {
+        "id": "omnixplatform.com/admin",
+        "label": "omnixplatform.com/admin",
+        "type": "directory",
+        "status": 403,
+        "technologies": [],
+        "headers": [],
+        "fullLabel": "omnixplatform.com/admin",
+        "hostname": "omnixplatform.com/admin"
+      },
+      {
+        "id": "omnixplatform.com/products",
+        "label": "omnixplatform.com/products",
+        "type": "directory",
+        "status": 200,
+        "technologies": [
+          "Magento"
+        ],
+        "headers": [],
+        "fullLabel": "omnixplatform.com/products",
+        "hostname": "omnixplatform.com/products"
+      },
+      {
+        "id": "omnixplatform.com/cart",
+        "label": "omnixplatform.com/cart",
+        "type": "directory",
+        "status": 200,
+        "technologies": [
+          "Magento"
+        ],
+        "headers": [],
+        "fullLabel": "omnixplatform.com/cart",
+        "hostname": "omnixplatform.com/cart"
+      },
+      {
+        "id": "omnixplatform.com/checkout",
+        "label": "omnixplatform.com/checkout",
+        "type": "directory",
+        "status": 200,
+        "technologies": [
+          "Magento"
+        ],
+        "headers": [],
+        "fullLabel": "omnixplatform.com/checkout",
+        "hostname": "omnixplatform.com/checkout"
+      },
+      {
+        "id": "omnixplatform.com/uploads",
+        "label": "omnixplatform.com/uploads",
+        "type": "directory",
+        "status": 200,
+        "technologies": [],
+        "headers": [],
+        "fullLabel": "omnixplatform.com/uploads",
+        "hostname": "omnixplatform.com/uploads"
+      },
+      {
+        "id": "omnixplatform.com/api/v1/users",
+        "label": "omnixplatform.com/api/v1/users",
+        "type": "endpoint",
+        "status": 200,
+        "technologies": [
+          "REST API"
+        ],
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "fullLabel": "omnixplatform.com/api/v1/users",
+        "hostname": "omnixplatform.com/api/v1/users"
+      },
+      {
+        "id": "omnixplatform.com/api/v1/orders",
+        "label": "omnixplatform.com/api/v1/orders",
+        "type": "endpoint",
+        "status": 200,
+        "technologies": [
+          "REST API"
+        ],
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "fullLabel": "omnixplatform.com/api/v1/orders",
+        "hostname": "omnixplatform.com/api/v1/orders"
+      },
+      {
+        "id": "omnixplatform.com/api/v1/account",
+        "label": "omnixplatform.com/api/v1/account",
+        "type": "endpoint",
+        "status": 200,
+        "technologies": [
+          "REST API"
+        ],
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "fullLabel": "omnixplatform.com/api/v1/account",
+        "hostname": "omnixplatform.com/api/v1/account"
+      },
+      {
+        "id": "omnixplatform.com/api/v1/transfer",
+        "label": "omnixplatform.com/api/v1/transfer",
+        "type": "endpoint",
+        "status": 200,
+        "technologies": [
+          "REST API"
+        ],
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "fullLabel": "omnixplatform.com/api/v1/transfer",
+        "hostname": "omnixplatform.com/api/v1/transfer"
+      },
+      {
+        "id": "omnixplatform.com/config.php.bak",
+        "label": "omnixplatform.com/config.php.bak",
+        "type": "file",
+        "status": 200,
+        "technologies": [
+          "PHP"
+        ],
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/octet-stream"
+          }
+        ],
+        "fullLabel": "omnixplatform.com/config.php.bak",
+        "hostname": "omnixplatform.com/config.php.bak"
+      },
+      {
+        "id": "omnixplatform.com/.env",
+        "label": "omnixplatform.com/.env",
+        "type": "file",
+        "status": 200,
+        "technologies": [],
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "text/plain"
+          }
+        ],
+        "fullLabel": "omnixplatform.com/.env",
+        "hostname": "omnixplatform.com/.env"
+      },
+      {
+        "id": "omnixplatform.com/backup.sql",
+        "label": "omnixplatform.com/backup.sql",
+        "type": "file",
+        "status": 200,
+        "technologies": [
+          "MySQL"
+        ],
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/sql"
+          }
+        ],
+        "fullLabel": "omnixplatform.com/backup.sql",
+        "hostname": "omnixplatform.com/backup.sql"
+      },
+      {
+        "id": "omnixplatform.com/private.key",
+        "label": "omnixplatform.com/private.key",
+        "type": "file",
+        "status": 200,
+        "technologies": [
+          "SSL/TLS"
+        ],
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/octet-stream"
+          }
+        ],
+        "fullLabel": "omnixplatform.com/private.key",
+        "hostname": "omnixplatform.com/private.key"
+      }
+    ],
+    "links": [
+      {
+        "source": "omnixplatform.com",
+        "target": "www.omnixplatform.com",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "app.omnixplatform.com",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "shop.omnixplatform.com",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "bank.omnixplatform.com",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "admin.omnixplatform.com",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "cdn.omnixplatform.com",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "dev.omnixplatform.com",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "status.omnixplatform.com",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "support.omnixplatform.com",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "omnixplatform.com/admin",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "omnixplatform.com/products",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "omnixplatform.com/cart",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "omnixplatform.com/checkout",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "omnixplatform.com/uploads",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "omnixplatform.com/api/v1/users",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "omnixplatform.com/api/v1/orders",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "omnixplatform.com/api/v1/account",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "omnixplatform.com/api/v1/transfer",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "omnixplatform.com/config.php.bak",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "omnixplatform.com/.env",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "omnixplatform.com/backup.sql",
+        "type": "contains"
+      },
+      {
+        "source": "omnixplatform.com",
+        "target": "omnixplatform.com/private.key",
+        "type": "contains"
+      }
+    ]
+  }
+}
