@@ -691,21 +691,76 @@ export const HierarchicalGraph = ({
     exportFnsRef.current.getNodeSize = getNodeSize;
   }, [getNodeColor, getNodeSize]);
   
-  const handleNodeHover = useCallback((node) => {
-    setHoverNodeId(node?.id || null);
-    const inst = fgRef.current;
-    if (!inst) return;
 
-    if (node) {
-      // Pause simulation when hovering a node to stop it from moving away (Bloodhound-like behavior)
-      try { inst.pauseAnimation(); } catch (e) {}
-    } else {
-      // Resume if not locked
-      if (!lockLayout) {
-        try { inst.resumeAnimation(); } catch (e) {}
+const handleNodeHover = useCallback((node) => {
+  setHoverNodeId(node?.id || null);
+  const inst = fgRef.current;
+  if (!inst) return;
+
+  if (node) {
+    // Pause simulation when hovering a node to stop it from moving away (Bloodhound-like behavior)
+    try { inst.pauseAnimation(); } catch (e) {}
+    
+    // Stop the d3 simulation completely
+    try {
+      const sim = inst.d3Simulation?.();
+      if (sim) {
+        sim.stop();
       }
+    } catch (e) {}
+    
+    // Fix ALL node positions to prevent any drift during hover
+    // This ensures nodes stay exactly where they are
+    try {
+      const graphData = inst.graphData();
+      if (graphData && graphData.nodes) {
+        graphData.nodes.forEach(n => {
+          if (isFinite(n.x) && isFinite(n.y)) {
+            n.fx = n.x;
+            n.fy = n.y;
+            // Also zero out velocities to prevent any momentum
+            n.vx = 0;
+            n.vy = 0;
+          }
+        });
+      }
+    } catch (e) {}
+  } else {
+    // Resume if not locked
+    if (!lockLayout) {
+      // Unfreeze nodes that aren't explicitly locked by the user
+      try {
+        const graphData = inst.graphData();
+        if (graphData && graphData.nodes) {
+          graphData.nodes.forEach(n => {
+            const nodeId = String(n.id || '').trim();
+            // Only unfreeze if not in the user's locked set
+            const isUserLocked = lockedNodeIds instanceof Set 
+              ? lockedNodeIds.has(nodeId) 
+              : Array.isArray(lockedNodeIds) 
+                ? lockedNodeIds.includes(nodeId) 
+                : false;
+            if (!isUserLocked) {
+              n.fx = undefined;
+              n.fy = undefined;
+            }
+          });
+        }
+      } catch (e) {}
+      
+      // Restart simulation with low energy
+      try {
+        const sim = inst.d3Simulation?.();
+        if (sim) {
+          sim.alpha(0.1); // Low energy restart
+          sim.restart();
+        }
+      } catch (e) {}
+      
+      try { inst.resumeAnimation(); } catch (e) {}
     }
-  }, [lockLayout]);
+  }
+}, [lockLayout, lockedNodeIds]);
 
   // Handle node click:
   // - Click expandable nodes => expand/collapse (no auto-zoom, no details fetch)
@@ -1384,193 +1439,299 @@ export const HierarchicalGraph = ({
   onEngineStop={() => { /* disable automatic fit; manualFit handles explicit requests */ }}
         
         // Custom node rendering for better visuals
-	        nodeCanvasObjectMode={() => 'replace'}
-	        nodeCanvasObject={(node, ctx, globalScale) => {
-	            if (node.x === undefined || node.y === undefined || !isFinite(node.x) || !isFinite(node.y)) return;
 
-	            const id = String(node.id);
-	            const isSelected = selectedNodeId && id === String(selectedNodeId);
-	            const rawDepth = selectedNodeId ? (depthByNodeId.get(id) ?? 99) : 0;
-	            const depthBucket = selectedNodeId ? Math.min(3, rawDepth) : 0;
-	            const isHighlighted = highlightedNodes.includes(id);
-	            const color = getNodeColor(node);
-	            const hasChildren = !disableLevelSystem && data?.links?.some((l) => {
-	              if (l.type !== 'contains') return false;
-	              const src = typeof l.source === 'object' ? l.source.id : l.source;
-	              return String(src) === String(node.id);
-	            });
-	            const canExpand = hasChildren && isExpandableNode(node);
-	            const isExpanded = expandedNodes.has(node.id);
+nodeCanvasObject={(node, ctx, globalScale) => {
+  if (node.x === undefined || node.y === undefined || !isFinite(node.x) || !isFinite(node.y)) return;
 
-	            const baseRadius = getNodeSize(node);
-	            const depthScale = !selectedNodeId ? 1 : (depthBucket === 0 ? 1.15 : depthBucket === 1 ? 1 : depthBucket === 2 ? 0.9 : 0.8);
-	            const nodeRadius = baseRadius * depthScale;
+  const id = String(node.id);
+  const isSelected = selectedNodeId && id === String(selectedNodeId);
+  const rawDepth = selectedNodeId ? (depthByNodeId.get(id) ?? 99) : 0;
+  const depthBucket = selectedNodeId ? Math.min(3, rawDepth) : 0;
+  const isHighlighted = highlightedNodes.includes(id);
+  const color = getNodeColor(node);
+  const hasChildren = !disableLevelSystem && data?.links?.some((l) => {
+    if (l.type !== 'contains') return false;
+    const src = typeof l.source === 'object' ? l.source.id : l.source;
+    return String(src) === String(node.id);
+  });
+  const canExpand = hasChildren && isExpandableNode(node);
+  const isExpanded = expandedNodes.has(node.id);
 
-            const alpha = !selectedNodeId ? 0.92 : (depthBucket === 0 ? 1 : depthBucket === 1 ? 0.9 : depthBucket === 2 ? 0.62 : 0.38);
-            const finalAlpha = isHighlighted ? 1 : alpha;
+  const baseRadius = getNodeSize(node);
+  const depthScale = !selectedNodeId ? 1 : (depthBucket === 0 ? 1.15 : depthBucket === 1 ? 1 : depthBucket === 2 ? 0.9 : 0.8);
+  const nodeRadius = baseRadius * depthScale;
 
-            const attackScore = Number(node?.attackScore);
-            const attackGlow = node?.attackView
-              ? (node.type === 'cluster' ? 0.18 : (Number.isFinite(attackScore) && attackScore >= 90 ? 0.34 : Number.isFinite(attackScore) && attackScore >= 60 ? 0.22 : 0))
-              : 0;
-            const glowStrength = Math.max(
-              isHighlighted ? 0.42 : isSelected ? 0.3 : (depthBucket === 1 ? 0.12 : 0),
-              attackGlow
-            );
-            if (glowStrength > 0) {
-              try {
-                const glowSize = Math.max(nodeRadius * 3, 26);
-                const gradient = ctx.createRadialGradient(node.x, node.y, nodeRadius, node.x, node.y, glowSize);
-                const rgb = (function() {
-                  const c = String(color || '').trim();
-                  if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(c)) {
-                    const hex = c.slice(1);
-                    if (hex.length === 3) {
-                      const r = parseInt(hex[0] + hex[0], 16);
-                      const g = parseInt(hex[1] + hex[1], 16);
-                      const b = parseInt(hex[2] + hex[2], 16);
-                      return { r, g, b };
-                    }
-                    const r = parseInt(hex.slice(0, 2), 16);
-                    const g = parseInt(hex.slice(2, 4), 16);
-                    const b = parseInt(hex.slice(4, 6), 16);
-                    return { r, g, b };
-                  }
-                  return { r: 45, g: 226, b: 230 };
-                })();
-                gradient.addColorStop(0, `rgba(${rgb.r},${rgb.g},${rgb.b},${glowStrength})`);
-                gradient.addColorStop(0.4, `rgba(${rgb.r},${rgb.g},${rgb.b},${glowStrength * 0.5})`);
-                gradient.addColorStop(1, 'rgba(0,0,0,0)');
-                ctx.beginPath();
-                ctx.arc(node.x, node.y, glowSize, 0, 2 * Math.PI, false);
-                ctx.fillStyle = gradient;
-                ctx.fill();
-              } catch (e) {}
-            }
+  const alpha = !selectedNodeId ? 0.92 : (depthBucket === 0 ? 1 : depthBucket === 1 ? 0.9 : depthBucket === 2 ? 0.62 : 0.38);
+  const finalAlpha = isHighlighted ? 1 : alpha;
 
-            // node body
-            ctx.save();
-            ctx.globalAlpha = finalAlpha;
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, nodeRadius, 0, 2 * Math.PI, false);
-            ctx.fillStyle = color;
-            ctx.fill();
-            ctx.restore();
+  const attackScore = Number(node?.attackScore);
+  const attackGlow = node?.attackView
+    ? (node.type === 'cluster' ? 0.18 : (Number.isFinite(attackScore) && attackScore >= 90 ? 0.34 : Number.isFinite(attackScore) && attackScore >= 60 ? 0.22 : 0))
+    : 0;
+  const glowStrength = Math.max(
+    isHighlighted ? 0.42 : isSelected ? 0.3 : (depthBucket === 1 ? 0.12 : 0),
+    attackGlow
+  );
+  if (glowStrength > 0) {
+    try {
+      const glowSize = Math.max(nodeRadius * 3, 26);
+      const gradient = ctx.createRadialGradient(node.x, node.y, nodeRadius, node.x, node.y, glowSize);
+      const rgb = (function() {
+        const c = String(color || '').trim();
+        if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(c)) {
+          const hex = c.slice(1);
+          if (hex.length === 3) {
+            const r = parseInt(hex[0] + hex[0], 16);
+            const g = parseInt(hex[1] + hex[1], 16);
+            const b = parseInt(hex[2] + hex[2], 16);
+            return { r, g, b };
+          }
+          const r = parseInt(hex.slice(0, 2), 16);
+          const g = parseInt(hex.slice(2, 4), 16);
+          const b = parseInt(hex.slice(4, 6), 16);
+          return { r, g, b };
+        }
+        return { r: 45, g: 226, b: 230 };
+      })();
+      gradient.addColorStop(0, `rgba(${rgb.r},${rgb.g},${rgb.b},${glowStrength})`);
+      gradient.addColorStop(0.4, `rgba(${rgb.r},${rgb.g},${rgb.b},${glowStrength * 0.5})`);
+      gradient.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, glowSize, 0, 2 * Math.PI, false);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+    } catch (e) {}
+  }
 
-            // outline
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, nodeRadius, 0, 2 * Math.PI, false);
-            ctx.lineWidth = Math.max(1, 1.8 / Math.max(1, globalScale));
-            ctx.strokeStyle = isSelected
-              ? 'rgba(45,226,230,0.85)'
-              : depthBucket === 1
-                ? 'rgba(45,226,230,0.24)'
-                : 'rgba(255,255,255,0.06)';
-            ctx.stroke();
-            ctx.restore();
+  // node body
+  ctx.save();
+  ctx.globalAlpha = finalAlpha;
+  ctx.beginPath();
+  ctx.arc(node.x, node.y, nodeRadius, 0, 2 * Math.PI, false);
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.restore();
 
-            const isBookmarked =
-              bookmarkedNodeIds instanceof Set
-                ? bookmarkedNodeIds.has(id)
-                : Array.isArray(bookmarkedNodeIds)
-                  ? bookmarkedNodeIds.includes(id)
-                  : false;
-            if (isBookmarked) {
-              try {
-                ctx.save();
-                const fs = Math.max(10, 12 / Math.max(0.7, globalScale));
-                ctx.font = `${fs}px Inter, Arial`;
-                ctx.fillStyle = 'rgba(45,226,230,0.92)';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                const ox = node.x + nodeRadius + (10 / Math.max(0.7, globalScale));
-                const oy = node.y - nodeRadius - (10 / Math.max(0.7, globalScale));
-                ctx.fillText('★', ox, oy);
-                ctx.restore();
-              } catch (e) {}
-            }
+  // outline
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(node.x, node.y, nodeRadius, 0, 2 * Math.PI, false);
+  ctx.lineWidth = Math.max(1, 1.8 / Math.max(1, globalScale));
+  ctx.strokeStyle = isSelected
+    ? 'rgba(45,226,230,0.85)'
+    : depthBucket === 1
+      ? 'rgba(45,226,230,0.24)'
+      : 'rgba(255,255,255,0.06)';
+  ctx.stroke();
+  ctx.restore();
 
-            // Draw lock indicator for locked nodes
-            const isLocked =
-              lockedNodeIds instanceof Set
-                ? lockedNodeIds.has(id)
-                : Array.isArray(lockedNodeIds)
-                  ? lockedNodeIds.includes(id)
-                  : false;
-            if (isLocked) {
-              try {
-                ctx.save();
-                const fs = Math.max(10, 12 / Math.max(0.7, globalScale));
-                ctx.font = `${fs}px Inter, Arial`;
-                ctx.fillStyle = 'rgba(251, 146, 60, 0.92)'; // orange color
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                const ox = node.x + nodeRadius + (10 / Math.max(0.7, globalScale));
-                const oy = node.y + nodeRadius + (10 / Math.max(0.7, globalScale));
-                ctx.fillText('🔒', ox, oy);
-                ctx.restore();
-              } catch (e) {}
-            }
+  const isBookmarked =
+    bookmarkedNodeIds instanceof Set
+      ? bookmarkedNodeIds.has(id)
+      : Array.isArray(bookmarkedNodeIds)
+        ? bookmarkedNodeIds.includes(id)
+        : false;
+  if (isBookmarked) {
+    try {
+      ctx.save();
+      const fs = Math.max(10, 12 / Math.max(0.7, globalScale));
+      ctx.font = `${fs}px Inter, Arial`;
+      ctx.fillStyle = 'rgba(45,226,230,0.92)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const ox = node.x + nodeRadius + (10 / Math.max(0.7, globalScale));
+      const oy = node.y - nodeRadius - (10 / Math.max(0.7, globalScale));
+      ctx.fillText('★', ox, oy);
+      ctx.restore();
+    } catch (e) {}
+  }
 
-	            // Hover action cue
-	            const isHovered = hoverNodeId && id === String(hoverNodeId);
-	            if (isHovered && !isSelected && canExpand) {
-	              try {
-	                const label = isExpanded ? 'Collapse' : 'Expand';
-	                ctx.save();
-	                ctx.font = `${Math.max(10, 11 / globalScale)}px Inter, Arial`;
-	                const tw = ctx.measureText(label).width;
-                const padX = 10 / Math.max(0.6, globalScale);
-                const padY = 6 / Math.max(0.6, globalScale);
-                const w = tw + padX * 2;
-                const h = (12 / Math.max(0.6, globalScale)) + padY * 2;
-                const x = node.x - w / 2;
-                const y = node.y - nodeRadius - h - (10 / Math.max(0.6, globalScale));
-                const r = 8 / Math.max(0.6, globalScale);
-                ctx.beginPath();
-                if (typeof ctx.roundRect === 'function') ctx.roundRect(x, y, w, h, r);
-                else {
-                  ctx.moveTo(x + r, y);
-                  ctx.arcTo(x + w, y, x + w, y + h, r);
-                  ctx.arcTo(x + w, y + h, x, y + h, r);
-                  ctx.arcTo(x, y + h, x, y, r);
-                  ctx.arcTo(x, y, x + w, y, r);
-                  ctx.closePath();
-                }
-                ctx.fillStyle = 'rgba(13, 22, 30, 0.82)';
-                ctx.fill();
-                ctx.strokeStyle = 'rgba(45,226,230,0.22)';
-                ctx.lineWidth = Math.max(1, 1 / Math.max(1, globalScale));
-                ctx.stroke();
-                ctx.fillStyle = 'rgba(180, 255, 255, 0.92)';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(label, node.x, y + h / 2 + (0.5 / Math.max(1, globalScale)));
-                ctx.restore();
-              } catch (e) {}
-	            }
+  // Draw lock indicator for locked nodes
+  const isLocked =
+    lockedNodeIds instanceof Set
+      ? lockedNodeIds.has(id)
+      : Array.isArray(lockedNodeIds)
+        ? lockedNodeIds.includes(id)
+        : false;
+  if (isLocked) {
+    try {
+      ctx.save();
+      const fs = Math.max(10, 12 / Math.max(0.7, globalScale));
+      ctx.font = `${fs}px Inter, Arial`;
+      ctx.fillStyle = 'rgba(251, 146, 60, 0.92)'; // orange color
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const ox = node.x + nodeRadius + (10 / Math.max(0.7, globalScale));
+      const oy = node.y + nodeRadius + (10 / Math.max(0.7, globalScale));
+      ctx.fillText('🔒', ox, oy);
+      ctx.restore();
+    } catch (e) {}
+  }
 
-	            // Expansion indicator
-	            if (canExpand) {
-	              try {
-	                ctx.save();
-	                const indicatorR = Math.max(8, nodeRadius * 0.55);
-	                const ix = node.x + nodeRadius - indicatorR;
-	                const iy = node.y - nodeRadius + indicatorR;
-	                ctx.beginPath();
-	                ctx.arc(ix, iy, indicatorR, 0, 2 * Math.PI, false);
-	                ctx.fillStyle = isExpanded ? 'rgba(45,226,230,0.8)' : 'rgba(148,163,184,0.5)';
-	                ctx.fill();
-	                ctx.fillStyle = 'rgba(2,6,12,0.92)';
-	                ctx.font = `${Math.max(8, 10 / globalScale)}px Inter, Arial`;
-	                ctx.textAlign = 'center';
-	                ctx.textBaseline = 'middle';
-	                ctx.fillText(isExpanded ? '−' : '+', ix, iy);
-	                ctx.restore();
-	              } catch (e) {}
-	            }
-	        }}
+  // Hover action cue
+  const isHovered = hoverNodeId && id === String(hoverNodeId);
+  if (isHovered && !isSelected && canExpand) {
+    try {
+      const label = isExpanded ? 'Collapse' : 'Expand';
+      ctx.save();
+      ctx.font = `${Math.max(10, 11 / globalScale)}px Inter, Arial`;
+      const tw = ctx.measureText(label).width;
+      const padX = 10 / Math.max(0.6, globalScale);
+      const padY = 6 / Math.max(0.6, globalScale);
+      const w = tw + padX * 2;
+      const h = (12 / Math.max(0.6, globalScale)) + padY * 2;
+      const x = node.x - w / 2;
+      const y = node.y - nodeRadius - h - (10 / Math.max(0.6, globalScale));
+      const r = 8 / Math.max(0.6, globalScale);
+      ctx.beginPath();
+      if (typeof ctx.roundRect === 'function') ctx.roundRect(x, y, w, h, r);
+      else {
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + w, y, x + w, y + h, r);
+        ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r);
+        ctx.arcTo(x, y, x + w, y, r);
+        ctx.closePath();
+      }
+      ctx.fillStyle = 'rgba(13, 22, 30, 0.82)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(45,226,230,0.22)';
+      ctx.lineWidth = Math.max(1, 1 / Math.max(1, globalScale));
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(180, 255, 255, 0.92)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(label, node.x, y + h / 2 + (0.5 / Math.max(1, globalScale)));
+      ctx.restore();
+    } catch (e) {}
+  }
+
+  // Expansion indicator
+  if (canExpand) {
+    try {
+      ctx.save();
+      const indicatorR = Math.max(8, nodeRadius * 0.55);
+      const ix = node.x + nodeRadius - indicatorR;
+      const iy = node.y - nodeRadius + indicatorR;
+      ctx.beginPath();
+      ctx.arc(ix, iy, indicatorR, 0, 2 * Math.PI, false);
+      ctx.fillStyle = isExpanded ? 'rgba(45,226,230,0.8)' : 'rgba(148,163,184,0.5)';
+      ctx.fill();
+      ctx.fillStyle = 'rgba(2,6,12,0.92)';
+      ctx.font = `${Math.max(8, 10 / globalScale)}px Inter, Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(isExpanded ? '−' : '+', ix, iy);
+      ctx.restore();
+    } catch (e) {}
+  }
+
+  // === SMART LABEL LOGIC ===
+  // Determine if we should show the label based on labelMode and context
+
+  let showLabel = false;
+
+  if (labelMode === "off") {
+    showLabel = false;
+  } else if (labelMode === "all") {
+    // Show all labels, but fade them at extreme zoom-out
+    showLabel = globalScale > 0.15;
+  } else {
+    // "smart" mode - show labels based on node importance and zoom level
+    const nodeType = String(node.type || "").toLowerCase();
+    const nodeRole = String(node.role || "").toLowerCase();
+
+    // Priority levels for smart label display:
+    // 1. Always show: selected, hovered, highlighted, on path
+    // 2. Root nodes: show when zoom > 0.2
+    // 3. Host/subdomain nodes: show when zoom > 0.35
+    // 4. Directory nodes: show when zoom > 0.5
+    // 5. Path/file nodes: show when zoom > 0.7
+    // 6. Other nodes: show when zoom > 0.9
+
+    const isOnPath = highlightPath.includes(id);
+
+    if (isSelected || isHovered || isHighlighted || isOnPath) {
+      showLabel = true;
+    } else if (nodeType === "host" && nodeRole === "root") {
+      // Root domain - always visible except at extreme zoom-out
+      showLabel = globalScale > 0.15;
+    } else if (nodeType === "host" || nodeType === "cluster") {
+      // Subdomains and clusters - visible at moderate zoom
+      showLabel = globalScale > 0.3;
+    } else if (nodeType === "dir" || nodeType === "directory") {
+      // Directories - visible when zoomed in a bit
+      showLabel = globalScale > 0.45;
+    } else if (
+      nodeType === "path" ||
+      nodeType === "file" ||
+      nodeType === "endpoint"
+    ) {
+      // Endpoints/files - only visible when fairly zoomed in
+      showLabel = globalScale > 0.65;
+    } else if (
+      nodeType === "ip" ||
+      nodeType === "port" ||
+      nodeType === "service"
+    ) {
+      // Technical nodes - only when very zoomed in
+      showLabel = globalScale > 0.8;
+    } else {
+      // Unknown types - default behavior
+      showLabel = globalScale > 0.7;
+    }
+  }
+
+  // Render the label if needed
+  if (showLabel) {
+    const label =
+      node.label || node.fullLabel || node.value || String(node.id);
+
+    // Adaptive label truncation based on zoom
+    let maxLen;
+    if (globalScale < 0.3) {
+      maxLen = 8;
+    } else if (globalScale < 0.5) {
+      maxLen = 12;
+    } else if (globalScale < 0.8) {
+      maxLen = 18;
+    } else if (globalScale < 1.2) {
+      maxLen = 25;
+    } else {
+      maxLen = 35;
+    }
+
+    const truncated =
+      label.length > maxLen ? label.slice(0, maxLen - 1) + "…" : label;
+
+    // Adaptive font size
+    const baseFontSize = isSelected ? 12 : isHighlighted ? 11 : 10;
+    const fontSize = Math.max(
+      8,
+      Math.min(14, baseFontSize / Math.max(0.5, globalScale)),
+    );
+
+    ctx.font = `${isSelected ? "bold " : ""}${fontSize}px Inter, Arial, sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+
+    const labelY = node.y + nodeRadius + 3;
+
+    // Text shadow for readability
+    ctx.fillStyle = "rgba(0,0,0,0.75)";
+    ctx.fillText(truncated, node.x + 0.5, labelY + 0.5);
+
+    // Actual label
+    ctx.fillStyle = isSelected
+      ? "#ffffff"
+      : isHighlighted
+        ? "#e0f7fa"
+        : isHovered
+          ? "#ffffff"
+          : "rgba(255,255,255,0.85)";
+    ctx.fillText(truncated, node.x, labelY);
+  }
+}}
       />
       
   {/* legend removed per user request - they already have an external explanation */}

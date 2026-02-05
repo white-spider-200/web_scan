@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceManyBody, forceCollide, forceLink, forceCenter, forceRadial } from 'd3-force';
 import './Graph.css';
@@ -9,11 +9,48 @@ export const Graph = ({ data, onNodeClick, highlightedNodes = [], similarNodes =
   const [size, setSize] = useState({ width: 800, height: 520 });
   const [isPhysicsLocked, setIsPhysicsLocked] = useState(false);
   const didAutoFitRef = useRef(false);
-  const nodesAddedAt = useRef(new Map());
 
   // Build lookup sets for highlights
   const highlightedSet = new Set(highlightedNodes.map(String));
   const similarNodesSet = new Set(similarNodes.map(String));
+
+  // Normalize and filter the graph data to ensure all nodes are valid
+  const normalizedData = useMemo(() => {
+    if (!data) return { nodes: [], links: [] };
+
+    // Handle different data structures (direct or nested under 'graph')
+    let rawNodes = data.nodes || data.graph?.nodes || [];
+    let rawLinks = data.links || data.graph?.links || [];
+
+    // Filter out invalid/incomplete nodes (must have at least an 'id')
+    const validNodes = rawNodes.filter(node => {
+      if (!node || typeof node !== 'object') return false;
+      // Node must have an id to be valid
+      return node.id !== undefined && node.id !== null;
+    });
+
+    // Create a set of valid node IDs for link filtering
+    const validNodeIds = new Set(validNodes.map(n => String(n.id)));
+
+    // Filter links to only include those connecting valid nodes
+    const validLinks = rawLinks.filter(link => {
+      if (!link || typeof link !== 'object') return false;
+      const sourceId = String(typeof link.source === 'object' ? link.source.id : link.source);
+      const targetId = String(typeof link.target === 'object' ? link.target.id : link.target);
+      return validNodeIds.has(sourceId) && validNodeIds.has(targetId);
+    }).map(link => ({
+      ...link,
+      source: typeof link.source === 'object' ? link.source.id : link.source,
+      target: typeof link.target === 'object' ? link.target.id : link.target
+    }));
+
+    console.log(`[Graph] Loaded ${validNodes.length} valid nodes and ${validLinks.length} valid links`);
+
+    return {
+      nodes: validNodes,
+      links: validLinks
+    };
+  }, [data]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -35,31 +72,30 @@ export const Graph = ({ data, onNodeClick, highlightedNodes = [], similarNodes =
 
   // Configure forces
   useEffect(() => {
-    if (!fgRef.current || !data?.nodes?.length) return;
+    if (!fgRef.current || !normalizedData?.nodes?.length) return;
 
     const fg = fgRef.current;
-    const rootNode = data.nodes.find(n => n.type === 'host' && n.role === 'root') || data.nodes.find(n => n.type === 'host');
+    const rootNode = normalizedData.nodes.find(n => n.type === 'host' && n.role === 'root') 
+      || normalizedData.nodes.find(n => n.type === 'host')
+      || normalizedData.nodes[0];
+    
     if (!rootNode) return;
 
     // If physics is locked, disable all forces and stop simulation
     if (isPhysicsLocked) {
-      // Remove all forces
       fg.d3Force('center', null);
       fg.d3Force('charge', null);
       fg.d3Force('link', null);
       fg.d3Force('radial', null);
       fg.d3Force('collision', null);
       
-      // Access and stop the simulation
       try {
         const sim = fg.d3Simulation();
         if (sim) {
           sim.stop();
           sim.alpha(0);
         }
-      } catch (e) {
-        // Simulation might not be ready yet
-      }
+      } catch (e) {}
       
       return;
     }
@@ -71,51 +107,70 @@ export const Graph = ({ data, onNodeClick, highlightedNodes = [], similarNodes =
         sim.restart();
         sim.alpha(0.3);
       }
-    } catch (e) {
-      // Simulation might not be ready yet
-    }
+    } catch (e) {}
 
     // Center force
     fg.d3Force('center', forceCenter(size.width / 2, size.height / 2).strength(0.05));
 
-    // Charge force
-    fg.d3Force('charge', forceManyBody().strength(node => 
-      node.id === rootNode.id ? -1000 : -500
-    ));
+    // Charge force - repulsion between nodes
+    fg.d3Force('charge', forceManyBody()
+      .strength(node => node.id === rootNode.id ? -800 : -300)
+      .distanceMin(20)
+      .distanceMax(500)
+    );
 
     // Link force
-    fg.d3Force('link', forceLink()
+    fg.d3Force('link', forceLink(normalizedData.links)
       .id(d => d.id)
       .distance(link => {
-        const isRootLink = link.source.id === rootNode.id || link.target.id === rootNode.id;
-        return isRootLink ? 150 : 80;
+        const sourceNode = typeof link.source === 'object' ? link.source : 
+          normalizedData.nodes.find(n => n.id === link.source);
+        const targetNode = typeof link.target === 'object' ? link.target :
+          normalizedData.nodes.find(n => n.id === link.target);
+        
+        const isRootLink = sourceNode?.id === rootNode.id || targetNode?.id === rootNode.id;
+        const levelDiff = Math.abs((sourceNode?.level || 1) - (targetNode?.level || 1));
+        
+        return isRootLink ? 180 : 80 + levelDiff * 40;
       })
-      .strength(0.2));
+      .strength(0.3)
+    );
 
-    // Radial force
+    // Radial force - organize by level
     fg.d3Force('radial', forceRadial(
-      node => node.id === rootNode.id ? 0 : 200,
+      node => {
+        if (node.id === rootNode.id) return 0;
+        const level = node.level || 2;
+        return (level - 1) * 150;
+      },
       size.width / 2,
       size.height / 2
-    ).strength(node => node.id === rootNode.id ? 0.8 : 0.1));
+    ).strength(0.4));
 
-    // Collision force
-    fg.d3Force('collision', forceCollide(20));
+    // Collision force - prevent overlap
+    fg.d3Force('collision', forceCollide()
+      .radius(node => {
+        const baseRadius = node.type === 'host' && node.role === 'root' ? 25 : 15;
+        return baseRadius;
+      })
+      .strength(0.8)
+    );
 
-    // Pin root node only if physics is on
+    // Pin root node at center
     rootNode.fx = size.width / 2;
     rootNode.fy = size.height / 2;
 
-    if (!didAutoFitRef.current) {
+    // Auto-fit on first load
+    if (!didAutoFitRef.current && normalizedData.nodes.length > 0) {
       const timeout = setTimeout(() => {
         if (fg.zoomToFit) {
-          fg.zoomToFit(800, 100);
+          fg.zoomToFit(400, 80);
           didAutoFitRef.current = true;
         }
-      }, 300);
+      }, 500);
       return () => clearTimeout(timeout);
     }
-  }, [data, size.width, size.height, isPhysicsLocked]);
+  }, [normalizedData, size.width, size.height, isPhysicsLocked]);
 
   // Zoom controls
   const handleZoom = (type) => {
@@ -147,23 +202,12 @@ export const Graph = ({ data, onNodeClick, highlightedNodes = [], similarNodes =
     onNodeClick?.(node, [node.id]);
   };
 
-  // Handle node drag - only allow dragging on click, not on hover
-  const handleNodeDrag = (node, translate) => {
-    if (!node) return;
-    // This is called during drag - update node position
-    node.fx = translate.x;
-    node.fy = translate.y;
-  };
-
   const handleNodeDragEnd = (node) => {
     if (!node) return;
-    // If physics is locked, keep node fixed. Otherwise release it.
     if (isPhysicsLocked) {
-      // Keep the node pinned at its current position
       node.fx = node.x;
       node.fy = node.y;
     } else {
-      // Release the node so physics can take over
       node.fx = undefined;
       node.fy = undefined;
     }
@@ -171,20 +215,74 @@ export const Graph = ({ data, onNodeClick, highlightedNodes = [], similarNodes =
 
   // Toggle physics lock
   const togglePhysicsLock = () => {
-    setIsPhysicsLocked(!isPhysicsLocked);
+    setIsPhysicsLocked(prev => {
+      const newState = !prev;
+      // If locking, pin all nodes at current positions
+      if (newState && normalizedData.nodes) {
+        normalizedData.nodes.forEach(node => {
+          if (isFinite(node.x) && isFinite(node.y)) {
+            node.fx = node.x;
+            node.fy = node.y;
+          }
+        });
+      } else if (!newState && normalizedData.nodes) {
+        // If unlocking, release all non-root nodes
+        const rootNode = normalizedData.nodes.find(n => n.type === 'host' && n.role === 'root');
+        normalizedData.nodes.forEach(node => {
+          if (node.id !== rootNode?.id) {
+            node.fx = undefined;
+            node.fy = undefined;
+          }
+        });
+      }
+      return newState;
+    });
   };
 
   // Get node color based on type
   const getNodeColor = (node) => {
-    if (!node?.type) return '#bbb';
+    if (!node?.type) return '#9CA3AF';
+    
     switch(node.type) {
-      case 'host': return node.role === 'root' ? 'rgba(255,255,255,0.95)' : 'rgba(45,226,230,0.95)';
-      case 'dir': return 'rgba(59,130,246,0.95)';
+      case 'host': 
+        return node.role === 'root' ? '#2DE2E6' : '#3B82F6';
+      case 'dir': 
+        return '#FBBF24';
       case 'path':
-      case 'file': return 'rgba(251,146,60,0.95)';
-      default: return '#bbb';
+      case 'file': 
+        return '#EF4444';
+      case 'ip':
+        return '#FB923C';
+      default: 
+        return '#9CA3AF';
     }
   };
+
+  // Get node size based on type
+  const getNodeSize = (node) => {
+    if (!node?.type) return 6;
+    
+    switch(node.type) {
+      case 'host': 
+        return node.role === 'root' ? 12 : 8;
+      case 'dir': 
+        return 7;
+      case 'path':
+      case 'file': 
+        return 5;
+      default: 
+        return 5;
+    }
+  };
+
+  // Don't render if no valid data
+  if (!normalizedData.nodes.length) {
+    return (
+      <div ref={containerRef} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94A3B8' }}>
+        <p>No graph data to display</p>
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
@@ -200,12 +298,30 @@ export const Graph = ({ data, onNodeClick, highlightedNodes = [], similarNodes =
           {isPhysicsLocked ? '🔒' : '🔓'}
         </button>
       </div>
+      
+      {/* Node count indicator */}
+      <div style={{ 
+        position: 'absolute', 
+        bottom: 10, 
+        left: 10, 
+        color: '#94A3B8', 
+        fontSize: 11,
+        background: 'rgba(0,0,0,0.5)',
+        padding: '4px 8px',
+        borderRadius: 4
+      }}>
+        {normalizedData.nodes.length} nodes • {normalizedData.links.length} links
+      </div>
+      
       <ForceGraph2D
         ref={fgRef}
-        graphData={data}
-        dagMode="radialout"
-        dagLevelDistance={100}
-        nodeLabel={node => node.fullLabel || node.label || node.id}
+        graphData={normalizedData}
+        nodeLabel={node => {
+          const label = node.fullLabel || node.label || node.id;
+          const type = node.type || 'unknown';
+          const status = node.status ? ` [${node.status}]` : '';
+          return `${label}${status} (${type})`;
+        }}
         nodeRelSize={6}
         linkColor={link => {
           const sourceId = String(typeof link.source === 'object' ? link.source.id : link.source);
@@ -215,7 +331,7 @@ export const Graph = ({ data, onNodeClick, highlightedNodes = [], similarNodes =
           
           if (isHighlighted) return 'rgba(45,226,230,0.6)';
           if (isSimilar) return 'rgba(251,146,60,0.6)';
-          return 'rgba(255,255,255,0.2)';
+          return 'rgba(148,163,184,0.25)';
         }}
         linkWidth={link => {
           const sourceId = String(typeof link.source === 'object' ? link.source.id : link.source);
@@ -226,33 +342,37 @@ export const Graph = ({ data, onNodeClick, highlightedNodes = [], similarNodes =
           return isHighlighted || isSimilar ? 2 : 1;
         }}
         onNodeClick={handleNodeClick}
-        onNodeDrag={handleNodeDrag}
         onNodeDragEnd={handleNodeDragEnd}
         enableNodeDrag={true}
         enableZoomInteraction={true}
         enablePanInteraction={true}
         width={size.width}
         height={size.height}
+        backgroundColor="rgba(0,0,0,0)"
+        cooldownTicks={150}
+        nodeCanvasObjectMode={() => 'replace'}
         nodeCanvasObject={(node, ctx, globalScale) => {
-          const label = node.label || node.id;
-          const fontSize = node.type === 'host' && node.role === 'root' ? 14 : 12;
-          ctx.font = `${fontSize}px Arial`;
+          // Skip invalid nodes
+          if (!isFinite(node.x) || !isFinite(node.y)) return;
+          
           const nodeColor = getNodeColor(node);
+          const radius = getNodeSize(node);
           const isHighlighted = highlightedSet.has(String(node.id));
           const isSimilar = similarNodesSet.has(String(node.id));
-          const radius = 6;
+          const isRoot = node.type === 'host' && node.role === 'root';
 
-          // Draw glow effect for highlighted nodes
-          if (isHighlighted) {
-            const glowSize = 15;
-            // Skip if node positions are not yet finite
-            if (!isFinite(node.x) || !isFinite(node.y)) return;
+          // Draw glow effect for highlighted/similar nodes
+          if (isHighlighted || isSimilar || isRoot) {
+            const glowSize = radius * 2.5;
             const gradient = ctx.createRadialGradient(
               node.x, node.y, radius,
               node.x, node.y, glowSize
             );
-            gradient.addColorStop(0, nodeColor);
-            gradient.addColorStop(1, 'rgba(255,255,255,0)');
+            const glowColor = isHighlighted ? 'rgba(45,226,230,0.4)' : 
+                              isSimilar ? 'rgba(251,146,60,0.4)' : 
+                              'rgba(45,226,230,0.2)';
+            gradient.addColorStop(0, glowColor);
+            gradient.addColorStop(1, 'rgba(0,0,0,0)');
             
             ctx.beginPath();
             ctx.arc(node.x, node.y, glowSize, 0, 2 * Math.PI, false);
@@ -260,24 +380,40 @@ export const Graph = ({ data, onNodeClick, highlightedNodes = [], similarNodes =
             ctx.fill();
           }
 
-          // Draw the node
+          // Draw the node circle
           ctx.beginPath();
           ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI, false);
           ctx.fillStyle = nodeColor;
           ctx.fill();
           
-          // Add a subtle ring for highlighted nodes
-          if (isHighlighted) {
-            ctx.strokeStyle = 'rgba(255,255,255,0.8)';
-            ctx.lineWidth = 2;
+          // Add ring for highlighted nodes
+          if (isHighlighted || isRoot) {
+            ctx.strokeStyle = isRoot ? 'rgba(255,255,255,0.8)' : 'rgba(45,226,230,0.8)';
+            ctx.lineWidth = 2 / globalScale;
             ctx.stroke();
           }
 
-          // Draw text
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillStyle = '#fff';
-          ctx.fillText(label, node.x, node.y + 8 + fontSize/2);
+          // Draw label for important nodes or when zoomed in
+          const shouldShowLabel = isRoot || isHighlighted || isSimilar || 
+            node.type === 'host' || globalScale > 0.8;
+          
+          if (shouldShowLabel) {
+            const label = node.label || String(node.id).split(':').pop() || '';
+            const truncatedLabel = label.length > 20 ? label.slice(0, 18) + '…' : label;
+            
+            const fontSize = Math.max(10, 12 / globalScale);
+            ctx.font = `${isRoot ? 'bold ' : ''}${fontSize}px Inter, Arial, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            
+            // Text shadow
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillText(truncatedLabel, node.x + 0.5, node.y + radius + 3 + 0.5);
+            
+            // Actual text
+            ctx.fillStyle = isRoot ? '#ffffff' : 'rgba(255,255,255,0.85)';
+            ctx.fillText(truncatedLabel, node.x, node.y + radius + 3);
+          }
         }}
       />
     </div>

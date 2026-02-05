@@ -2868,7 +2868,7 @@
       }
 
       /* Toast Notification */
-      .toast {
+.toast {
         position: fixed;
         bottom: 100px;
         left: 50%;
@@ -2882,14 +2882,19 @@
         padding: 14px 28px;
         border-radius: 12px;
         z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
         font-weight: 500;
+        pointer-events: none;
       }
 
       .toast.visible {
         opacity: 1;
+        visibility: visible;
         transform: translateX(-50%) translateY(0);
+        pointer-events: auto;
       }
 
       .toast.error {
@@ -2949,10 +2954,11 @@
         }
       }
 
+
       @media print {
         /* Reset & Layout */
         @page {
-          margin: 15mm;
+          margin: 10mm;
           size: A4;
         }
 
@@ -2960,28 +2966,38 @@
           background: #fff !important;
           color: #000 !important;
           font-family: "Georgia", "Times New Roman", serif !important;
-          font-size: 11pt !important;
-          line-height: 1.5 !important;
+          font-size: 9pt !important;
+          line-height: 1.4 !important;
           -webkit-print-color-adjust: exact !important;
           print-color-adjust: exact !important;
         }
 
-        /* Hide screen-only elements */
+        /* Hide ONLY interactive/screen-only elements */
         .export-btn,
         .back-to-top,
         .quick-nav,
         .export-panel,
-        .search-bar,
         .loading-screen,
-        .header-actions,
         .particles,
         .toast,
         .tooltip,
         .keyboard-hint,
         .header-divider,
         .header-left .logo-container,
-        .collapsible-header .toggle-icon,
-        .no-data {
+        .toggle-icon,
+        .no-data,
+        .search-clear,
+        .search-loading,
+        .search-suggestions,
+        .copy-btn,
+        .action-btn,
+        .filter-group,
+        .header-actions {
+          display: none !important;
+        }
+
+        /* Keep search bar visible but simplified */
+        .search-bar {
           display: none !important;
         }
 
@@ -2996,27 +3012,24 @@
           page-break-after: always;
         }
 
-        /* Header / Footer adjustments */
+        /* Header adjustments */
         .header {
-          position: relative;
+          position: relative !important;
           background: none !important;
           color: #000 !important;
           border-bottom: 2px solid #000 !important;
           box-shadow: none !important;
-          padding: 0 !important;
+          padding: 10px 0 !important;
           margin-bottom: 20px !important;
-          display: none !important; /* Use cover page instead of app header on first page */
         }
 
         .footer {
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          width: 100%;
+          position: relative !important;
           border-top: 1px solid #ccc !important;
           color: #666 !important;
           font-size: 9pt !important;
           padding: 10px 0 !important;
+          margin-top: 30px !important;
         }
 
         /* Container reset */
@@ -3031,50 +3044,154 @@
           background: none !important;
           color: #000 !important;
           border-bottom: 2px solid #000 !important;
-          padding: 10px 0 !important;
-          margin-top: 30px !important;
-          margin-bottom: 15px !important;
-          page-break-after: avoid;
+          padding: 8px 0 !important;
+          margin-top: 20px !important;
+          margin-bottom: 10px !important;
         }
         
         .section-header::before { display: none !important; }
         
         .section-header .left {
           font-family: "Helvetica", "Arial", sans-serif !important;
-          font-size: 16pt !important;
+          font-size: 14pt !important;
           font-weight: 700 !important;
           text-transform: none !important;
           letter-spacing: normal !important;
+        }
+
+        .section-header .actions {
+          display: none !important;
         }
 
         .count-badge {
           background: #eee !important;
           color: #000 !important;
           border: 1px solid #ccc !important;
+          font-size: 8pt !important;
         }
 
-        /* Panels & Cards */
+        /* Panels & Cards - SHOW EVERYTHING */
         .panel, .summary-card, .risk-score-section, .chart-panel {
           background: #fff !important;
-          border: none !important;
+          border: 1px solid #ccc !important;
           box-shadow: none !important;
-          margin-bottom: 20px !important;
-          padding: 0 !important;
+          margin-bottom: 15px !important;
+          padding: 10px !important;
           animation: none !important;
-          break-inside: avoid;
         }
+
+        /* REMOVE ALL HEIGHT RESTRICTIONS */
+        .panel,
+        .scrollable-table,
+        #headersPanel,
+        #cookiesPanel,
+        #hostsPanel,
+        #nodesPanel,
+        #pathsPanel,
+        #corsPanel,
+        #techPanel,
+        #ipPanel,
+        [style*="max-height"],
+        [style*="overflow"] {
+          max-height: none !important;
+          height: auto !important;
+          overflow: visible !important;
+        }
+
+        /* FORCE ALL SECTIONS VISIBLE */
+        .panel,
+        #headersPanel,
+        #cookiesPanel,
+        [id$="Panel"],
+        [id$="Details"],
+        .collapsible-header + .panel,
+        .collapsible-header.collapsed + .panel {
+          display: block !important;
+          visibility: visible !important;
+          max-height: none !important;
+          overflow: visible !important;
+        }
+
+        /* Headers panel print styling */
+        .header-host-block {
+          margin-bottom: 10px !important;
+          border: 1px solid #ccc !important;
+          page-break-inside: avoid;
+        }
+
+        .header-host-block > div:first-child {
+          background: #f0f0f0 !important;
+          color: #000 !important;
+          border-bottom: 1px solid #ccc !important;
+          padding: 8px !important;
+        }
+
+        .header-host-block > div:first-child strong {
+          color: #000 !important;
+        }
+
+        .header-host-block > div:first-child button {
+          display: none !important;
+        }
+
+        .header-category {
+          background: #f5f5f5 !important;
+          color: #333 !important;
+          border-left: 3px solid #000 !important;
+          font-weight: bold !important;
+          padding: 5px 10px !important;
+          font-size: 9pt !important;
+        }
+
+        .header-item {
+          border-bottom: 1px solid #eee !important;
+          padding: 4px 10px !important;
+          display: flex !important;
+        }
+
+        .header-item:hover {
+          background: transparent !important;
+          padding-left: 10px !important;
+        }
+
+        .header-key {
+          color: #000 !important;
+          font-weight: 600 !important;
+          min-width: 180px !important;
+          font-size: 8pt !important;
+        }
+
+        .header-value {
+          color: #333 !important;
+          word-break: break-all !important;
+          font-size: 8pt !important;
+          flex: 1 !important;
+        }
+
+        .header-chip {
+          background: #f0f0f0 !important;
+          color: #000 !important;
+          border: 1px solid #ccc !important;
+          font-size: 7pt !important;
+          padding: 1px 4px !important;
+        }
+
+        .chip-green { border-color: #4caf50 !important; }
+        .chip-red { border-color: #f44336 !important; }
+        .chip-blue { border-color: #2196f3 !important; }
+        .chip-orange { border-color: #ff9800 !important; }
+        .chip-purple { border-color: #9c27b0 !important; }
 
         /* Summary Cards Grid */
         .summary-row {
           display: grid !important;
           grid-template-columns: repeat(3, 1fr) !important;
-          gap: 15px !important;
-          page-break-inside: avoid;
+          gap: 10px !important;
         }
 
         .summary-card {
           border: 1px solid #ccc !important;
-          padding: 15px !important;
+          padding: 10px !important;
           border-radius: 4px !important;
         }
         
@@ -3090,7 +3207,7 @@
         /* Risk Section */
         .risk-score-section {
           border: 1px solid #ccc !important;
-          padding: 20px !important;
+          padding: 15px !important;
           border-radius: 4px !important;
         }
         .risk-score-value .score { color: #000 !important; }
@@ -3103,18 +3220,20 @@
           color: #000 !important;
         }
 
-        .two-columns, .three-columns {
-          display: block !important; /* Stack columns for print usually safer, or use grid if space allows */
-        }
-        
-        /* Force grid for charts if we want side-by-side */
+        /* Two columns for print */
         .two-columns {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
-            gap: 20px !important;
+          display: grid !important;
+          grid-template-columns: 1fr 1fr !important;
+          gap: 15px !important;
         }
 
-        /* Tables */
+        .three-columns {
+          display: grid !important;
+          grid-template-columns: 1fr 1fr 1fr !important;
+          gap: 15px !important;
+        }
+
+        /* FULL TABLES - NO TRUNCATION */
         .scrollable-table {
           max-height: none !important;
           overflow: visible !important;
@@ -3123,8 +3242,12 @@
         table {
           width: 100% !important;
           border-collapse: collapse !important;
-          font-size: 10pt !important;
-          font-family: monospace !important;
+          font-size: 8pt !important;
+          font-family: "Courier New", monospace !important;
+        }
+
+        thead {
+          display: table-header-group !important;
         }
 
         thead th {
@@ -3132,16 +3255,34 @@
           color: #000 !important;
           border: 1px solid #000 !important;
           font-weight: bold !important;
+          padding: 5px 6px !important;
+          font-size: 8pt !important;
+        }
+
+        tbody {
+          display: table-row-group !important;
         }
 
         tbody td {
           border: 1px solid #ccc !important;
           color: #000 !important;
-          padding: 6px 8px !important;
+          padding: 4px 6px !important;
+          font-size: 8pt !important;
+          word-break: break-word !important;
+        }
+
+        tbody tr {
+          display: table-row !important;
         }
 
         tbody tr:nth-child(even) {
           background: #f9f9f9 !important;
+        }
+
+        /* Show ALL table rows - no hidden rows */
+        tbody tr.hidden-row,
+        tbody tr[style*="display: none"] {
+          display: table-row !important;
         }
 
         /* Badges & Chips */
@@ -3151,42 +3292,130 @@
           color: #000 !important;
           font-weight: bold !important;
           box-shadow: none !important;
+          font-size: 7pt !important;
+          padding: 1px 4px !important;
         }
         
-        /* Highlighting for print (borders instead of backgrounds) */
         .status-200 { border-color: #4caf50 !important; color: #2e7d32 !important; }
-        .status-500, .status-403 { border-color: #d32f2f !important; color: #c62828 !important; font-weight: 900 !important; }
+        .status-301, .status-302 { border-color: #2196f3 !important; color: #1565c0 !important; }
+        .status-400 { border-color: #ff9800 !important; color: #e65100 !important; }
+        .status-403, .status-404 { border-color: #f44336 !important; color: #c62828 !important; }
+        .status-500 { border-color: #9c27b0 !important; color: #6a1b9a !important; }
         
-        .risk-critical .count, .risk-high .count { font-weight: 900 !important; text-decoration: underline !important; }
+        .risk-critical .count, .risk-high .count { 
+          font-weight: 900 !important; 
+          text-decoration: underline !important; 
+        }
 
-        /* Charts */
+        /* Charts - smaller for print */
+        .chart-panel {
+          min-height: auto !important;
+          padding: 10px !important;
+          border: 1px solid #eee !important;
+        }
+
+        .chart-wrapper {
+          max-width: 300px !important;
+          margin: 0 auto !important;
+        }
+
         canvas {
           max-width: 100% !important;
           height: auto !important;
-        }
-        
-        .chart-panel {
-            min-height: auto !important;
-            padding: 10px !important;
-            border: 1px solid #eee !important;
+          max-height: 200px !important;
         }
 
         /* Timeline */
         .timeline-section {
-            border: 1px solid #ccc !important;
-            background: #fff !important;
+          border: 1px solid #ccc !important;
+          background: #fff !important;
+          padding: 10px !important;
         }
-        .timeline-label { color: #444 !important; }
-        .timeline-value { color: #000 !important; }
+        .timeline-label { color: #444 !important; font-size: 8pt !important; }
+        .timeline-value { color: #000 !important; font-size: 8pt !important; }
         
+        /* Cookies panel - SHOW ALL */
+        #cookiesPanel {
+          max-height: none !important;
+          overflow: visible !important;
+        }
+
+        .cookie-item {
+          border: 1px solid #ccc !important;
+          margin-bottom: 8px !important;
+          padding: 8px !important;
+          background: #fff !important;
+        }
+
+        .cookie-name {
+          color: #000 !important;
+          font-weight: bold !important;
+        }
+
+        .cookie-value {
+          word-break: break-all !important;
+          font-size: 8pt !important;
+        }
+
+        .cookie-flags {
+          font-size: 7pt !important;
+        }
+
+        /* Nodes panel - SHOW ALL */
+        #nodesPanel,
+        #nodesTable {
+          max-height: none !important;
+          overflow: visible !important;
+        }
+
+        /* Paths panel - SHOW ALL */
+        #pathsPanel {
+          max-height: none !important;
+          overflow: visible !important;
+        }
+
         /* Links */
-        a { text-decoration: none !important; color: #000 !important; }
+        a { 
+          text-decoration: none !important; 
+          color: #000 !important; 
+        }
         
-        /* Avoid breaks */
-        tr { page-break-inside: avoid; }
-        .panel { page-break-inside: avoid; }
-        h1, h2, h3 { page-break-after: avoid; }
+        a[href]::after {
+          content: none !important;
+        }
+
+        /* HSTS & HTTP/3 panels */
+        #hstsDetails .panel,
+        #http3Details .panel,
+        #cacheDetails .panel,
+        #clientHints .panel {
+          max-height: none !important;
+          overflow: visible !important;
+        }
+
+        /* Infrastructure table */
+        #infrastructureTable {
+          display: table !important;
+        }
+
+        /* Tech & IP panels */
+        #techPanel,
+        #ipPanel {
+          min-height: auto !important;
+        }
+
+        /* Animations - disable all */
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+
+        .fade-in, .fade-in-up, .fade-in-left, .fade-in-right, .scale-in {
+          opacity: 1 !important;
+          transform: none !important;
+        }
       }
+
 
       /* Custom Scrollbar */
       ::-webkit-scrollbar {
@@ -3990,7 +4219,7 @@
         ip: "#ff9f43",
         endpoint: "#26de81",
         url: "#2bcbba",
-        path: "#20bf6b",
+        path: "rgb(239, 68, 68)",
         dir: "#26de81",
         file: "#badc58",
         api: "#fd79a8",
@@ -4001,9 +4230,28 @@
         header: "#5f27cd",
         cookie: "#d35400",
         parameter: "#576574",
+        script: "#f368e0",
+        stylesheet: "#ff6b6b",
+        image: "#feca57",
+        font: "#48dbfb",
+        document: "#1dd1a1",
+        xhr: "#ee5a24",
+        fetch: "#ff9ff3",
+        websocket: "#54a0ff",
+        media: "#c8d6e5",
+        other: "#8395a7",
+        unknown: "#636e72",
         default: "#a0a0a0",
       };
 
+      // Color palette for types not in NODE_COLORS
+      const FALLBACK_COLORS = [
+        "#2de2e6", "#ff2a6d", "#05d9e8", "#ff6b6b", 
+        "#4ecdc4", "#ffe66d", "#a855f7", "#f472b6",
+        "#34d399", "#fbbf24", "#60a5fa", "#c084fc",
+        "#fb7185", "#2dd4bf", "#facc15", "#818cf8",
+        "#f87171", "#a78bfa", "#67e8f9", "#fcd34d"
+      ];
       const STATUS_COLORS = {
         200: "#4caf50",
         301: "#2196f3",
@@ -4014,6 +4262,30 @@
         500: "#9c27b0",
         null: "#9e9e9e",
       };
+ // Track assigned colors for unknown types
+      const assignedColors = {};
+      let colorIndex = 0;
+
+      function getNodeColor(type) {
+        const normalizedType = String(type || "").toLowerCase();
+        
+        // Check if we have a predefined color
+        if (NODE_COLORS[normalizedType]) {
+          return NODE_COLORS[normalizedType];
+        }
+        
+        // Check if we already assigned a color to this type
+        if (assignedColors[normalizedType]) {
+          return assignedColors[normalizedType];
+        }
+        
+        // Assign a new color from fallback palette
+        const color = FALLBACK_COLORS[colorIndex % FALLBACK_COLORS.length];
+        assignedColors[normalizedType] = color;
+        colorIndex++;
+        
+        return color;
+      }
 
       // Create floating particles
       function createParticles() {
@@ -4046,12 +4318,6 @@
         }
 
         requestAnimationFrame(update);
-      }
-
-      function getNodeColor(type) {
-        return (
-          NODE_COLORS[String(type || "").toLowerCase()] || NODE_COLORS.default
-        );
       }
 
       function getStatusColor(status) {
@@ -4701,6 +4967,7 @@
         return Object.entries(counts).sort((a, b) => b[1] - a[1]);
       }
 
+      
       function drawDonutChart(canvas, data, colorFn) {
         const ctx = canvas.getContext("2d");
         const centerX = canvas.width / 2;
@@ -4712,53 +4979,41 @@
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+        // Draw all slices immediately (no setTimeout delays)
         let startAngle = -Math.PI / 2;
-        data.slice(0, 10).forEach(([label, count], index) => {
+        data.forEach(([label, count]) => {
           const sliceAngle = (count / total) * 2 * Math.PI;
 
-          // Animate slice
-          setTimeout(() => {
-            ctx.beginPath();
-            ctx.moveTo(centerX, centerY);
-            ctx.arc(
-              centerX,
-              centerY,
-              radius,
-              startAngle,
-              startAngle + sliceAngle,
-            );
-            ctx.closePath();
-            ctx.fillStyle = colorFn(label);
-            ctx.fill();
-            ctx.strokeStyle = "#0d1a26";
-            ctx.lineWidth = 2;
-            ctx.stroke();
-          }, index * 100);
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
+          ctx.closePath();
+          ctx.fillStyle = colorFn(label);
+          ctx.fill();
+          ctx.strokeStyle = "#0d1a26";
+          ctx.lineWidth = 2;
+          ctx.stroke();
 
           startAngle += sliceAngle;
         });
 
-        // Center hole (delayed)
-        setTimeout(
-          () => {
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, radius * 0.55, 0, 2 * Math.PI);
-            ctx.fillStyle = "#0d1a26";
-            ctx.fill();
+        // Draw center hole
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius * 0.55, 0, 2 * Math.PI);
+        ctx.fillStyle = "#0d1a26";
+        ctx.fill();
 
-            ctx.fillStyle = "#fff";
-            ctx.font = "bold 32px sans-serif";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillText(total.toString(), centerX, centerY - 8);
-            ctx.font = "11px sans-serif";
-            ctx.fillStyle = "#888";
-            ctx.fillText("TOTAL", centerX, centerY + 16);
-          },
-          data.length * 100 + 100,
-        );
+        // Draw total text
+        ctx.fillStyle = "#fff";
+        ctx.font = "bold 32px sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(total.toString(), centerX, centerY - 8);
+        ctx.font = "11px sans-serif";
+        ctx.fillStyle = "#888";
+        ctx.fillText("TOTAL", centerX, centerY + 16);
       }
-
+      
       function drawRiskGauge(score) {
         const canvas = document.getElementById("riskGauge");
         const ctx = canvas.getContext("2d");
@@ -4851,6 +5106,29 @@
           : "block";
       }
 
+      // Expand all sections before printing
+      window.addEventListener("beforeprint", function() {
+        // Expand headers panel
+        const headersPanel = document.getElementById("headersPanel");
+        const headersHeader = document.querySelector('[onclick*="headersPanel"]');
+        if (headersPanel) {
+          headersPanel.style.display = "block";
+        }
+        if (headersHeader) {
+          headersHeader.classList.remove("collapsed");
+        }
+
+        // Expand all collapsible sections
+        document.querySelectorAll(".collapsible-header").forEach(header => {
+          header.classList.remove("collapsed");
+          const panelId = header.getAttribute("onclick")?.match(/toggleSection\('([^']+)'/)?.[1];
+          if (panelId) {
+            const panel = document.getElementById(panelId);
+            if (panel) panel.style.display = "block";
+          }
+        });
+      });
+
       function populateSummaryCards(nodes, links) {
         const hosts = nodes.filter((n) => n.type === "host").length;
 
@@ -4922,7 +5200,7 @@
             icon: "📁",
             value: paths,
             label: "Paths Found",
-            color: "#20bf6b",
+            color: "rgb(239, 68, 68)",
             percent: (paths / (nodes.length || 1)) * 100,
           },
           {
@@ -6102,7 +6380,85 @@
           })
           .join("");
       }
+      function renderNodeTypeChart(data) {
+        const ctx = document.getElementById("nodeTypeChart")?.getContext("2d");
+        if (!ctx) return;
 
+        // Count node types
+        const typeCounts = {};
+        data.nodes?.forEach(node => {
+          const type = node.type || "unknown";
+          typeCounts[type] = (typeCounts[type] || 0) + 1;
+        });
+
+        const labels = Object.keys(typeCounts);
+        const values = Object.values(typeCounts);
+        const colors = [
+          "#2de2e6", "#ff2a6d", "#05d9e8", "#ff6b6b", 
+          "#4ecdc4", "#ffe66d", "#a855f7", "#f472b6",
+          "#34d399", "#fbbf24", "#60a5fa", "#c084fc",
+          "#fb7185", "#2dd4bf", "#facc15", "#818cf8"
+        ];
+
+        new Chart(ctx, {
+          type: "pie",
+          data: {
+            labels: labels,
+            datasets: [{
+              data: values,
+              backgroundColor: colors.slice(0, labels.length),
+              borderColor: "rgba(0,0,0,0.3)",
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: true,
+                position: "right",
+                labels: {
+                  color: "#fff",
+                  font: {
+                    size: 10
+                  },
+                  padding: 8,
+                  boxWidth: 12,
+                  boxHeight: 12,
+                  generateLabels: function(chart) {
+                    const data = chart.data;
+                    if (data.labels.length && data.datasets.length) {
+                      return data.labels.map((label, i) => {
+                        const value = data.datasets[0].data[i];
+                        const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                        const percentage = ((value / total) * 100).toFixed(1);
+                        return {
+                          text: `${label}: ${value} (${percentage}%)`,
+                          fillStyle: data.datasets[0].backgroundColor[i],
+                          hidden: false,
+                          index: i
+                        };
+                      });
+                    }
+                    return [];
+                  }
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                    const value = context.raw;
+                    const percentage = ((value / total) * 100).toFixed(1);
+                    return `${context.label}: ${value} (${percentage}%)`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
       function renderReport(data) {
         reportData = data;
 

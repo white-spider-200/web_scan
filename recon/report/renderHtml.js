@@ -29,14 +29,15 @@ function renderBarChart(data, title, maxItems = 10) {
   const entries = Object.entries(data || {})
     .sort((a, b) => b[1] - a[1])
     .slice(0, maxItems);
-  
+
   if (!entries.length) return '';
 
-  const maxVal = Math.max(...entries.map(e => e[1]));
-  
-  const bars = entries.map(([label, count]) => {
-    const pct = (count / maxVal) * 100;
-    return `
+  const maxVal = Math.max(...entries.map((e) => e[1]));
+
+  const bars = entries
+    .map(([label, count]) => {
+      const pct = (count / maxVal) * 100;
+      return `
       <div class="chart-row">
         <div class="chart-label" title="${escapeHtml(label)}">${escapeHtml(label)}</div>
         <div class="chart-bar-container">
@@ -45,7 +46,8 @@ function renderBarChart(data, title, maxItems = 10) {
         </div>
       </div>
     `;
-  }).join('');
+    })
+    .join('');
 
   return `
     <div class="card chart-card">
@@ -58,9 +60,10 @@ function renderBarChart(data, title, maxItems = 10) {
 }
 
 function renderTable(headers, rows, emptyMsg = 'No data available') {
-  if (!rows || !rows.length) return `<div class="empty-state">${emptyMsg}</div>`;
-  
-  const ths = headers.map(h => `<th>${escapeHtml(h)}</th>`).join('');
+  if (!rows || !rows.length)
+    return `<div class="empty-state">${emptyMsg}</div>`;
+
+  const ths = headers.map((h) => `<th>${escapeHtml(h)}</th>`).join('');
   return `
     <div class="table-container">
       <table>
@@ -78,64 +81,99 @@ function renderHtml(report) {
   const jsonData = JSON.stringify(report).replace(/</g, '\u003c');
 
   // Summary Metrics
-  const vulnCount = Object.values(summary.byVulnSeverity || {}).reduce((a, b) => a + b, 0);
+  const vulnCount = Object.values(summary.byVulnSeverity || {}).reduce(
+    (a, b) => a + b,
+    0,
+  );
   const techCount = Object.keys(summary.byTech || {}).length;
 
   // Tables Rows
-  const topHubsRows = summary.topHubs.map(h => `
+  const topHubsRows = summary.topHubs
+    .map(
+      (h) => `
     <tr>
       <td>${escapeHtml(h.label)}</td>
       <td><span class="badge badge-type">${escapeHtml(h.type)}</span></td>
       <td class="text-right">${h.outCount}</td>
     </tr>
-  `).join('');
+  `,
+    )
+    .join('');
 
-  const interestingRows = summary.interestingEndpoints.map(n => `
+  const interestingRows = summary.interestingEndpoints
+    .map(
+      (n) => `
     <tr>
       <td>${escapeHtml(n.label)}</td>
       <td class="wrap"><a href="${escapeHtml(n.fullUrl)}" target="_blank">${escapeHtml(n.fullUrl)}</a></td>
       <td><span class="badge badge-status status-${String(n.status)[0]}xx">${escapeHtml(n.status)}</span></td>
     </tr>
-  `).join('');
+  `,
+    )
+    .join('');
 
-  const vulnRows = (summary.topVulns || []).map(v => `
+  const vulnRows = (summary.topVulns || [])
+    .map(
+      (v) => `
     <tr>
       <td><span class="badge badge-severity severity-${escapeHtml(v.severity)}">${escapeHtml(v.severity)}</span></td>
       <td>${escapeHtml(v.name)}</td>
       <td>${escapeHtml(v.host)}</td>
     </tr>
-  `).join(''); 
+  `,
+    )
+    .join('');
   // Note: summary.topVulns isn't explicitly built in buildReport, but we can iterate nodes if needed.
   // Let's build a quick vuln list from nodes since buildReport aggregates counts but not a list in summary.
   let allVulns = [];
-  nodes.forEach(n => {
-    if(n.vulns && n.vulns.length) {
-      n.vulns.forEach(v => {
+  nodes.forEach((n) => {
+    if (n.vulns && n.vulns.length) {
+      n.vulns.forEach((v) => {
         allVulns.push({ ...v, host: n.label });
       });
     }
   });
   // Sort by severity
-  const severityOrder = { critical: 5, high: 4, medium: 3, low: 2, info: 1, unknown: 0 };
-  allVulns.sort((a, b) => (severityOrder[b.severity?.toLowerCase()] || 0) - (severityOrder[a.severity?.toLowerCase()] || 0));
-  const topVulnsRows = allVulns.slice(0, 50).map(v => `
+  const severityOrder = {
+    critical: 5,
+    high: 4,
+    medium: 3,
+    low: 2,
+    info: 1,
+    unknown: 0,
+  };
+  allVulns.sort(
+    (a, b) =>
+      (severityOrder[b.severity?.toLowerCase()] || 0) -
+      (severityOrder[a.severity?.toLowerCase()] || 0),
+  );
+  const topVulnsRows = allVulns
+    .slice(0, 50)
+    .map(
+      (v) => `
     <tr>
       <td><span class="badge badge-severity severity-${escapeHtml(v.severity?.toLowerCase())}">${escapeHtml(v.severity)}</span></td>
       <td>${escapeHtml(v.info?.name || v.id || 'Unknown Issue')}</td>
       <td>${escapeHtml(v.host)}</td>
       <td class="wrap text-muted">${escapeHtml(v.info?.description || v.matcher_name || '')}</td>
     </tr>
-  `).join('');
+  `,
+    )
+    .join('');
 
-
-  const nodeRows = nodes.slice(0, nodeLimit).map(n => `
+  const nodeRows = nodes
+    .slice(0, nodeLimit)
+    .map(
+      (n) => `
     <tr>
       <td><span class="badge badge-type">${escapeHtml(n.type)}</span></td>
       <td class="wrap">${escapeHtml(n.fullUrl || n.label)}</td>
       <td><span class="badge badge-status status-${String(n.status)[0]}xx">${escapeHtml(n.status ?? '-')}</span></td>
       <td class="text-muted">${escapeHtml(n.technologies?.join(', ') || '')}</td>
     </tr>
-  `).join('');
+  `,
+    )
+    .join('');
 
   return `<!doctype html>
 <html lang="en">
@@ -291,12 +329,16 @@ function renderHtml(report) {
   </section>
 
   <!-- Top Vulnerabilities Table -->
-  ${topVulnsRows.length ? `
+  ${
+    topVulnsRows.length
+      ? `
     <section class="card" style="margin-bottom: 30px;">
       <h3>Detected Vulnerabilities</h3>
       ${renderTable(['Severity', 'Name', 'Host', 'Description'], topVulnsRows)}
     </section>
-  ` : ''}
+  `
+      : ''
+  }
 
   <!-- Interesting Endpoints -->
   <section class="card" style="margin-bottom: 30px;">
@@ -313,10 +355,7 @@ function renderHtml(report) {
   <!-- Full Node List -->
   <section class="card">
     <h3>All Nodes (${nodes.length})</h3>
-    ${renderTable(
-      ['Type', 'URL / Label', 'Status', 'Tech'],
-      nodeRows
-    )}
+    ${renderTable(['Type', 'URL / Label', 'Status', 'Tech'], nodeRows)}
     ${hasMore ? `<div style="padding:10px; color:#666; font-style:italic;">Showing first ${nodeLimit} nodes. Download JSON for full dataset.</div>` : ''}
   </section>
 
@@ -344,4 +383,5 @@ function renderHtml(report) {
 </script>
 
 </body>
-</html>
+</html>`;
+}
