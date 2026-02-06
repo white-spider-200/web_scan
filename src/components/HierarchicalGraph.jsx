@@ -34,6 +34,7 @@ export const HierarchicalGraph = ({
 }) => {
   const containerRef = useRef(null);
   const fgRef = useRef(null);
+  const positionedNodesRef = useRef(new Set());
   const {
     layout: settingsLayout,
     display: settingsDisplay,
@@ -69,6 +70,25 @@ export const HierarchicalGraph = ({
       return 'radial';
     }
   });
+
+  // Gently reheat simulation when level changes to animate nodes smoothly
+  useEffect(() => {
+    if (disableLevelSystem || maxVisibleLevel === null) return;
+
+    const inst = fgRef.current;
+    if (!inst) return;
+
+    try {
+      const sim = inst.d3Simulation?.();
+      if (sim) {
+        // Use a low alpha so nodes ease into position rather than exploding
+        sim.alpha(0.3);
+        sim.restart();
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, [maxVisibleLevel, disableLevelSystem]);
 
   // Ensure any leftover debug panel from previous builds or edits is removed from the DOM
   useEffect(() => {
@@ -118,6 +138,18 @@ export const HierarchicalGraph = ({
     const setLevel = (lvl) => {
       const newLvl = Math.max(1, Math.min(maxLevel, lvl));
       setExpanded(() => new Set());
+
+      // Clear positioned nodes so new nodes spawn from parents
+      // Keep only the root node positioned
+      const root = data?.nodes?.find(
+        (n) => n.type === 'host' && n.role === 'root',
+      );
+      if (root) {
+        positionedNodesRef.current = new Set([String(root.id)]);
+      } else {
+        positionedNodesRef.current = new Set();
+      }
+
       setMaxVisibleLevel(newLvl);
     };
 
@@ -674,18 +706,18 @@ export const HierarchicalGraph = ({
       const tgt = typeof l.target === 'object' ? l.target.id : l.target;
       const srcId = String(src);
       const tgtId = String(tgt);
-      
+
       const arr = parentMap.get(tgtId) || [];
       arr.push(srcId);
       parentMap.set(tgtId, arr);
-      
+
       const kids = childMap.get(srcId) || [];
       kids.push(tgtId);
       childMap.set(srcId, kids);
     });
 
     const visible = new Set();
-    
+
     // If level-driven visibility mode is active, show nodes up to that level only
     if (maxVisibleLevel !== null) {
       data.nodes.forEach((n) => {
@@ -701,67 +733,19 @@ export const HierarchicalGraph = ({
       });
 
       // Branch expansion: when a node is expanded, reveal its immediate children
-      // Use a queue to handle nested expansions
-      const processExpansion = () => {
-        let changed = true;
-        let iterations = 0;
-        const maxIterations = 100; // Safety limit
-        
-        while (changed && iterations < maxIterations) {
-          changed = false;
-          iterations++;
-          
-          expandedNodes.forEach((expandedId) => {
-            const eid = String(expandedId);
-            // Only process if the expanded node is visible
-            if (!visible.has(eid)) return;
-            
-            const children = childMap.get(eid) || [];
-            children.forEach((childId) => {
-              const cid = String(childId);
-              if (!visible.has(cid)) {
-                visible.add(cid);
-                changed = true;
-              }
-            });
-          });
-        }
-      };
-      
-      processExpansion();
-    } else {
-      // No level mode - show root and handle expansions manually
-      const root =
-        data.nodes.find((n) => n.type === 'host' && n.role === 'root') ||
-        data.nodes.find((n) => n.type === 'host');
-      
-      if (root) {
-        visible.add(String(root.id));
-        
-        // Show immediate children of root (subdomains)
-        const rootChildren = childMap.get(String(root.id)) || [];
-        rootChildren.forEach((childId) => {
-          const childNode = data.nodes.find((nn) => String(nn.id) === String(childId));
-          if (childNode && childNode.type === 'host' && childNode.role === 'subdomain') {
-            visible.add(String(childId));
-          }
-        });
-      }
-      
-      // Process all expanded nodes and show their children
       const processExpansion = () => {
         let changed = true;
         let iterations = 0;
         const maxIterations = 100;
-        
+
         while (changed && iterations < maxIterations) {
           changed = false;
           iterations++;
-          
+
           expandedNodes.forEach((expandedId) => {
             const eid = String(expandedId);
             if (!visible.has(eid)) return;
-            
+
             const children = childMap.get(eid) || [];
             children.forEach((childId) => {
               const cid = String(childId);
@@ -773,30 +757,155 @@ export const HierarchicalGraph = ({
           });
         }
       };
-      
+
+      processExpansion();
+    } else {
+      const root =
+        data.nodes.find((n) => n.type === 'host' && n.role === 'root') ||
+        data.nodes.find((n) => n.type === 'host');
+
+      if (root) {
+        visible.add(String(root.id));
+
+        const rootChildren = childMap.get(String(root.id)) || [];
+        rootChildren.forEach((childId) => {
+          const childNode = data.nodes.find(
+            (nn) => String(nn.id) === String(childId),
+          );
+          if (
+            childNode &&
+            childNode.type === 'host' &&
+            childNode.role === 'subdomain'
+          ) {
+            visible.add(String(childId));
+          }
+        });
+      }
+
+      const processExpansion = () => {
+        let changed = true;
+        let iterations = 0;
+        const maxIterations = 100;
+
+        while (changed && iterations < maxIterations) {
+          changed = false;
+          iterations++;
+
+          expandedNodes.forEach((expandedId) => {
+            const eid = String(expandedId);
+            if (!visible.has(eid)) return;
+
+            const children = childMap.get(eid) || [];
+            children.forEach((childId) => {
+              const cid = String(childId);
+              if (!visible.has(cid)) {
+                visible.add(cid);
+                changed = true;
+              }
+            });
+          });
+        }
+      };
+
       processExpansion();
     }
 
-    // Build resulting visible nodes array and add simple level hints
-    const visibleNodes = [];
+    // Build a map of current node positions for parent lookup
+    const nodePositions = new Map();
     data.nodes.forEach((n) => {
-      if (visible.has(String(n.id))) {
-        n.level = levels.get(n.id) ?? n.level;
-        visibleNodes.push(n);
+      if (isFinite(n.x) && isFinite(n.y)) {
+        nodePositions.set(String(n.id), { x: n.x, y: n.y });
+      }
+    });
+
+    // Build resulting visible nodes array
+    const visibleNodes = [];
+    const positionedNodes = positionedNodesRef.current;
+
+    data.nodes.forEach((n) => {
+      const nodeId = String(n.id);
+      if (!visible.has(nodeId)) return;
+
+      n.level = levels.get(n.id) ?? n.level;
+
+      // Check if this node needs initial positioning
+      // A node needs positioning if:
+      // 1. It doesn't have valid coordinates, OR
+      // 2. It hasn't been positioned before (newly visible)
+      const needsPositioning =
+        !positionedNodes.has(nodeId) &&
+        (!isFinite(n.x) || !isFinite(n.y) || (n.x === 0 && n.y === 0));
+
+      if (needsPositioning) {
+        const parentIds = parentMap.get(nodeId) || [];
+        let parentPos = null;
+
+        // Find a parent with valid coordinates
+        for (const pid of parentIds) {
+          const pos = nodePositions.get(pid);
+          if (pos) {
+            parentPos = pos;
+            break;
+          }
+        }
+
+        if (parentPos) {
+          // Spawn at parent position with random offset in a circle
+          const offsetAngle = Math.random() * 2 * Math.PI;
+          const offsetDist = 30 + Math.random() * 50;
+          n.x = parentPos.x + Math.cos(offsetAngle) * offsetDist;
+          n.y = parentPos.y + Math.sin(offsetAngle) * offsetDist;
+        } else {
+          // No parent found - check if root exists and spawn near it
+          const root = data.nodes.find(
+            (nn) => nn.type === 'host' && nn.role === 'root',
+          );
+          if (root && isFinite(root.x) && isFinite(root.y)) {
+            const offsetAngle = Math.random() * 2 * Math.PI;
+            const offsetDist = 80 + Math.random() * 120;
+            n.x = root.x + Math.cos(offsetAngle) * offsetDist;
+            n.y = root.y + Math.sin(offsetAngle) * offsetDist;
+          } else {
+            // Fallback to center
+            const centerX = size.width / 2;
+            const centerY = size.height / 2;
+            const offsetAngle = Math.random() * 2 * Math.PI;
+            const offsetDist = 50 + Math.random() * 100;
+            n.x = centerX + Math.cos(offsetAngle) * offsetDist;
+            n.y = centerY + Math.sin(offsetAngle) * offsetDist;
+          }
+        }
+
+        // Mark as positioned
+        positionedNodes.add(nodeId);
+      }
+
+      visibleNodes.push(n);
+    });
+
+    // Clean up positioned nodes that are no longer in data
+    const currentNodeIds = new Set(data.nodes.map((n) => String(n.id)));
+    positionedNodes.forEach((id) => {
+      if (!currentNodeIds.has(id)) {
+        positionedNodes.delete(id);
       }
     });
 
     return visibleNodes;
-  }, [data, expandedNodes, levels, maxVisibleLevel, disableLevelSystem]);
-
-// ...existing code...
+  }, [
+    data,
+    expandedNodes,
+    levels,
+    maxVisibleLevel,
+    disableLevelSystem,
+    size.width,
+    size.height,
+  ]);
 
   // Handle node click:
   // - Click expandable nodes => expand/collapse (no auto-zoom, no details fetch)
   // - Shift+click (or leaf nodes) => focus + show details
   // - Cluster nodes => delegate to parent (no auto-zoom)
-
-
 
   // Get visible links based on visible nodes
   const getVisibleLinks = useCallback(
@@ -957,76 +1066,11 @@ export const HierarchicalGraph = ({
     exportFnsRef.current.getNodeSize = getNodeSize;
   }, [getNodeColor, getNodeSize]);
 
-
- 
-  const handleNodeHover = useCallback(
-    (node) => {
-      setHoverNodeId(node?.id || null);
-      const inst = fgRef.current;
-      if (!inst) return;
-
-      // Always freeze all nodes when hovering ANY node to prevent movement
-      if (node) {
-        // Stop simulation completely
-        try {
-          const sim = inst.d3Simulation?.();
-          if (sim) {
-            sim.stop();
-            sim.alpha(0);
-          }
-        } catch (e) {}
-
-        // Fix ALL node positions
-        try {
-          const graphData = inst.graphData();
-          if (graphData && graphData.nodes) {
-            graphData.nodes.forEach((n) => {
-              if (isFinite(n.x) && isFinite(n.y)) {
-                n.fx = n.x;
-                n.fy = n.y;
-                n.vx = 0;
-                n.vy = 0;
-              }
-            });
-          }
-        } catch (e) {}
-      } else {
-        // Only resume if NOT locked
-        if (!lockLayout && !settingsLayout?.isFrozen) {
-          // Unfreeze nodes that aren't explicitly locked
-          try {
-            const graphData = inst.graphData();
-            if (graphData && graphData.nodes) {
-              graphData.nodes.forEach((n) => {
-                const nodeId = String(n.id || '').trim();
-                const isUserLocked =
-                  lockedNodeIds instanceof Set
-                    ? lockedNodeIds.has(nodeId)
-                    : Array.isArray(lockedNodeIds)
-                      ? lockedNodeIds.includes(nodeId)
-                      : false;
-                if (!isUserLocked) {
-                  n.fx = undefined;
-                  n.fy = undefined;
-                }
-              });
-            }
-          } catch (e) {}
-
-          // Restart with VERY low energy
-          try {
-            const sim = inst.d3Simulation?.();
-            if (sim) {
-              sim.alpha(0.05);
-              sim.alphaDecay(0.05); // Faster decay = stops sooner
-              sim.restart();
-            }
-          } catch (e) {}
-        }
-      }
-    },
-    [lockLayout, lockedNodeIds, settingsLayout?.isFrozen],
-  );
+  const handleNodeHover = useCallback((node) => {
+    setHoverNodeId(node?.id || null);
+    // Remove all the simulation stopping/starting logic on hover
+    // Just update the hover state - don't touch physics
+  }, []);
 
   // Handle node click:
   // - Click expandable nodes => expand/collapse (no auto-zoom, no details fetch)
@@ -1280,13 +1324,24 @@ export const HierarchicalGraph = ({
       data.nodes.find((n) => n.type === 'host');
     if (!root) return;
 
-    // Delay to allow graph to initialize and settle
+    // Only run once using suppressAutoFit ref
+    if (suppressAutoFit.current) return;
+    suppressAutoFit.current = true;
+
+    // Delay longer to allow graph to fully settle
     const timer = setTimeout(() => {
-      manualFit(400, 200, 0);
-    }, 600);
+      try {
+        const inst = fgRef.current;
+        if (inst && typeof inst.zoomToFit === 'function') {
+          inst.zoomToFit(400, 100);
+        }
+      } catch (e) {
+        // ignore
+      }
+    }, 1200);
 
     return () => clearTimeout(timer);
-  }, [data?.nodes?.length, manualFit]);
+  }, [data?.nodes?.length]);
 
   // Get current visible graph data
   const visibleNodes = getVisibleNodes();
@@ -1411,130 +1466,27 @@ export const HierarchicalGraph = ({
     [selectedNode, selectedNodeId, depthByNodeId],
   );
 
-
   // Set up hierarchical positioning with MUCH weaker forces
   useEffect(() => {
     try {
-      if (!fgRef.current || !visibleNodes.length) return;
+      const inst = fgRef.current;
+      if (!inst) return;
 
-      const simulation = fgRef.current.d3Force;
-      if (simulation) {
-        if (layout === 'radial') {
-          const ringRadius = (node) => {
-            return ((node.level || 1) - 1) * 160 + 60;
-          };
-          simulation(
-            'radial',
-            forceRadial(ringRadius, size.width / 2, size.height / 2).strength(
-              0.3, // REDUCED from 0.92
-            ),
-          );
-          simulation('x', null);
-          simulation('y', null);
-        } else if (layout === 'hierarchical') {
-          simulation('radial', null);
-          const maxLevel = visibleNodes.reduce((mx, n) => {
-            const lvl = Number(n?.level);
-            return Number.isFinite(lvl)
-              ? Math.max(mx, Math.max(1, Math.floor(lvl)))
-              : mx;
-          }, 1);
-          const gap = Math.min(
-            170,
-            Math.max(90, (size.height - 160) / Math.max(1, maxLevel)),
-          );
-          const top = size.height / 2 - ((maxLevel - 1) * gap) / 2;
-          const yFor = (node) => {
-            const lvl = Number(node?.level);
-            const safe = Number.isFinite(lvl)
-              ? Math.max(1, Math.floor(lvl))
-              : 1;
-            return top + (safe - 1) * gap;
-          };
-          simulation('x', forceX(size.width / 2).strength(0.02)); // REDUCED from 0.06
-          simulation('y', forceY(yFor).strength(0.1)); // REDUCED from 0.34
-        } else {
-          simulation('radial', null);
-          simulation('x', null);
-          simulation('y', null);
-        }
+      // Use very weak forces to prevent movement
+      inst.d3Force('charge')?.strength(-50);
+      inst.d3Force('link')?.distance(80).strength(0.1);
+      inst.d3Force('center')?.strength(0.01);
 
-        // MUCH weaker charge to reduce pulling
-        simulation(
-          'charge',
-          forceManyBody().strength((node) => {
-            const baseStrength = -80; // REDUCED from -300
-            const levelMultiplier = Math.max(0.3, 1 - (node.level || 0) * 0.2);
-            return baseStrength * levelMultiplier;
-          }),
-        );
-
-        // Weaker collision
-        simulation(
-          'collision',
-          forceCollide()
-            .radius((node) => getNodeSize(node) + 8) // REDUCED from +15
-            .strength(0.4), // REDUCED from 0.9
-        );
-
-        // Normalize links
-        const idMap = new Map(visibleNodes.map((n) => [n.id, n]));
-        const normalizedLinks = visibleLinks
-          .map((l) => {
-            const srcId = typeof l.source === 'object' ? l.source.id : l.source;
-            const tgtId = typeof l.target === 'object' ? l.target.id : l.target;
-            const srcNode = idMap.get(srcId);
-            const tgtNode = idMap.get(tgtId);
-            if (!srcNode || !tgtNode) return null;
-            return Object.assign({}, l, { source: srcNode, target: tgtNode });
-          })
-          .filter(Boolean);
-
-        // MUCH weaker link force
-        simulation(
-          'link',
-          forceLink(normalizedLinks)
-            .id((d) => d.id)
-            .distance((link) => {
-              const baseDist = settingsLayout.forces.linkDistance || 100;
-              const sourceNode = link.source;
-              const targetNode = link.target;
-              const levelDiff = Math.abs(
-                (sourceNode?.level || 1) - (targetNode?.level || 1),
-              );
-              return baseDist + levelDiff * 60;
-            })
-            .strength(0.15), // REDUCED from 0.6
-        );
-
-        // Weaker center force
-        simulation(
-          'center',
-          forceCenter(size.width / 2, size.height / 2).strength(0.01), // REDUCED from 0.05
-        );
-
-        // Configure simulation to settle quickly
-        try {
-          const sim = fgRef.current.d3Simulation?.();
-          if (sim) {
-            sim.alphaDecay(0.03); // Faster decay = settles faster
-            sim.velocityDecay(0.6); // More friction = less movement
-          }
-        } catch (e) {}
+      // Lower alpha to reduce initial movement
+      const sim = inst.d3Simulation?.();
+      if (sim) {
+        sim.alphaDecay(0.05); // Faster decay = settles quicker
+        sim.velocityDecay(0.6); // Higher = more friction
       }
     } catch (err) {
-      console.error('[graph] layout error', err);
+      // ignore
     }
-  }, [
-    visibleNodes,
-    visibleLinks,
-    size,
-    getNodeSize,
-    layout,
-    settingsLayout.forces.linkDistance,
-    settingsLayout.forces.repulsion,
-    settingsLayout.forces.center,
-  ]);
+  }, [visibleNodes, visibleLinks]);
 
   // Apply lock freezing to locked nodes
   useEffect(() => {
@@ -1777,51 +1729,18 @@ export const HierarchicalGraph = ({
         // Node interactions
         onNodeClick={handleNodeClick}
         onNodeHover={handleNodeHover}
- onNodeDragEnd={(node) => {
+        onNodeDragEnd={(node) => {
           if (!node) return;
-          
+
           // Always pin the dragged node where it was dropped
           node.fx = node.x;
           node.fy = node.y;
           node.vx = 0;
           node.vy = 0;
-          
-          // Stop simulation briefly to prevent other nodes from jumping
-          try {
-            const sim = fgRef.current?.d3Simulation?.();
-            if (sim) {
-              sim.alpha(0);
-              sim.stop();
-            }
-          } catch (e) {}
-          
-          // Freeze all other nodes momentarily
-          try {
-            const graphData = fgRef.current?.graphData();
-            if (graphData && graphData.nodes) {
-              graphData.nodes.forEach((n) => {
-                if (isFinite(n.x) && isFinite(n.y)) {
-                  n.vx = 0;
-                  n.vy = 0;
-                }
-              });
-            }
-          } catch (e) {}
-          
+
           setPinnedNodes((prev) => new Set(prev).add(node.id));
-          
-          // If not locked, restart with minimal energy after a delay
-          if (!lockLayout && !settingsLayout?.isFrozen) {
-            setTimeout(() => {
-              try {
-                const sim = fgRef.current?.d3Simulation?.();
-                if (sim) {
-                  sim.alpha(0.02); // Very low energy
-                  sim.restart();
-                }
-              } catch (e) {}
-            }, 300);
-          }
+
+          // Don't restart simulation - let it stay calm
         }}
         // Link styling
         linkWidth={(link) => {
@@ -1961,7 +1880,6 @@ export const HierarchicalGraph = ({
           return isHighlighted ? 0.008 : 0;
         }}
         // Use canvas mode for custom link rendering
-
 
         // Use canvas mode for custom link rendering
         linkCanvasObjectMode={() => 'replace'}

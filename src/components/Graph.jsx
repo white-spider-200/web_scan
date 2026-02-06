@@ -70,107 +70,45 @@ export const Graph = ({ data, onNodeClick, highlightedNodes = [], similarNodes =
     return () => ro.disconnect();
   }, []);
 
-  // Configure forces
+
+  // Configure forces - use weaker values
   useEffect(() => {
     if (!fgRef.current || !normalizedData?.nodes?.length) return;
 
     const fg = fgRef.current;
-    const rootNode = normalizedData.nodes.find(n => n.type === 'host' && n.role === 'root') 
-      || normalizedData.nodes.find(n => n.type === 'host')
-      || normalizedData.nodes[0];
-    
-    if (!rootNode) return;
+    // ...existing code...
 
-    // If physics is locked, disable all forces and stop simulation
-    if (isPhysicsLocked) {
-      fg.d3Force('center', null);
-      fg.d3Force('charge', null);
-      fg.d3Force('link', null);
-      fg.d3Force('radial', null);
-      fg.d3Force('collision', null);
-      
-      try {
-        const sim = fg.d3Simulation();
-        if (sim) {
-          sim.stop();
-          sim.alpha(0);
-        }
-      } catch (e) {}
-      
-      return;
-    }
-
-    // When unlocked, restart simulation with forces
-    try {
-      const sim = fg.d3Simulation();
-      if (sim) {
-        sim.restart();
-        sim.alpha(0.3);
-      }
-    } catch (e) {}
-
-    // Center force
-    fg.d3Force('center', forceCenter(size.width / 2, size.height / 2).strength(0.05));
-
-    // Charge force - repulsion between nodes
+    // Charge force - REDUCE strength
     fg.d3Force('charge', forceManyBody()
-      .strength(node => node.id === rootNode.id ? -800 : -300)
+      .strength(node => node.id === rootNode.id ? -200 : -80)
       .distanceMin(20)
-      .distanceMax(500)
+      .distanceMax(300)
     );
 
-    // Link force
+    // Center force - VERY weak
+    fg.d3Force('center', forceCenter(size.width / 2, size.height / 2).strength(0.01));
+
+    // Link force - weaker
     fg.d3Force('link', forceLink(normalizedData.links)
       .id(d => d.id)
-      .distance(link => {
-        const sourceNode = typeof link.source === 'object' ? link.source : 
-          normalizedData.nodes.find(n => n.id === link.source);
-        const targetNode = typeof link.target === 'object' ? link.target :
-          normalizedData.nodes.find(n => n.id === link.target);
-        
-        const isRootLink = sourceNode?.id === rootNode.id || targetNode?.id === rootNode.id;
-        const levelDiff = Math.abs((sourceNode?.level || 1) - (targetNode?.level || 1));
-        
-        return isRootLink ? 180 : 80 + levelDiff * 40;
-      })
-      .strength(0.3)
+      .distance(100)
+      .strength(0.1)
     );
 
-    // Radial force - organize by level
+    // Radial force - weaker
     fg.d3Force('radial', forceRadial(
       node => {
         if (node.id === rootNode.id) return 0;
         const level = node.level || 2;
-        return (level - 1) * 150;
+        return (level - 1) * 120;
       },
       size.width / 2,
       size.height / 2
-    ).strength(0.4));
+    ).strength(0.1));
 
-    // Collision force - prevent overlap
-    fg.d3Force('collision', forceCollide()
-      .radius(node => {
-        const baseRadius = node.type === 'host' && node.role === 'root' ? 25 : 15;
-        return baseRadius;
-      })
-      .strength(0.8)
-    );
-
-    // Pin root node at center
-    rootNode.fx = size.width / 2;
-    rootNode.fy = size.height / 2;
-
-    // Auto-fit on first load
-    if (!didAutoFitRef.current && normalizedData.nodes.length > 0) {
-      const timeout = setTimeout(() => {
-        if (fg.zoomToFit) {
-          fg.zoomToFit(400, 80);
-          didAutoFitRef.current = true;
-        }
-      }, 500);
-      return () => clearTimeout(timeout);
-    }
+    // ...existing code...
   }, [normalizedData, size.width, size.height, isPhysicsLocked]);
+
 
   // Zoom controls
   const handleZoom = (type) => {
