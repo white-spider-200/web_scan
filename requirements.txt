@@ -1,0 +1,4 @@
+requests==2.31.0
+beautifulsoup4==4.12.3
+playwright==1.58.0
+python-Wappalyzer==0.3.1

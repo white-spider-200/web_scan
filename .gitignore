@@ -6,3 +6,5 @@ __pycache__/
 **/__pycache__/
 *.pyc
 server/data.db.bak-*
+results/
+recon/__pycache__
